@@ -76,7 +76,7 @@ case $H in
       -e LITELLM_KEY -e MODEL=$MODEL agent-trial:4 \
       python3 /opt/mini_harness_v2.py "$PROMPT" < /dev/null > $L.out 2> $L.err
     rc=$?; cp $B/out/$ID/transcript.jsonl $L.jsonl 2>/dev/null; exit $rc ;;
-  minits)
+  minits|mini3)
     # mini in TypeScript (the npm package's one-file bundle), same image, key and settings as v2.
     MINI_API_KEY="$(cat $KEYS/mini-harness.key)" \
       timeout -k 30 2700 $DOCKER -v $B/out/$ID:/out -v ${MINI_TS_BUNDLE:-$HOME/repos/mini/dist/mini.js}:/opt/mini.js:ro \

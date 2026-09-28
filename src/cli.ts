@@ -27,6 +27,8 @@ Usage: mini [options] "task"
   -v, --version          version
 
 The API key comes from MINI_API_KEY (or LITELLM_KEY / OPENAI_API_KEY), never from a flag.
+MINI_NUDGE_AFTER: tool calls without a file change before mini tells the model to step back
+(default 8, 0 = off). MINI_RETRY_SECONDS: how long a failed model call is retried (default 180).
 The sandbox mounts only the current folder (as /work) and refuses to run in / or your home folder.`;
 
 const env = process.env;
@@ -55,7 +57,7 @@ function sandbox(task: string, o: { model: string; baseURL: string; image: strin
     ...(uid !== undefined ? ["--user", `${uid}:${gid}`, "-e", "HOME=/tmp"] : []),
     "-v", `${here}:/work`, "-w", "/work", "-v", `${logDir}:/out`, "-v", `${self}:/opt/mini/mini.js:ro`,
     "-e", "MINI_API_KEY", "-e", `MINI_BASE_URL=${baseURL}`, "-e", `MINI_MODEL=${o.model}`,
-    "-e", "MINI_WORK=/work", "-e", `MINI_LOG=/out/${logName}`,
+    "-e", "MINI_WORK=/work", "-e", `MINI_LOG=/out/${logName}`, "-e", "MINI_NUDGE_AFTER", "-e", "MINI_RETRY_SECONDS",
     o.image, "node", "/opt/mini/mini.js", "--no-sandbox", task,
   ];
   console.error(`mini: sandbox ${o.image}, folder ${here}, transcript ${join(logDir, logName)}`);
@@ -94,7 +96,9 @@ async function cli(): Promise<number> {
     mkdirSync(stateDir(), { recursive: true });
     log = join(stateDir(), `${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`);
   }
-  return main(task, { apiKey: apiKey()!, baseURL, model, work, log });
+  const int = (v: string | undefined) => (v && /^\d+$/.test(v) ? Number(v) : undefined);
+  return main(task, { apiKey: apiKey()!, baseURL, model, work, log,
+    nudgeAfter: int(env.MINI_NUDGE_AFTER), retrySeconds: int(env.MINI_RETRY_SECONDS) });
 }
 
 cli().then((rc) => process.exit(rc), (e) => {

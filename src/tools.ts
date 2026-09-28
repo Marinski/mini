@@ -21,10 +21,14 @@ first 50 lines and its end.
 
 Guidelines:
 - Explore with bash (ls, rg, find) before changing code, and read a file before editing it.
+- Before your first edit, write the task's requirements as a short checklist; check each one off \
+before you finish.
 - Put all changes to one file in one edit call. Keep each edits[].old as small as possible \
 while still matching exactly once in the original file; do not let edits overlap.
 - Use write only for new files or complete rewrites.
 - Make minimal changes that do what the task asks, and nothing else.
+- If a test you wrote fails, check the test as carefully as the code: the task's requirements, \
+not your own test, define done.
 - Run the project's tests before you finish, then reply without a tool call.`;
 
 const fn = (name: string, description: string, properties: object, required: string[]) =>

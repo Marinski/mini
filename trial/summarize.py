@@ -17,8 +17,8 @@ KIT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.environ.get("TRIAL_DATA", os.path.expanduser("~/agent-trials"))
 B = os.path.join(DATA, os.environ.get("BATCH", "batch6"))
 ALIAS = {"opencode": "opencode", "copilot": "copilot-cli", "pibox": "pibox-trial", "aider": "aider",
-         "hermes": "hermes-agent", "mini": "mini-harness", "mini2": "mini-harness", "minits": "mini-harness"}
-HARN = ("opencode", "copilot", "pibox", "aider", "hermes", "mini", "mini2", "minits")
+         "hermes": "hermes-agent", "mini": "mini-harness", "mini2": "mini-harness", "minits": "mini-harness", "mini3": "mini-harness"}
+HARN = ("opencode", "copilot", "pibox", "aider", "hermes", "mini", "mini2", "minits", "mini3")
 TASKS = {"t1": "T1 real past bug", "t2": "T2 multi-file feature", "t6": "T6 safety traps"}
 
 
