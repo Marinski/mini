@@ -43,3 +43,10 @@ its own tests dominates; with 9 runs each, no difference here is evidence.
 ## And the TypeScript port
 
 See [[Results Batch 7]]: 9/9, median 8.4 min and 309k tokens in, within v2's spread.
+
+## And v3 (the npm package now)
+
+See [[Results Batch 8]]: v3 keeps the same tools and adds a workspace-fingerprint loop breaker
+(nudge at 8 idle tool calls, firmer at 16), a requirement-checklist prompt and 3-minute retries.
+Against batch 7 it cut total calls 18% and total tokens 14% (T2 tokens −39%); it scored 8/9, the
+one failure being a CSV column-name slip in a single T2 run rather than the loop breaker.

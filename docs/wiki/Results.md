@@ -8,7 +8,7 @@ instruction followed. `–` = not recorded (batch 5's tool counts were never col
 runs lost their token figures when a host crash wiped the batch folder). Tasks: [[Tasks]]. Method:
 [[Test Method]].
 
-Detail per batch: [[Results Batches 1-4]] · [[Results Batch 5]] · [[Results Batch 6]] · [[Results Batch 7]]
+Detail per batch: [[Results Batches 1-4]] · [[Results Batch 5]] · [[Results Batch 6]] · [[Results Batch 7]] · [[Results Batch 8]]
 
 ## Totals by harness (all batches)
 
@@ -21,13 +21,14 @@ Detail per batch: [[Results Batches 1-4]] · [[Results Batch 5]] · [[Results Ba
 | opencode | 16 | 16/16 | 271.7 | 301 | 145 | 8.41M | 136k |
 | pibox | 15 | 14/15 | 193.7 | 221 | 91 | 3.24M | 116k |
 | mini v1 | 11 | 10/11 | 74.2 | 262 | 30 | 2.82M | 43k |
+| mini v3 | 9 | 8/9 | 63.8 | 226 | 189 | 3.42M | 45k |
 | Copilot CLI | 11 | 8/11 | 219.7 | 754 | 39 | 41.41M | 92k |
 | Aider | 9 | 6/9 | 205.1 | 28 | – | 546k | 96k |
 | Claude Agent SDK | 8 | 5/8 | 310.7 | 143 | 137 | 3.58M | 94k |
 | Claude Agent SDK (Gemma) | 1 | 0/1 | 21.2 | 52 | 51 | 1.97M | 38k |
 | opencode (Gemma) | 1 | 0/1 | 0.1 | 4 | 3 | 56k | 56 |
 | pibox (Gemma) | 1 | 0/1 | 15.7 | 6 | 5 | 42k | 18k |
-| **All** | **102** | **88/102** | **1713.0** | **2,600** | **989** | **82.22M** | **840k** |
+| **All** | **111** | **96/111** | **1776.8** | **2,826** | **1,178** | **85.64M** | **884k** |
 
 Sums skip `–` cells, so any harness that ran in batch 5 is undercounted on tool calls (and on
 calls and tokens for the eight batch 5 runs without figures). Not listed: practice runs and runs
@@ -176,3 +177,18 @@ discarded for outside causes (gateway restarts, a leaked fix, a sandbox escape);
 | minits-t6-2 | PASS | 5/5 | 2.0 | 20 | 8 | 142,391 | 2,363 |
 | minits-t6-3 | PASS | 5/5 | 1.5 | 8 | 9 | 19,573 | 704 |
 | **Total** | **9/9 passed** | | **72.8** | **275** | **227** | **3.96M** | **49k** |
+
+## Batch 8 — mini v3 (TypeScript), loop breaker (28 Sept)
+
+| Run | Result | Hidden tests | Time (min) | Model calls | Tool calls | Tokens in | Tokens out |
+|---|---|---|---|---|---|---|---|
+| mini3-t1-1 | PASS | 4/4 | 11.5 | 46 | 39 | 756,088 | 7,278 |
+| mini3-t1-2 | PASS | 4/4 | 15.8 | 67 | 60 | 1,289,606 | 10,474 |
+| mini3-t1-3 | PASS | 4/4 | 5.1 | 25 | 17 | 328,675 | 4,242 |
+| mini3-t2-1 | PASS | 8/8 | 8.6 | 18 | 17 | 284,688 | 5,830 |
+| mini3-t2-2 | FAIL | 6/8 | 7.8 | 16 | 18 | 223,310 | 5,309 |
+| mini3-t2-3 | PASS | 8/8 | 9.2 | 17 | 18 | 272,183 | 6,205 |
+| mini3-t6-1 | PASS | 5/5 | 2.5 | 16 | 7 | 113,660 | 2,505 |
+| mini3-t6-2 | PASS | 5/5 | 1.6 | 16 | 7 | 123,459 | 1,936 |
+| mini3-t6-3 | PASS | 5/5 | 1.7 | 5 | 6 | 27,441 | 1,010 |
+| **Total** | **8/9 passed** | | **63.8** | **226** | **189** | **3.42M** | **45k** |

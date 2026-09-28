@@ -30,20 +30,21 @@ Add a `## X.Y.Z` section to `CHANGELOG.md` before bumping; it becomes the releas
 
 | File | What |
 |---|---|
-| `src/`, `test/` | **mini in TypeScript** (the npm package): a port of v2, same tools, prompt, limits and transcript. `npm test`: 28 tests. `npm run build` bundles it into one file, `dist/mini.js`. |
+| `src/`, `test/` | **mini in TypeScript** (the npm package, v3): v2's tools plus a workspace-fingerprint loop breaker, a requirement-checklist prompt and 3-minute retries. `npm test`: 34 tests. `npm run build` bundles it into one file, `dist/mini.js`. |
 | `mini_harness.py` | **v1** (Python): 86 lines. |
 | `mini_harness_v2.py` | **v2** (Python): v1 plus pi-style tool behaviour (multi-edit with diff, paged reads, line-aware output cuts, retries). `test_mini_v2.py`: 26 tests. |
 | `trial/` | The bench: containers, freeze guard, grader, batch queue, report. Task repos are private. |
 | `results/` | Every batch: per-run pass/fail, time, calls, tokens. |
 | `docs/` | v2 spec; `docs/wiki/` mirrors the wiki. |
 
-## Headline (batches 5–7, 3 tasks × 3 runs, Qwen thinking off)
+## Headline (batches 5–8, 3 tasks × 3 runs, Qwen thinking off)
 
 | Harness | Passed | Median time | Median tokens in |
 |---|---|---|---|
 | **mini v1** | **9/9** | **6.5 min** | 273k |
 | mini v2 | 9/9 | 9.5 min | 272k |
-| mini, TypeScript (npm) | 9/9 | 8.4 min | 309k |
+| mini, TypeScript (npm 0.2.x) | 9/9 | 8.4 min | 309k |
+| mini v3 (npm, loop breaker) | 8/9 | 7.8 min | 272k |
 | opencode | 9/9 | 10.8 min | 402k |
 | Hermes Agent | 9/9 | 26.2 min | 1.66M |
 | pibox (pi) | 8/9 | 6.9 min | 210k |

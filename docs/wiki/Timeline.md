@@ -17,3 +17,6 @@ All times Europe/Sofia. Model = Qwen 3.8 via vLLM + LiteLLM unless stated.
 | 28 Sept 08:25–10:33 | **Batch 6**: mini v2 × 3 tasks × 3; two runs rerun after a gateway restart | 9/9, no measurable gain over v1 |
 | 28 Sept 11:00–11:40 | **mini in TypeScript** (npm package with a Docker sandbox); published as `@marinski/mini` 0.2.0, then 0.2.1 by the tag-driven release workflow | 28 tests; 300-case parity check against Python |
 | 28 Sept 11:22–12:36 | **Batch 7**: the TypeScript bundle × 3 tasks × 3 | 9/9, like v2 |
+| 28 Sept 12:37–12:50 | **mini v3** (TypeScript): a workspace-fingerprint loop breaker (nudge at 8 idle tool calls, firmer at 16), a requirement-checklist prompt, retries up to 3 minutes; 34 tests | |
+| 28 Sept 12:50–13:54 | **Batch 8**: the v3 bundle × 3 tasks × 3 | 8/9; calls 18% and tokens 14% below batch 7; the one failure was a `refunds`/`refunds_eur` column-key slip, not the loop breaker |
+| 28 Sept | `@marinski/mini` **0.3.0** released: npm package + GitHub release via the tag workflow | |

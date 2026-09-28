@@ -7,19 +7,22 @@
    run-to-run variance (one looping run can triple a task's total).
 2. **Tool polish didn't matter here.** v2's paged reads and line-aware cuts almost never fired.
 3. **What does cost time is self-test loops:** the model rerunning its own failing test many
-   times. That's the next thing worth attacking.
+   times. v3's loop breaker cuts that (see next steps), but doesn't remove it: T1 still nudges.
 4. **Retries must survive a gateway restart.** v2's ~20 s of retries didn't; two runs died at
-   step 0.
+   step 0. v3 retries for up to 3 minutes.
 
 ## Next steps, in order
 
 1. **Harder tasks** so pass rates can differ: longer multi-file features, a bug needing a
    reproduction first, a task over a larger repo (context pressure, where compaction matters).
    Keep the private-repo setup, 3–5 runs per task.
-2. **Loop breaker experiment (v3):** a short requirement checklist in the prompt, and a nudge
-   when the same test command fails 3 times in a row ("re-read the spec, change approach").
-   Measure calls and tokens against v1/v2 on the same tasks.
-3. **Robust transport:** retry connection errors and 5xx for up to ~2 minutes with backoff.
+2. ~~**Loop breaker experiment (v3):**~~ done (batch 8): a workspace-fingerprint nudge at 8 idle
+   tool calls and a firmer one at 16, plus a requirement checklist. v3 cut total calls 18% and
+   tokens 14% against batch 7 on the same tasks (T2 tokens −39%) and scored 8/9; the single
+   failure was an unrelated CSV column-name slip. Next: whether a lighter nudge (fewer false
+   positives) keeps the gain, and whether harder tasks make the difference clearer.
+3. ~~**Robust transport:**~~ done (v3): connection errors, timeouts and 408/409/429/5xx retry with
+   backoff for up to ~3 minutes, enough to ride out a gateway restart.
 4. **Context management** only if the harder tasks push prompts past ~60k tokens (none did yet:
    peak 42k).
 5. ~~Packaging~~ done: `@marinski/mini` on npm, released by pushing a version tag (batch 7
