@@ -3,7 +3,7 @@
 The npm package's one-file bundle (`dist/mini.js`, the code published as 0.2.0/0.2.1), run with
 `--no-sandbox` inside the same trial container as the Python versions. Same tasks, model and
 settings as batches 5 and 6 (T1, T2, T6 × 3, `vllm-qwen3.8-nothink`). Per-run data:
-`batch-7.json`.
+`results/batch-7.json` in the repo.
 
 | Run | Result | Hidden | Min | Calls | Tokens in / out | Peak prompt |
 |---|---|---|---|---|---|---|
