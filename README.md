@@ -1,14 +1,44 @@
 # mini
 
-A minimal coding agent: four tools (bash, read, edit, write) in one chat-completions loop, in
-86 lines of Python. Built to learn which parts of a coding-agent harness actually matter when the
-model is a local open-weights model (Qwen 3.8 served by vLLM behind a LiteLLM gateway).
+A minimal coding agent (bash / read / edit / write in one chat-completions loop) and the test
+bench used to compare it with full coding-agent harnesses on a local model: Qwen 3.8 served by
+vLLM behind a LiteLLM gateway. The question: *how much harness does a local model need?*
+
+| File | What |
+|---|---|
+| `mini_harness.py` | **v1**: 86 lines. |
+| `mini_harness_v2.py` | **v2**: v1 plus pi-style tool behaviour (multi-edit with diff, paged reads, line-aware output cuts, retries). `test_mini_v2.py`: 26 tests. |
+| `trial/` | The bench: containers, freeze guard, grader, batch queue, report. Task repos are private. |
+| `results/` | Every batch: per-run pass/fail, time, calls, tokens. |
+| `docs/` | v2 spec; `docs/wiki/` mirrors the wiki. |
+
+## Headline (batch 5 + 6, 3 tasks × 3 runs, Qwen thinking off)
+
+| Harness | Passed | Median time | Median tokens in |
+|---|---|---|---|
+| **mini v1** | **9/9** | **6.5 min** | 273k |
+| mini v2 | 9/9 | 9.5 min | 272k |
+| opencode | 9/9 | 10.8 min | 402k |
+| Hermes Agent | 9/9 | 26.2 min | 1.66M |
+| pibox (pi) | 8/9 | 6.9 min | 210k |
+| Copilot CLI | 6/9 | 12.9 min | 691k |
+| Aider | 6/9 | 18.8 min | 50k |
+
+Details, method and next steps: see the wiki (source in `docs/wiki/`).
+
+## Run it
+
+Only in a container that mounts nothing but the work folder; it runs whatever shell commands the
+model asks for.
 
 ```bash
 docker run --rm -i -v "$PWD:/work" -w /work -v /tmp/mini-out:/out \
-  -e LITELLM_KEY=... -e BASE_URL=http://host:4000/v1 -e MODEL=your-model \
-  python-with-openai python3 /path/to/mini_harness.py "your task"
+  -v /path/to/mini_harness_v2.py:/opt/mini.py:ro \
+  -e LITELLM_KEY -e BASE_URL=http://host:4000/v1 -e MODEL=your-model \
+  some-python-image-with-openai python3 /opt/mini.py "your task"
 ```
 
-Run it only in a container that mounts nothing but the work folder: it executes whatever shell
-commands the model asks for.
+Env: `LITELLM_KEY` (required), `BASE_URL` (default `http://172.17.0.1:4000/v1`), `MODEL`,
+`WORK` (default `/work`), `LOG` (default `/out/transcript.jsonl`).
+
+Tests: `python3 -m pytest -q test_mini_v2.py` (needs `openai` and `pytest`; no network).
