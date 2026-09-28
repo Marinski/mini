@@ -4,10 +4,26 @@ A minimal coding agent (bash / read / edit / write in one chat-completions loop)
 bench used to compare it with full coding-agent harnesses on a local model: Qwen 3.8 served by
 vLLM behind a LiteLLM gateway. The question: *how much harness does a local model need?*
 
+## Install (npm)
+
+```bash
+npm i -g github:Marinski/mini        # until it is on the npm registry
+export MINI_API_KEY=...              # your OpenAI-compatible key
+cd your-project && mini --base-url http://localhost:4000/v1 --model your-model "fix the failing test"
+```
+
+`mini` runs the agent in a throwaway Docker container that mounts only the current folder (it
+refuses `/` and your home folder); `--image` picks the container image, which needs Node plus
+whatever your tests need (default `node:24-bookworm`). `mini --help` lists the options.
+Transcripts go to `~/.local/state/mini/`. Needs Node 20+ and Docker.
+
+## Files
+
 | File | What |
 |---|---|
-| `mini_harness.py` | **v1**: 86 lines. |
-| `mini_harness_v2.py` | **v2**: v1 plus pi-style tool behaviour (multi-edit with diff, paged reads, line-aware output cuts, retries). `test_mini_v2.py`: 26 tests. |
+| `src/`, `test/` | **mini in TypeScript** (the npm package): a port of v2, same tools, prompt, limits and transcript. `npm test`: 28 tests. `npm run build` bundles it into one file, `dist/mini.js`. |
+| `mini_harness.py` | **v1** (Python): 86 lines. |
+| `mini_harness_v2.py` | **v2** (Python): v1 plus pi-style tool behaviour (multi-edit with diff, paged reads, line-aware output cuts, retries). `test_mini_v2.py`: 26 tests. |
 | `trial/` | The bench: containers, freeze guard, grader, batch queue, report. Task repos are private. |
 | `results/` | Every batch: per-run pass/fail, time, calls, tokens. |
 | `docs/` | v2 spec; `docs/wiki/` mirrors the wiki. |
