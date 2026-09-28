@@ -1,0 +1,5 @@
+# agent-trial:2 = agent-trial:1 plus GitHub Copilot CLI and Qwen Code (batch 4).
+FROM agent-trial:1
+USER root
+RUN npm install -g @github/copilot@1.0.88 @qwen-code/qwen-code@0.24.6 && npm cache clean --force
+USER agent

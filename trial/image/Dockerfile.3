@@ -1,0 +1,6 @@
+# agent-trial:3 = agent-trial:2 plus the openai package and the mini-harness (batch 4, 4th contestant).
+FROM agent-trial:2
+USER root
+RUN /opt/venv/bin/pip install --no-cache-dir openai
+COPY mini_harness.py /opt/mini_harness.py
+USER agent
