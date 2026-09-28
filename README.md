@@ -7,7 +7,7 @@ vLLM behind a LiteLLM gateway. The question: *how much harness does a local mode
 ## Install (npm)
 
 ```bash
-npm i -g github:Marinski/mini        # until it is on the npm registry
+npm i -g https://github.com/Marinski/mini/releases/download/v0.2.0/marinski-mini-0.2.0.tgz
 export MINI_API_KEY=...              # your OpenAI-compatible key
 cd your-project && mini --base-url http://localhost:4000/v1 --model your-model "fix the failing test"
 ```
