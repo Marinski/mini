@@ -39,3 +39,7 @@ failing test ~15 times). The other seven are at or under v1's typical cost. v2's
 behaviour barely fired: 1 read-continuation hint and 0 output cuts in ~150 tool calls, so on these
 tasks the tool changes neither helped nor hurt. Run-to-run variance in how long the model loops on
 its own tests dominates; with 9 runs each, no difference here is evidence.
+
+## And the TypeScript port
+
+See [[Results Batch 7]]: 9/9, median 8.4 min and 309k tokens in, within v2's spread.

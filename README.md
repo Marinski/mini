@@ -37,12 +37,13 @@ Add a `## X.Y.Z` section to `CHANGELOG.md` before bumping; it becomes the releas
 | `results/` | Every batch: per-run pass/fail, time, calls, tokens. |
 | `docs/` | v2 spec; `docs/wiki/` mirrors the wiki. |
 
-## Headline (batch 5 + 6, 3 tasks × 3 runs, Qwen thinking off)
+## Headline (batches 5–7, 3 tasks × 3 runs, Qwen thinking off)
 
 | Harness | Passed | Median time | Median tokens in |
 |---|---|---|---|
 | **mini v1** | **9/9** | **6.5 min** | 273k |
 | mini v2 | 9/9 | 9.5 min | 272k |
+| mini, TypeScript (npm) | 9/9 | 8.4 min | 309k |
 | opencode | 9/9 | 10.8 min | 402k |
 | Hermes Agent | 9/9 | 26.2 min | 1.66M |
 | pibox (pi) | 8/9 | 6.9 min | 210k |

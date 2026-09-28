@@ -22,7 +22,8 @@
 3. **Robust transport:** retry connection errors and 5xx for up to ~2 minutes with backoff.
 4. **Context management** only if the harder tasks push prompts past ~60k tokens (none did yet:
    peak 42k).
-5. **Packaging** (below) once the harness stops changing weekly.
+5. ~~Packaging~~ done: `@marinski/mini` on npm, released by pushing a version tag (batch 7
+   confirmed the TypeScript port matches v2).
 
 ## Packaging mini for npm (like opencode, pi, Copilot CLI)
 

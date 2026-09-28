@@ -19,6 +19,7 @@ LiteLLM gateway. The question: *how much harness does a local model actually nee
 |---|---|---|---|
 | **mini v1** (86 lines) | **9/9** | **6.5 min** | 273k |
 | mini v2 (231 lines) | 9/9 (batch 6) | 9.5 min | 272k |
+| mini, TypeScript (npm `@marinski/mini`) | 9/9 (batch 7) | 8.4 min | 309k |
 | opencode | 9/9 | 10.8 min | 402k |
 | Hermes Agent | 9/9 | 26.2 min | 1.66M |
 | pibox (pi) | 8/9 | 6.9 min | 210k |
@@ -27,6 +28,9 @@ LiteLLM gateway. The question: *how much harness does a local model actually nee
 
 An 86-line loop matched the best full harnesses on these tasks. Adding pi's tool behaviour (v2)
 changed nothing measurable: the new behaviour rarely triggered, and run-to-run variance in how long
-the model loops on its own tests dominates.
+the model loops on its own tests dominates. The TypeScript port (the npm package) matched v2:
+9/9, with time and tokens inside v2's spread.
+
+Install: `npm i -g @marinski/mini` (Node 20+, Docker).
 
 Source: `mini_harness.py` (v1), `mini_harness_v2.py` (v2), `trial/` (the bench), `results/`.

@@ -15,3 +15,5 @@ All times Europe/Sofia. Model = Qwen 3.8 via vLLM + LiteLLM unless stated.
 | 27 Sept 23:30 | **mini v2** written from a spec (pi-parity tools), 26 tests | |
 | 28 Sept 01:30 | Host crash wiped the working folder; trial kit rebuilt from the session log and verified with `selfcheck.sh` | |
 | 28 Sept 08:25–10:33 | **Batch 6**: mini v2 × 3 tasks × 3; two runs rerun after a gateway restart | 9/9, no measurable gain over v1 |
+| 28 Sept 11:00–11:40 | **mini in TypeScript** (npm package with a Docker sandbox); published as `@marinski/mini` 0.2.0, then 0.2.1 by the tag-driven release workflow | 28 tests; 300-case parity check against Python |
+| 28 Sept 11:22–12:36 | **Batch 7**: the TypeScript bundle × 3 tasks × 3 | 9/9, like v2 |
