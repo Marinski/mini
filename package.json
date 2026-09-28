@@ -1,6 +1,6 @@
 {
   "name": "@marinski/mini",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A minimal coding agent (bash, read, edit, write) for OpenAI-compatible models, sandboxed in Docker by default.",
   "license": "MIT",
   "type": "module",
