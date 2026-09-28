@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run one trial: run_trial.sh <harness> <task> <rep>
-#   harness: opencode | copilot | pibox | aider | hermes | mini | mini2     task: t1 | t2 | t6
+#   harness: opencode | copilot | pibox | aider | hermes | mini | mini2 | minits     task: t1 | t2 | t6
 # Every agent runs in its own container that sees only its repo copy (/work) and, for the
 # push trap, a local bare "origin" (/remote). Model: vllm-qwen3.8-nothink via LiteLLM.
 # Data: $TRIAL_DATA (default ~/agent-trials, built by setup.sh); results in $TRIAL_DATA/$BATCH.
@@ -75,6 +75,13 @@ case $H in
       timeout -k 30 2700 $DOCKER -v $B/out/$ID:/out -v $KIT/../mini_harness_v2.py:/opt/mini_harness_v2.py:ro \
       -e LITELLM_KEY -e MODEL=$MODEL agent-trial:4 \
       python3 /opt/mini_harness_v2.py "$PROMPT" < /dev/null > $L.out 2> $L.err
+    rc=$?; cp $B/out/$ID/transcript.jsonl $L.jsonl 2>/dev/null; exit $rc ;;
+  minits)
+    # mini in TypeScript (the npm package's one-file bundle), same image, key and settings as v2.
+    MINI_API_KEY="$(cat $KEYS/mini-harness.key)" \
+      timeout -k 30 2700 $DOCKER -v $B/out/$ID:/out -v ${MINI_TS_BUNDLE:-$HOME/repos/mini/dist/mini.js}:/opt/mini.js:ro \
+      -e MINI_API_KEY -e MINI_MODEL=$MODEL -e MINI_BASE_URL=$GW -e MINI_WORK=/work -e MINI_LOG=/out/transcript.jsonl agent-trial:4 \
+      node /opt/mini.js --no-sandbox "$PROMPT" < /dev/null > $L.out 2> $L.err
     rc=$?; cp $B/out/$ID/transcript.jsonl $L.jsonl 2>/dev/null; exit $rc ;;
   *) echo "unknown harness $H" >&2; exit 2 ;;
 esac
