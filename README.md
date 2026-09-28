@@ -7,7 +7,7 @@ vLLM behind a LiteLLM gateway. The question: *how much harness does a local mode
 ## Install (npm)
 
 ```bash
-npm i -g https://github.com/Marinski/mini/releases/download/v0.2.0/marinski-mini-0.2.0.tgz
+npm i -g @marinski/mini
 export MINI_API_KEY=...              # your OpenAI-compatible key
 cd your-project && mini --base-url http://localhost:4000/v1 --model your-model "fix the failing test"
 ```
@@ -16,6 +16,15 @@ cd your-project && mini --base-url http://localhost:4000/v1 --model your-model "
 refuses `/` and your home folder); `--image` picks the container image, which needs Node plus
 whatever your tests need (default `node:24-bookworm`). `mini --help` lists the options.
 Transcripts go to `~/.local/state/mini/`. Needs Node 20+ and Docker.
+
+## Releasing
+
+```bash
+npm version patch            # or minor / major: bumps package.json, commits, tags vX.Y.Z
+git push --follow-tags       # the Publish workflow tests, publishes to npm, creates the GitHub release
+```
+
+Add a `## X.Y.Z` section to `CHANGELOG.md` before bumping; it becomes the release notes.
 
 ## Files
 

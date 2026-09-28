@@ -2,17 +2,18 @@
   "name": "@marinski/mini",
   "version": "0.2.0",
   "description": "A minimal coding agent (bash, read, edit, write) for OpenAI-compatible models, sandboxed in Docker by default.",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "mini": "dist/mini.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "engines": {
     "node": ">=20"
   },
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Marinski/mini.git"
@@ -27,7 +28,8 @@
     "build": "node build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test test/*.test.ts",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm test"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
@@ -35,5 +37,12 @@
     "esbuild": "^0.28.2",
     "openai": "^7.23.0",
     "typescript": "^5.9.0"
+  },
+  "homepage": "https://github.com/Marinski/mini#readme",
+  "bugs": {
+    "url": "https://github.com/Marinski/mini/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
