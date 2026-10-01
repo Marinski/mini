@@ -1,0 +1,79 @@
+# agent-trial:5 = agent-trial:4 plus the three context plugins, the local embedding model they
+# share, and the one python package t9's test suite needs. Step 2 of SPEC-context-plugins.md.
+#
+# Everything a run needs is baked in, so a run works with `--network none`: OpenCode resolves its
+# plugins from ~/.cache/opencode/packages, and both memory plugins read their embeddings from
+# HF_HOME=/opt/embeddings (read-only at run time). Versions are pinned; nothing self-updates.
+FROM agent-trial:4
+USER root
+
+# Pin OpenCode: the plugins are installed against this version's plugin API, and a self-update
+# mid-trial would change what every variant is measured on.
+RUN npm install -g --no-audit --no-fund opencode-ai@1.18.33 >/dev/null && opencode --version
+
+# t9's tests/conftest.py imports agentpipe_runner.db -> config -> dotenv. Without it every t9 run
+# reports broken regressions, so it belongs in the image. Same pin as the kit's venv.
+RUN /opt/venv/bin/pip install --no-cache-dir python-dotenv==1.2.3
+
+# One embedding model for both plugins: Magic Context's default and AgentMemory's local provider
+# are both Xenova/all-MiniLM-L6-v2 through @huggingface/transformers.
+ENV HF_HOME=/opt/embeddings
+RUN mkdir -p /opt/embeddings && npm install --no-audit --no-fund --prefix /opt/embeddings-loader \
+      @huggingface/transformers@4.2.0 >/dev/null \
+ && node -e 'const {pipeline,env}=require("/opt/embeddings-loader/node_modules/@huggingface/transformers");env.cacheDir="/opt/embeddings";pipeline("feature-extraction","Xenova/all-MiniLM-L6-v2").then(m=>m("hello",{pooling:"mean",normalize:true})).then(v=>console.log("baked",v.data.length,"dims"))' \
+ && rm -rf /opt/embeddings-loader
+# HOME is /home/agent image-wide, so the root steps above wrote into it (the `opencode --version`
+# check creates both ~/.config/opencode and ~/.local/share/opencode as root). Give the whole home
+# back to the agent, or the plugin install below cannot write its log or its node_modules.
+RUN chown -R agent:agent /home/agent
+
+USER agent
+# OpenCode installs the packages named in a config's "plugin" list into its own config dir, so the
+# bootstrap config below is how the three plugins get baked in. Only the copy inside the agent's own
+# config dir is deleted: /tmp is sticky and root-owned, so the agent cannot remove that one.
+COPY plugin-bootstrap.json /tmp/plugin-bootstrap.json
+# `opencode plugin <mod>@<ver>` is the supported installer: it puts each package in
+# ~/.cache/opencode/packages/<mod>@<ver>/node_modules, which is the dir a run resolves from.
+# Versions are pinned here so a run can never drift. The bootstrap config is only there to be
+# updated by the installer; a run's config comes from OPENCODE_CONFIG_CONTENT.
+RUN mkdir -p /home/agent/.config/opencode \
+ && cp /tmp/plugin-bootstrap.json /home/agent/.config/opencode/opencode.json \
+ && for p in context-mode@1.0.169 @cortexkit/opencode-magic-context@0.44.4 @agentmemory/agentmemory@0.9.29; do \
+      (opencode plugin "$p" >/tmp/oc.log 2>&1 || { echo "--- opencode plugin $p failed:"; tail -30 /tmp/oc.log; exit 1; }); \
+    done \
+  && rm /home/agent/.config/opencode/opencode.json \
+  && rm -rf /home/agent/.cache/opencode/packages/context-mode@latest \
+  && rm -rf /home/agent/.config/opencode/context-mode \
+  && ls -1 /home/agent/.cache/opencode/packages \
+  && test -d /home/agent/.cache/opencode/packages/context-mode@1.0.169 \
+  && test -d /home/agent/.cache/opencode/packages/@cortexkit/opencode-magic-context@0.44.4 \
+  && test -d /home/agent/.cache/opencode/packages/@agentmemory/agentmemory@0.9.29 \
+  && test ! -d /home/agent/.cache/opencode/packages/context-mode@latest
+
+# V4's capture plugin: 22 hooks that POST to the memory server and inject memories at session start.
+# Copied from the @agentmemory/agentmemory package (plugin/opencode/agentmemory-capture.ts).
+COPY agentmemory-capture.ts /home/agent/.config/opencode/plugins/agentmemory-capture.ts
+
+# Magic Context reads this path and has no env override for it, so it is baked in. Same config for
+# V3/V5/V6; the per-run data is isolated by MAGIC_CONTEXT_STORAGE_DIR instead. Inert for the
+# variants that do not load the plugin.
+COPY magic-context.jsonc /home/agent/.config/cortexkit/magic-context.jsonc
+
+USER root
+# The memory server ships inside the plugin package OpenCode already installed, so point at it
+# rather than npm-installing a second copy of an 800 MB dependency tree.
+RUN ln -sf /home/agent/.cache/opencode/packages/@agentmemory/agentmemory@0.9.29/node_modules/.bin/agentmemory \
+       /usr/local/bin/agentmemory \
+ && rm -f /tmp/plugin-bootstrap.json \
+ && agentmemory --version
+# agentmemory's worker needs the iii engine, and downloads it from GitHub on first start unless the
+# binary is already at ~/.agentmemory/bin/iii. The image has no curl or wget, so fetch it with node
+# (it is the same v0.11.2 tarball agentmemory names in its own setup instructions) and check the
+# version, so a run never reaches for the network to start the server.
+RUN node -e 'const fs=require("fs");fetch("https://github.com/iii-hq/iii/releases/download/iii/v0.11.2/iii-x86_64-unknown-linux-gnu.tar.gz").then(r=>{if(!r.ok)throw new Error("http "+r.status);return r.arrayBuffer()}).then(b=>fs.writeFileSync("/tmp/iii.tgz",Buffer.from(b))).catch(e=>{console.error(e.message);process.exit(1)})' \
+ && mkdir -p /home/agent/.agentmemory/bin \
+ && tar -xzf /tmp/iii.tgz -C /home/agent/.agentmemory/bin && rm /tmp/iii.tgz \
+ && chmod +x /home/agent/.agentmemory/bin/iii \
+  && test "$(/home/agent/.agentmemory/bin/iii --version)" = "0.11.2" \
+  && chown -R agent:agent /home/agent/.agentmemory
+USER agent

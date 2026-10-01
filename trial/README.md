@@ -53,7 +53,12 @@ BATCH=batch6 setsid nohup harness/trial/queue.sh "mini2" 3 >> ~/agent-trials/bat
 | `TRIAL_DATA` | `~/agent-trials` | Bases, venv and batch output |
 | `BATCH` | `batch6` | Batch folder name |
 | `TRIAL_KEYS` | `~/.config/agent-trial` | One LiteLLM key file per harness (`<alias>.key`, mode 600) |
-| `OPENCODE_KEY_FILE` | `~/.config/opencode/aigate-litellm.key` | opencode's key |
-| `QWEN_METRICS_URL` | `http://localhost:8001/metrics` | vLLM `/metrics`, for the freeze guard and restart detection |
+| `OPENCODE_KEY_FILE` | `~/.config/opencode/aigate-litellm.key` | opencode's key (never used for variants: they need `trial-opencode.key`) |
+| `TRIAL_IMAGE` | `agent-trial:5` | Image for OpenCode variant runs |
+| `VARIANT` / `SCENARIO` | `V0` / `single` | OpenCode config to use, and `single` or `H` (handover) |
+| `VARIANTS` | (unset) | With `queue.sh`, run these variants round-robin instead of harnesses |
+| `WINDOW_GATE` | `0` | `1` starts a run only if it fits the night window and clears the backup windows |
+| `TASK_LONGEST` | `t2:20 t8:35 t9:65` | Per-task longest run in minutes, for the window gate |
+| `QWEN_METRICS_URL` | `http://192.168.50.232:8001/metrics` | vLLM `/metrics` on the head, for the freeze guard, traffic sampling and restart detection |
 | `LITELLM_ENV_FILE` | `~/repos/aigate/.env` | Where `summarize.py` finds the LiteLLM admin key to read spend logs |
 | `NOTIFY_ENV_FILE` | `~/repos/agentpipe/.env` | Optional Discord bot token and channel for notices |

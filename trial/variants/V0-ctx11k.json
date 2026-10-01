@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "aigate/vllm-qwen3.8-nothink",
+  "small_model": "aigate/vllm-qwen3.8-nothink",
+  "provider": {
+    "aigate": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "aigate",
+      "options": {
+        "baseURL": "http://172.17.0.1:4000/v1",
+        "apiKey": "{env:AIGATE_KEY}"
+      },
+      "models": {
+        "vllm-qwen3.8-nothink": {
+          "name": "Qwen 3.8, thinking off",
+          "tool_call": true,
+          "limit": {
+            "context": 11264,
+            "output": 4096
+          }
+        }
+      }
+    }
+  },
+  "share": "disabled",
+  "autoupdate": false
+}
