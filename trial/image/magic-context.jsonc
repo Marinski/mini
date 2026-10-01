@@ -1,0 +1,36 @@
+// Magic Context config for the context-plugins trial (SPEC-context-plugins.md, V3/V5/V6).
+//
+// Baked into agent-trial:5 at ~/.config/cortexkit/magic-context.jsonc because the plugin reads this
+// path and has no env override for it. Per-run data is isolated by MAGIC_CONTEXT_STORAGE_DIR, which
+// run_trial.sh points at the run's /state dir, so nothing leaks between runs or variants.
+{
+  // The historian is a second OpenCode provider entry (aigate-historian) using the trial-historian
+  // key, so its calls are counted separately in the spend logs while hitting the same Qwen server.
+  "historian": {
+    "opencode": {
+      "model": "aigate-historian/vllm-qwen3.8-nothink"
+    }
+  },
+
+  // The one number step 2 has to calibrate: the share of usable context (context_limit x
+  // execute_threshold) reserved for the session history block. Schema range is 0.05-0.5, default
+  // 0.15, and 0.5 is the closest this build can get to V0's 28,672-token compaction trigger
+  // (45056 context x 0.8 execute_threshold x 0.5 = ~18,022). So V3 compresses *earlier* than V0
+  // rather than at the same point: record that when reading the results.
+  "history_budget_percentage": 0.5,
+
+  // Both plugins share the embedding model baked at HF_HOME=/opt/embeddings
+  // (Xenova/all-MiniLM-L6-v2, 384 dims), so no run reaches the network for embeddings.
+  "embedding": {
+    "provider": "local",
+    "model": "Xenova/all-MiniLM-L6-v2"
+  },
+
+  // Memory is the historian's long-term store, not AgentMemory's; V6 runs both, each in its own
+  // per-run dir. injection_budget_tokens is the stock default, which is the point: the trial
+  // measures what the plugin does without tuning it.
+  "memory": {
+    "enabled": true,
+    "injection_budget_tokens": 4000
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "aigate/vllm-qwen3.8-nothink",
+  "small_model": "aigate/vllm-qwen3.8-nothink",
+  "provider": {
+    "aigate": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "aigate",
+      "options": {
+        "baseURL": "http://172.17.0.1:4000/v1",
+        "apiKey": "{env:AIGATE_KEY}"
+      },
+      "models": {
+        "vllm-qwen3.8-nothink": {
+          "name": "Qwen 3.8, thinking off",
+          "tool_call": true,
+          "limit": {
+            "context": 45056,
+            "output": 16384
+          }
+        }
+      }
+    },
+    "aigate-historian": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "aigate-historian",
+      "options": {
+        "baseURL": "http://172.17.0.1:4000/v1",
+        "apiKey": "{env:AIGATE_HISTORIAN_KEY}"
+      },
+      "models": {
+        "vllm-qwen3.8-nothink": {
+          "name": "Qwen 3.8, thinking off",
+          "tool_call": true,
+          "limit": {
+            "context": 45056,
+            "output": 16384
+          }
+        }
+      }
+    }
+  },
+  "share": "disabled",
+  "autoupdate": false,
+  "plugin": [
+    "context-mode@1.0.169",
+    "@cortexkit/opencode-magic-context@0.44.4",
+    "./plugins/agentmemory-capture.ts"
+  ],
+  "compaction": {
+    "auto": false,
+    "prune": false
+  },
+  "instructions": [
+    "/opt/trial/context-mode-AGENTS.md"
+  ]
+}

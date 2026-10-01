@@ -8,6 +8,11 @@ FROZEN exists; delete it after the head restarts Qwen) and posts to Discord.
 
 KV cache usage counts as progress too: during a long chunked prefill the
 token counters stay flat but KV usage grows with every chunk.
+
+Every sample is also appended to <log-prefix>.samples.jsonl (time, running,
+waiting, prompt/generation tokens), so the report can mark a run that overlapped
+other Qwen traffic: the trial runs alone, so requests beyond the agent's own are
+someone else's.
 """
 import json
 import os
@@ -96,6 +101,7 @@ def notify(text):
 
 def main(pid, prefix, workspace=None):
     fingerprint, since = None, time.time()
+    open(prefix + ".samples.jsonl", "w").close()   # fresh per run; the report reads this
     while os.path.exists(f"/proc/{pid}"):
         try:
             m = read_metrics()
@@ -104,6 +110,11 @@ def main(pid, prefix, workspace=None):
             time.sleep(POLL)
             continue
         now = time.time()
+        with open(prefix + ".samples.jsonl", "a") as fh:
+            fh.write(json.dumps({"t": round(now), "running": m["vllm:num_requests_running"],
+                                 "waiting": m["vllm:num_requests_waiting"],
+                                 "prompt": m["vllm:prompt_tokens_total"],
+                                 "generation": m["vllm:generation_tokens_total"]}) + "\n")
         current = [m[k] for k in PROGRESS]
         busy = m["vllm:num_requests_running"] + m["vllm:num_requests_waiting"] > 0
         if current != fingerprint or not busy:
