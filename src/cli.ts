@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { main } from "./agent.ts";
+import type { NudgeMode } from "./progress.ts";
 
 declare const MINI_VERSION: string; // set by the build
 
@@ -28,7 +29,9 @@ Usage: mini [options] "task"
 
 The API key comes from MINI_API_KEY (or LITELLM_KEY / OPENAI_API_KEY), never from a flag.
 MINI_NUDGE_AFTER: tool calls without a file change before mini tells the model to step back
-(default 8, 0 = off). MINI_RETRY_SECONDS: how long a failed model call is retried (default 180).
+(default 8, 0 = off). MINI_NUDGE: the trigger, "after" (idle tool calls) or "strike" (the same
+call repeated); default "after". MINI_NUDGE_STRIKE: identical calls in a row before a nudge in
+"strike" mode (default 3). MINI_RETRY_SECONDS: how long a failed model call is retried (default 180).
 The sandbox mounts only the current folder (as /work) and refuses to run in / or your home folder.`;
 
 const env = process.env;
@@ -57,7 +60,8 @@ function sandbox(task: string, o: { model: string; baseURL: string; image: strin
     ...(uid !== undefined ? ["--user", `${uid}:${gid}`, "-e", "HOME=/tmp"] : []),
     "-v", `${here}:/work`, "-w", "/work", "-v", `${logDir}:/out`, "-v", `${self}:/opt/mini/mini.js:ro`,
     "-e", "MINI_API_KEY", "-e", `MINI_BASE_URL=${baseURL}`, "-e", `MINI_MODEL=${o.model}`,
-    "-e", "MINI_WORK=/work", "-e", `MINI_LOG=/out/${logName}`, "-e", "MINI_NUDGE_AFTER", "-e", "MINI_RETRY_SECONDS",
+    "-e", "MINI_WORK=/work", "-e", `MINI_LOG=/out/${logName}`, "-e", "MINI_NUDGE_AFTER", "-e", "MINI_NUDGE",
+    "-e", "MINI_NUDGE_STRIKE", "-e", "MINI_RETRY_SECONDS",
     o.image, "node", "/opt/mini/mini.js", "--no-sandbox", task,
   ];
   console.error(`mini: sandbox ${o.image}, folder ${here}, transcript ${join(logDir, logName)}`);
@@ -97,8 +101,15 @@ async function cli(): Promise<number> {
     log = join(stateDir(), `${new Date().toISOString().replace(/[:.]/g, "-")}.jsonl`);
   }
   const int = (v: string | undefined) => (v && /^\d+$/.test(v) ? Number(v) : undefined);
+  const mode = (v: string | undefined): NudgeMode | undefined => {
+    if (v === undefined) return undefined;
+    if (v === "after" || v === "strike") return v;
+    console.error(`mini: MINI_NUDGE must be "after" or "strike" (got ${JSON.stringify(v)}); using "after".`);
+    return undefined;
+  };
   return main(task, { apiKey: apiKey()!, baseURL, model, work, log,
-    nudgeAfter: int(env.MINI_NUDGE_AFTER), retrySeconds: int(env.MINI_RETRY_SECONDS) });
+    nudgeAfter: int(env.MINI_NUDGE_AFTER), nudgeMode: mode(env.MINI_NUDGE),
+    nudgeStrike: int(env.MINI_NUDGE_STRIKE), retrySeconds: int(env.MINI_RETRY_SECONDS) });
 }
 
 cli().then((rc) => process.exit(rc), (e) => {
