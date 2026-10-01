@@ -44,7 +44,8 @@ gate() {  # gate <task>: block until a run of that task fits the open window
   # An H run is two sessions on the same task, so it needs about twice the single-run allowance.
   [ "${SCENARIO:-single}" = H ] && min=$((min * 2))
   while ! "$DATA/venv/bin/python" "$KIT/window.py" --task-min "$min"; do
-    s=$("$DATA/venv/bin/python" "$KIT/window.py" --next "$min" 2>/dev/null || echo 300)
+    s=$("$DATA/venv/bin/python" "$KIT/window.py" --next "$min" 2>/dev/null)
+    case "$s" in ''|*[!0-9]*) s=300;; esac    # treat any non-numeric output as "recheck in 5 min"
     [ "$s" -gt 300 ] && s=300                 # re-check every 5 min, so a shorter task can slip in
     echo "$(date +%H:%M) window closed for $1 (longest ${min}m); waiting ${s}s"
     sleep "$s"

@@ -81,12 +81,11 @@ def cli(argv):
         dur = 60
     now = _now_minutes()
     if "--next" in argv:
+        # Informational: print the seconds to the next fitting start and exit 0.
+        # The "does it fit now" signal is --task-min's exit code.
         d = next_start(now, dur)
-        if d is None:
-            print(86400)
-            return 1
-        print(d * 60)
-        return 0 if d == 0 else 1
+        print(86400 if d is None else d * 60)
+        return 0
     if "--config" in argv:
         print(f"open {OPEN}-{CLOSE}, closed {CLOSED}, pad {PAD}")
         return 0
