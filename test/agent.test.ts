@@ -105,6 +105,33 @@ test("MINI_NUDGE_AFTER=0 turns the nudge off", async () => {
   assert.deepEqual(nudges(log()), []);
 });
 
+test("strike mode nudges on the same call repeated, not on idle calls", async () => {
+  const replies = [reply(null, [call("w", "write", { path: "a.txt", content: "x" })]),
+    ...Array.from({ length: 6 }, () => bash(1, "pytest -q")), reply("done")];
+  const { s, client, log } = setup(replies);
+  assert.equal(await main("task", { ...s, nudgeMode: "strike" }, client), 0);
+  const n = nudges(log());
+  assert.equal(n.length, 2);
+  assert.match(n[0], /run the same tool call 3 times in a row/);
+  assert.match(n[1], /same tool call has now run 6 times/);
+});
+
+test("strike mode stays silent when the calls differ", async () => {
+  const replies = [reply(null, [call("w", "write", { path: "a.txt", content: "x" })]),
+    ...Array.from({ length: 12 }, (_, i) => bash(i, `echo ${i}`)), reply("done")];
+  const { s, client, log } = setup(replies);
+  assert.equal(await main("task", { ...s, nudgeMode: "strike" }, client), 0);
+  assert.deepEqual(nudges(log()), []);
+});
+
+test("strike mode respects MINI_NUDGE_AFTER=0", async () => {
+  const replies = [reply(null, [call("w", "write", { path: "a.txt", content: "x" })]),
+    ...Array.from({ length: 8 }, () => bash(1, "pytest -q")), reply("done")];
+  const { s, client, log } = setup(replies);
+  assert.equal(await main("task", { ...s, nudgeMode: "strike", nudgeAfter: 0 }, client), 0);
+  assert.deepEqual(nudges(log()), []);
+});
+
 test("tool results go back to the model, and tool errors don't stop the run", async () => {
   const call = (id: string, name: string, args: object) => ({ id, function: { name, arguments: JSON.stringify(args) } });
   const { s, client, calls, log } = setup([

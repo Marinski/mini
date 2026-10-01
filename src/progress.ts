@@ -1,4 +1,10 @@
-// Loop breaker: notice when the agent keeps working without changing any file, and say so.
+// Loop breaker: notice when the agent keeps working without making progress, and say so.
+// Two triggers, chosen by mode:
+//   - "after" (default): count tool calls since the last file change; nudge at `after` idle
+//     calls, stronger at 2 x `after`.
+//   - "strike": count identical tool calls in a row (same name and arguments); nudge at
+//     `strike` repeats, stronger at 2 x `strike`. It targets the re-run-the-same-command
+//     loop without firing on varied work.
 // In the trials, healthy runs never went more than 5 tool calls without a file change after
 // their first edit; runs stuck re-checking a finished fix (usually debugging their own wrong
 // test) went 10 to 49.
@@ -49,23 +55,43 @@ export const nudgeText = (calls: number, strong: boolean) => strong
     "checklist. If what fails is a test you wrote, check whether the test itself is wrong. If every " +
     "requirement is met and the project's tests pass, stop and reply with a summary.";
 
-/** Counts tool calls since the last file change, starting after the first change (exploring
- * before the first edit is normal). Returns a nudge at `after` calls, then a stronger one every
- * 2 × `after` calls. `after` = 0 turns it off. */
+export const strikeText = (count: number, strong: boolean) => strong
+  ? `[harness] The same tool call has now run ${count} times in a row with no change. Finish now: ` +
+    "make the one change that is still needed, or reply with your summary."
+  : `[harness] You have run the same tool call ${count} times in a row with no change. If it is a ` +
+    "test you wrote, the test itself may be wrong. Re-read the task and your checklist, then either " +
+    "change your approach or stop and reply with a summary.";
+
+export type NudgeMode = "after" | "strike";
+
+/**
+ * Counts how long the agent has worked without progress and returns a nudge when it is stuck.
+ *
+ * `after` mode counts tool calls since the last file change (starting after the first change:
+ * exploring before the first edit is normal) and nudges at `after` calls, then stronger every
+ * 2 x `after`. `strike` mode counts identical calls in a row (same `sig`) and nudges at `strike`
+ * repeats, stronger every 2 x `strike`. `after` = 0 turns nudging off for both modes.
+ */
 export class Progress {
   private work: string;
   private after: number;
+  private mode: NudgeMode;
+  private strike: number;
   private last: string | null;
   private changed = false;
   private idle = 0;
+  private streak = 0;
+  private lastSig: string | null = null;
 
-  constructor(work: string, after: number) {
+  constructor(work: string, after: number, mode: NudgeMode = "after", strike = 3) {
     this.work = work;
     this.after = after;
+    this.mode = mode;
+    this.strike = Math.max(1, Math.floor(strike)); // 0 would make `streak % strike` NaN
     this.last = after ? fingerprint(work) : null;
   }
 
-  afterTool(): string | null {
+  afterTool(sig = ""): string | null {
     if (!this.after) return null;
     const now = fingerprint(this.work);
     if (now === null) return null; // too big to watch
@@ -73,9 +99,18 @@ export class Progress {
       this.last = now;
       this.changed = true;
       this.idle = 0;
+      this.streak = 0;
+      this.lastSig = sig;
       return null;
     }
     if (!this.changed) return null;
+    if (this.mode === "strike") {
+      this.streak = sig === this.lastSig ? this.streak + 1 : 1;
+      this.lastSig = sig;
+      if (this.streak === this.strike) return strikeText(this.streak, false);
+      if (this.streak % (2 * this.strike) === 0) return strikeText(this.streak, true);
+      return null;
+    }
     this.idle++;
     if (this.idle === this.after) return nudgeText(this.idle, false);
     if (this.idle % (2 * this.after) === 0) return nudgeText(this.idle, true);

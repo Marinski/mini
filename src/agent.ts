@@ -4,7 +4,7 @@
 import { appendFileSync } from "node:fs";
 import { setTimeout as sleep } from "node:timers/promises";
 import OpenAI from "openai";
-import { Progress } from "./progress.ts";
+import { type NudgeMode, Progress } from "./progress.ts";
 import { BUDGET_S, MAX_STEPS, TOOLS, runTool, system } from "./tools.ts";
 
 export interface Settings {
@@ -14,6 +14,8 @@ export interface Settings {
   work: string;
   log: string;
   nudgeAfter?: number; // tool calls without a file change before a nudge; 0 = off (default 8)
+  nudgeMode?: NudgeMode; // "after" counts idle tool calls; "strike" counts identical repeats (default "after")
+  nudgeStrike?: number; // identical calls in a row before a nudge in "strike" mode (default 3)
   retrySeconds?: number; // how long to keep retrying a failed model call (default 180)
   sleep?: (ms: number) => Promise<unknown>; // for tests
 }
@@ -49,7 +51,7 @@ export async function main(task: string, s: Settings, client: ChatClient = makeC
 
 export async function loop(client: ChatClient, messages: Record<string, unknown>[], s: Settings): Promise<number> {
   const t0 = Date.now();
-  const progress = new Progress(s.work, s.nudgeAfter ?? 8);
+  const progress = new Progress(s.work, s.nudgeAfter ?? 8, s.nudgeMode ?? "after", s.nudgeStrike ?? 3);
   const elapsed = () => Math.round((Date.now() - t0) / 100) / 10;
   const log = (entry: object) => appendFileSync(s.log, JSON.stringify(entry) + "\n");
   for (let step = 0; step < MAX_STEPS; step++) {
@@ -100,7 +102,7 @@ export async function loop(client: ChatClient, messages: Record<string, unknown>
       }
       messages.push({ role: "tool", tool_call_id: call.id, content: result });
       log({ step, tool: call.function.name, result: result.slice(0, 2000) });
-      nudge = progress.afterTool() ?? nudge;
+      nudge = progress.afterTool(`${call.function.name}\0${call.function.arguments}`) ?? nudge;
     }
     if (nudge) {
       messages.push({ role: "user", content: nudge });
