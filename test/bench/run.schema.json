@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mini bench run",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "run_id", "suite", "profile", "model", "endpoint",
+    "params", "started_at", "finished_at", "context_window", "context_source",
+    "jobs", "summary"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string"},
+    "suite": {"type": "string"},
+    "profile": {"type": "string"},
+    "model": {"type": "string"},
+    "endpoint": {"type": "string"},
+    "params": {"type": "object"},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"},
+    "context_window": {"type": ["integer", "null"]},
+    "context_source": {"type": "string"},
+    "jobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["job_id", "params", "sub_jobs"],
+        "properties": {
+          "job_id": {"type": "string"},
+          "params": {"type": "object"},
+          "sub_jobs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label", "prompt_bytes", "prompt_tokens", "prompt_tokens_estimated",
+                "ttft_seconds", "generation_seconds", "stream_seconds",
+                "output_tokens", "chunk_count", "cached_tokens", "tokens_per_second",
+                "response", "reasoning", "status", "reason"
+              ],
+              "properties": {
+                "label": {"type": "string"},
+                "prompt_bytes": {"type": "integer"},
+                "prompt_tokens": {"type": ["integer", "null"]},
+                "prompt_tokens_estimated": {"type": "boolean"},
+                "ttft_seconds": {"type": ["number", "null"]},
+                "generation_seconds": {"type": ["number", "null"]},
+                "stream_seconds": {"type": ["number", "null"]},
+                "output_tokens": {"type": ["integer", "null"]},
+                "chunk_count": {"type": "integer"},
+                "cached_tokens": {"type": ["integer", "null"]},
+                "tokens_per_second": {"type": ["number", "null"]},
+                "response": {"type": "string"},
+                "reasoning": {"type": "string"},
+                "status": {"enum": ["pass", "fail", "error", "skipped", "ok"]},
+                "reason": {"type": ["string", "null"]}
+              }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "jobs", "sub_jobs", "passed", "failed", "errors", "skipped",
+        "pass_rate", "median_ttft_seconds", "median_tokens_per_second",
+        "median_cached_tokens"
+      ],
+      "properties": {
+        "jobs": {"type": "integer"},
+        "sub_jobs": {"type": "integer"},
+        "passed": {"type": "integer"},
+        "failed": {"type": "integer"},
+        "errors": {"type": "integer"},
+        "skipped": {"type": "integer"},
+        "pass_rate": {"type": ["number", "null"]},
+        "median_ttft_seconds": {"type": ["number", "null"]},
+        "median_tokens_per_second": {"type": ["number", "null"]},
+        "median_cached_tokens": {"type": ["number", "null"]}
+      }
+    }
+  }
+}

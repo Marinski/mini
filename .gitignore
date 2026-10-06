@@ -2,3 +2,9 @@ node_modules/
 dist/
 *.tgz
 __pycache__/
+
+# bench: fetched datasets (run: python bench/data/setup.py) and runtime locks
+bench/data/three.module.js
+bench/data/human_eval.jsonl
+bench/data/finqa/
+results/bench/.locks/
