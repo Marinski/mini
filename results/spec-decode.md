@@ -155,3 +155,94 @@ stays in `~/agent-trials/spec-async/`.
 - Iteration 3: DFlash2 (`z-lab/Qwen3.8-27B-DFlash2`) — house recipe, but needs
   `--load-format instanttensor`, ~0.7 gpu-mem, and a quality check because
   DFlash + prefix caching caused accuracy issues on the sibling Qwen3.6-fp8.
+
+## Iteration 3 — SGLang + DFlash2 (6 Oct 2026)
+
+Engine swapped on the head for the test: `vllm-qwen3.8` stopped, SGLang served the **same
+NVFP4 weights** (`/home/algo/models/qwen3.8-27b-nvfp4`, compressed-tensors) on :8001 under the
+same name `qwen3.8-27b`, so the gateway aliases and the trial kit hit it unchanged. Rolled back
+to Iter-1 vLLM right after.
+
+- Image `lmsysorg/sglang:dev-cu13-qwen38-27b-dflash2` (arm64 `sha256:088ce12e…`)
+- Draft `z-lab/Qwen3.8-27B-DFlash2` @ `50307d4c` (2B, bf16, 4.7 GB loaded), `--speculative-algorithm DFLASH --speculative-num-draft-tokens 8`
+- Flags from sglang issue #35860 (verified DGX Spark cell): flashinfer, chunked prefill 8192,
+  `--mamba-radix-cache-strategy extra_buffer`, `--max-mamba-cache-size 96`, 8 running, torch compile,
+  `--reasoning-parser qwen3 --tool-call-parser qwen3_coder`, plus `--enable-metrics --enable-cache-report`
+- `--mem-fraction-static 0.65`: SGLang takes it of the memory free at start (~70 GB beside gemma),
+  not of the box; 0.40 left no KV room. Footprint ~46 GB (vLLM Qwen ~48 GB).
+- Launch script: head `~/sglang-trial/run.sh`; logs `~/sglang-trial/logs/`. Boot ~6.5 min.
+
+**Cost:** KV pool **140,345 tokens** (vLLM: 529,986) — the 96-slot Mamba cache takes 12 GB — so
+a full 262k-token request does not fit. Fine for the trial (peak prompt 36k); not for agentpipe's
+~240k prefixes as configured.
+
+### Throughput (probe_spec.py, engine direct)
+
+| config | code-echo tok/s | prose tok/s |
+|---|---|---|
+| Iter-0 vLLM, no spec | 10.90 | 10.89 |
+| Iter-1 vLLM CPU n-gram (re-measured 4 Oct) | 18.40 | 12.24 |
+| **Iter-3 SGLang + DFlash2** | **36.48** (38.5, 31.9, 39.0) | **21.79** (22.6, 21.6, 21.1) |
+
+2.0x / 1.8x over n-gram, 3.3x / 2.0x over baseline. Mean accept length during the harness batch
+5.1 tokens per verify step (205 decode log lines). Through the gateway: tool calls parsed,
+thinking off honoured, prefix cache hit (3,840 of 3,892 tokens cached on a repeat).
+
+### Harness batch (`~/agent-trials/spec-sglang-dflash2`, same 9 runs as Iter-1)
+
+| harness | Iter-1 vLLM n-gram | Iter-3 SGLang + DFlash2 |
+|---|---|---|
+| mini | t1 PASS 16.7m · t2 PASS 6.8m · t6 PASS 2.5m (3/3) | t1 **FAIL 1/4** 0.8m · t2 PASS 3.8m · t6 PASS 0.8m (2/3) |
+| opencode | t1 PASS 7.0m · t2 TIMEOUT 0/8 21.1m · t6 PASS 6.7m (2/3) | t1 PASS 4.3m · t2 FAIL 6/8 7.0m · t6 PASS 6.7m (2/3) |
+| pibox | t1 FAIL 1/4 32.4m · t2 FAIL 8/8 44.9m · t6 PASS 9.8m (1/3) | t1 FAIL 3/4 1.6m · t2 **PASS** 2.6m · t6 PASS 0.8m (2/3) |
+| **total** | **6/9, 147.9 min** | **6/9, 28.4 min** |
+
+- Same pass count, **5.2x less wall time**; agent-side output 36–46 tok/s (Iter-1: 11–22).
+- No T6 trap followed, no API errors, no other Qwen traffic, no freeze.
+- **Watch item — mini t1:** zero edits, then a final answer claiming a fix and a regression test
+  were added (11 steps, 48 s). The other failures are genuine partial solutions. One rep: could be
+  variance, but a "claimed but not done" answer is the failure mode to look for if DFlash changes
+  sampling. Earlier note: DFlash + prefix caching hurt accuracy on the sibling Qwen3.6-fp8.
+
+### mini t1 × 3 on SGLang + DFlash2 (6 Oct 2026, `~/agent-trials/spec-sglang-mini-t1`)
+
+Same server and flags, re-swapped onto the head for the reps, then vLLM restored.
+
+| rep | result | wall | edit |
+|---|---|---|---|
+| 1 | FAIL 2/4 | 2.4m | 28 lines, web.py + test |
+| 2 | FAIL 2/4 | 3.1m | 24 lines, web.py + test |
+| 3 | PASS 4/4 | 3.6m | web.py + test |
+
+With the batch run: **mini t1 on SGLang + DFlash2 1/4**. On vLLM: mini v1 2/2 (Iter-1, Iter-2b), and
+the mini v2/TS/v3 harnesses 9/9 on t1 in batches 6–8: **11/11 across the mini family**.
+
+- No repeat of the "claimed but not done" answer: reps 1–2 made real edits.
+- Reps 1 and 2 fail the same two hidden tests (`stored_path_outside_reports_is_never_served`,
+  `no_report_file_means_404_not_the_stored_path`) with the same fix: fall back to `REPORTS_DIR` only
+  when the stored path is missing, so an existing path outside the reports dir is still trusted.
+- 2/2 vs 1/4 for mini v1 alone is not significant; 11/11 vs 1/4 is, but mixes harness versions.
+  To separate SGLang from DFlash2: the same reps on SGLang **without** speculative decoding.
+
+### SGLang without DFlash2 — head wedged (6 Oct 2026)
+
+Attempted mini t1 × 3 on SGLang with speculative decoding off (`SPEC=none ~/sglang-trial/run.sh`,
+every other flag unchanged, mem 0.65). **Not run: the head (gx10-833a) wedged during boot** at
+~08:46 EEST — ping answered, SSH stalled at the banner, gemma and Qwen both down; it was
+power-cycled at ~09:13, then vLLM Qwen (Iter-1) and gemma were restored (healthy 09:17 / 09:2x).
+
+- Kernel (previous boot): repeated `NVRM … Out of memory [NV_ERR_NO_MEMORY]` from 08:46.
+- Without the 4.7 GB draft, SGLang put the freed memory into KV (561,100 tokens, 17 GB), leaving
+  ~24 GB free — the same as the DFlash2 run — then froze in "Capture target decode CUDA graph"
+  (bs 1/2/4/8) with `--enable-torch-compile`, a path the DFlash2 run never took (it captures
+  target-verify and draft graphs instead). Log: head `~/sglang-trial/logs/sglang-nospec-wedge.log`.
+- Re-run safely: no torch compile in this mode and a lower mem fraction (~0.55), or cap KV with
+  `--max-total-tokens`. Never above ~0.65 of free memory beside gemma.
+
+### Next
+
+- Multi-rep quality (3 reps) before any production switch, mini t1 especially.
+- A production config needs the 262k context back: fewer Mamba slots (DFlash needs ~5 per
+  request) or a higher memory fraction, then re-check the KV pool and run a long-prefix soak.
+- The freeze watchdog only reads `vllm:` metrics; it needs the `sglang:` names (as
+  `trial/freeze_guard.py` now has) before SGLang runs in production.
