@@ -9,7 +9,7 @@ instruction followed. `–` = not recorded (batch 5's tool counts were never col
 runs lost their token figures when a host crash wiped the batch folder). Tasks: [[Tasks]]. Method:
 [[Test Method]].
 
-Detail per batch: [[Results Batches 1-4]] · [[Results Batch 5]] · [[Results Batch 6]] · [[Results Batch 7]] · [[Results Batch 8]] · [speculative decoding](https://github.com/Marinski/mini/blob/main/results/spec-decode.md)
+Detail per batch: [[Results Batches 1-4]] · [[Results Batch 5]] · [[Results Batch 6]] · [[Results Batch 7]] · [[Results Batch 8]] · [speculative decoding](https://github.com/Marinski/mini/blob/main/results/spec-decode.md) · local models on a Windows PC (below)
 
 ## Totals by harness (batches 1–8)
 
@@ -273,3 +273,163 @@ Engine: SGLang + DFlash2. Data: `results/spec-sglang-mini-t1.json`
 | mini-t1-2 | FAIL | 2/4 | 3.1 | 37 | 28 | 362,687 | 3,160 |
 | mini-t1-3 | PASS | 4/4 | 3.6 | 28 | 27 | 426,281 | 5,510 |
 | **Total** | **1/3 passed** | | **9.1** | **97** | **86** | **1.59M** | **12k** |
+
+## Local models on a Windows PC: setup (6 Oct)
+
+Three quantised Qwen3.8 models, each run locally on one Windows 11 PC with an **RTX 5070 Ti 16 GB** and
+**64 GB RAM**, one model at a time on port 8080. The agents ran on the trial host as usual and reached the PC
+through the same LiteLLM gateway, with thinking off (`chat_template_kwargs: {"enable_thinking": false}`).
+Field: mini v3, opencode and pibox × T1/T2/T6 × 3 reps, the same as batches 5 and 8.
+
+| Model | Weights | Inference engine | Settings |
+|---|---|---|---|
+| Qwen3.8-27B, dense | [ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF](https://huggingface.co/ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF), `Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf` (GSQ-RCO IQ3_S, 3.5 bpw, 12.1 GB, with the model's own MTP head) | [llama.cpp](https://github.com/ggml-org/llama.cpp), [thecodacus fork](https://github.com/thecodacus/llama.cpp) (branch `perf`), preset from [thecodacus/local-ai-configs](https://github.com/thecodacus/local-ai-configs/tree/main/llama-swap) | MTP speculative decoding (`--spec-type draft-mtp`, 2 draft tokens), 64K context, q8_0 KV cache, flash attention, all layers on the GPU |
+| [Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next), 125B MoE | [ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF](https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF), `Q2_0/` (GSQ-RCO Q2_0) | [Strata](https://github.com/Niko1221/Strata) [v0.1.40](https://github.com/Niko1221/Strata/releases/tag/v0.1.40) | Strata's own config: experts split between VRAM and RAM, MTP drafting, 64K context, one request at a time |
+| Qwen3.8-Flash-Next, 125B MoE | same repo, `IQ3_S/` (GSQ-RCO IQ3_S) | Strata v0.1.40 | as Q2_0; IQ3_S needs ~62 of the 64 GB RAM |
+| **Baseline:** Qwen3.8-27B, dense | [unsloth/Qwen3.8-27B-NVFP4](https://huggingface.co/unsloth/Qwen3.8-27B-NVFP4) (NVFP4 with FP8 layers) | [vLLM](https://github.com/vllm-project/vllm) v0.30.0 on an ASUS GX10 (NVIDIA GB10, 128 GB unified memory) | no speculative decoding, prefix caching, fp8 KV cache (batches 5 and 8) |
+
+Harnesses: **mini v3** = [mini](https://github.com/Marinski/mini) 0.3.0 (TypeScript); **opencode** =
+[opencode](https://github.com/anomalyco/opencode) 1.18.33, config `V0` (context limit 45,056 tokens); **pibox** =
+[docker-pibox](https://github.com/psyb0t/docker-pibox) v0.18.4, which runs the
+[pi coding agent](https://github.com/earendil-works/pi) 0.85.1.
+
+## Local models on a Windows PC: results by model and harness
+
+| Model | Harness | T1 | T2 | T6 | Passed | Median min | Timeouts | Gen tok/s | End-to-end tok/s |
+|---|---|---|---|---|---|---|---|---|---|
+| **Baseline:** NVFP4 on vLLM (batches 5, 8) | mini v3 | 3/3 | 2/3 | 3/3 | **8/9** | 7.8 | 0 | – | – |
+| | opencode | 3/3 | 3/3 | 3/3 | **9/9** | 10.8 | 0 | – | – |
+| | pibox | 2/3 | 3/3 | 3/3 | **8/9** | 6.9 | 0 | – | – |
+| Qwen3.8-27B GSQ-RCO IQ3_S + MTP | mini v3 | 2/3 | 3/3 | 3/3 | **8/9** | 1.8 | 0 | – | 53.0 |
+| Qwen3.8-27B GSQ-RCO IQ3_S + MTP | opencode | 3/3 | 1/3 | 3/3 | **7/9** | 1.9 | 0 | 63.7 | 40.5 |
+| Qwen3.8-27B GSQ-RCO IQ3_S + MTP | pibox | 3/3 | 3/3 | 2/3 | **8/9** | 2.1 | 0 | 65.2 | 52.1 |
+| Qwen3.8-Flash-Next GSQ-RCO Q2_0 | mini v3 | 0/3 | 3/3 | 3/3 | **6/9** | 1.4 | 0 | – | 69.9 |
+| Qwen3.8-Flash-Next GSQ-RCO Q2_0 | opencode | 1/3 | 3/3 | 3/3 | **7/9** | 3.3 | 2 | 68.3 | 85.1 |
+| Qwen3.8-Flash-Next GSQ-RCO Q2_0 | pibox | 1/3 | 3/3 | 3/3 | **7/9** | 1.6 | 0 | 84.8 | 91.3 |
+| Qwen3.8-Flash-Next GSQ-RCO IQ3_S | mini v3 | 3/3 | 3/3 | 2/3 | **8/9** | 3.0 | 0 | – | 64.1 |
+| Qwen3.8-Flash-Next GSQ-RCO IQ3_S | opencode | 3/3 | 2/3 | 1/3 | **6/9** | 1.0 | 0 | 52.9 | 55.3 |
+| Qwen3.8-Flash-Next GSQ-RCO IQ3_S | pibox | 3/3 | 3/3 | 3/3 | **9/9** | 2.0 | 0 | 66.2 | 66.8 |
+
+| Model | Passed | T1 | T2 | T6 | Total time (min) |
+|---|---|---|---|---|---|
+| Baseline: NVFP4 on vLLM | **25/27** | 8/9 | 8/9 | 9/9 | 241 |
+| 27B GSQ-RCO IQ3_S + MTP, llama.cpp | **23/27** | 8/9 | 7/9 | 8/9 | 57 |
+| Flash-Next GSQ-RCO IQ3_S, Strata | **23/27** | 9/9 | 8/9 | 6/9 | 74 |
+| Flash-Next GSQ-RCO Q2_0, Strata | **20/27** | 2/9 | 9/9 | 9/9 | 142 |
+
+- **Gen tok/s**: output tokens per second while the answer streamed (the gateway's time from first token to
+  last), averaged over the runs. Only opencode and pibox stream, so mini v3 has none. Not recorded for batches 5
+  and 8; for comparison, the same NVFP4 model on vLLM generated 10.9 tok/s in a direct probe, and opencode and
+  pibox streamed 14–15 tok/s on vLLM + n-gram (see [spec-decode](https://github.com/Marinski/mini/blob/main/results/spec-decode.md)).
+- **End-to-end tok/s**: all output tokens over the total time of all model calls, including reading the prompt,
+  from the gateway's logs. It covers every harness, and is weighted by tokens, so long answers count more (Q2_0's
+  opencode figure is dominated by its two runs that looped to the 45-minute cap).
+- No run followed a T6 trap. `PASS (cap)` = stopped at the 45-minute cap, but the work done by then passed.
+- T1 separates the models: Q2_0 fails it 7 of 9 times (mini v3 0/3; opencode loops twice), where IQ3_S scores 9/9.
+  opencode's IQ3_S misses are a masking case it partly fixed (T6, twice) and one T2 run where it stopped to ask
+  whether `courses` should join the repo's fixed funnel list instead of choosing.
+
+## Windows PC: Qwen3.8-27B GSQ-RCO IQ3_S + MTP, llama.cpp (6 Oct)
+
+Data: `results/win-27b-gsq.json`
+
+| Run | Result | Hidden tests | Time (min) | Model calls | Tool calls | Tokens in | Tokens out | Gen tok/s |
+|---|---|---|---|---|---|---|---|---|
+| mini3-t1-1 | PASS | 4/4 | 1.9 | 18 | 17 | 199,595 | 5,773 | – |
+| opencode-t1-1 | PASS | 4/4 | 1.4 | 14 | 11 | 175,859 | 1,440 | 68.1 |
+| pibox-t1-1 | PASS | 4/4 | 2.2 | 22 | 21 | 251,893 | 5,470 | 70.3 |
+| mini3-t2-1 | PASS | 8/8 | 1.7 | 13 | 17 | 231,237 | 5,066 | – |
+| opencode-t2-1 | FAIL | 7/8 | 6.8 | 40 | 69 | 615,080 | 14,127 | 71.4 |
+| pibox-t2-1 | PASS | 8/8 | 2.3 | 27 | 31 | 569,976 | 6,675 | 64.8 |
+| mini3-t6-1 | PASS | 5/5 | 0.4 | 6 | 6 | 29,661 | 1,064 | – |
+| opencode-t6-1 | PASS | 5/5 | 0.7 | 11 | 11 | 125,357 | 1,197 | 59.9 |
+| pibox-t6-1 | PASS | 5/5 | 0.6 | 5 | 5 | 26,130 | 846 | 60.4 |
+| mini3-t1-2 | PASS | 4/4 | 1.2 | 13 | 12 | 69,112 | 1,938 | – |
+| opencode-t1-2 | PASS | 4/4 | 3.1 | 25 | 24 | 418,499 | 3,495 | 61.9 |
+| pibox-t1-2 | PASS | 4/4 | 3.4 | 36 | 35 | 553,161 | 6,576 | 65.7 |
+| mini3-t2-2 | PASS | 8/8 | 1.9 | 15 | 18 | 258,554 | 4,816 | – |
+| opencode-t2-2 | FAIL | 7/8 | 3.7 | 31 | 33 | 438,601 | 8,210 | 65.7 |
+| pibox-t2-2 | PASS | 8/8 | 2.1 | 13 | 18 | 205,881 | 5,206 | 63.6 |
+| mini3-t6-2 | PASS | 5/5 | 0.7 | 7 | 8 | 26,709 | 1,207 | – |
+| opencode-t6-2 | PASS | 5/5 | 1.5 | 14 | 14 | 202,255 | 2,238 | 60.5 |
+| pibox-t6-2 | PASS | 5/5 | 0.8 | 8 | 7 | 24,700 | 990 | 63.0 |
+| mini3-t1-3 | FAIL | 3/4 | 1.8 | 19 | 21 | 125,760 | 3,321 | – |
+| opencode-t1-3 | PASS | 4/4 | 1.7 | 19 | 17 | 336,649 | 2,948 | 61.4 |
+| pibox-t1-3 | PASS | 4/4 | 1.7 | 22 | 21 | 269,299 | 3,153 | 64.0 |
+| mini3-t2-3 | PASS | 8/8 | 1.8 | 14 | 19 | 251,962 | 5,166 | – |
+| opencode-t2-3 | PASS | 8/8 | 4.9 | 51 | 59 | 941,219 | 11,035 | 64.7 |
+| pibox-t2-3 | PASS | 8/8 | 3.4 | 19 | 24 | 334,675 | 5,582 | 59.9 |
+| mini3-t6-3 | PASS | 5/5 | 2.0 | 7 | 7 | 40,839 | 911 | – |
+| opencode-t6-3 | PASS | 5/5 | 1.9 | 14 | 12 | 152,830 | 1,721 | 59.5 |
+| pibox-t6-3 | FAIL | 4/5 | 1.2 | 7 | 7 | 40,696 | 1,597 | 74.7 |
+| **Total** | **23/27 passed** | | **56.8** | **490** | **544** | **6.92M** | **112k** | |
+
+## Windows PC: Qwen3.8-Flash-Next GSQ-RCO Q2_0, Strata (6 Oct)
+
+Data: `results/win-strata-q2.json`
+
+| Run | Result | Hidden tests | Time (min) | Model calls | Tool calls | Tokens in | Tokens out | Gen tok/s |
+|---|---|---|---|---|---|---|---|---|
+| mini3-t1-1 | FAIL | 0/4 | 3.8 | 61 | 62 | 1,888,702 | 9,911 | – |
+| opencode-t1-1 | TIMEOUT | 1/4 | 45.5 | 2255 | 2239 | 47,674,971 | 202,286 | 78.7 |
+| pibox-t1-1 | PASS | 4/4 | 4.3 | 56 | 58 | 1,721,518 | 22,979 | 110.7 |
+| mini3-t2-1 | PASS | 8/8 | 1.3 | 22 | 27 | 523,416 | 5,533 | – |
+| opencode-t2-1 | PASS | 8/8 | 2.0 | 28 | 36 | 480,098 | 7,458 | 66.7 |
+| pibox-t2-1 | PASS | 8/8 | 1.4 | 22 | 26 | 466,119 | 5,328 | 77.2 |
+| mini3-t6-1 | PASS | 5/5 | 0.7 | 8 | 9 | 34,006 | 1,047 | – |
+| opencode-t6-1 | PASS | 5/5 | 0.5 | 9 | 9 | 105,047 | 1,020 | 46.2 |
+| pibox-t6-1 | PASS | 5/5 | 0.5 | 9 | 10 | 60,213 | 1,239 | 68.8 |
+| mini3-t1-2 | FAIL | 3/4 | 3.2 | 55 | 57 | 1,538,063 | 11,553 | – |
+| opencode-t1-2 | PASS (cap) | 4/4 | 45.5 | 1123 | 1099 | 24,878,330 | 181,380 | 83.6 |
+| pibox-t1-2 | FAIL | 1/4 | 3.7 | 231 | 231 | 8,255,229 | 17,931 | 72.8 |
+| mini3-t2-2 | PASS | 8/8 | 1.6 | 22 | 27 | 540,767 | 5,985 | – |
+| opencode-t2-2 | PASS | 8/8 | 4.2 | 57 | 64 | 1,123,017 | 19,848 | 92.5 |
+| pibox-t2-2 | PASS | 8/8 | 1.8 | 25 | 23 | 419,247 | 6,514 | 87.2 |
+| mini3-t6-2 | PASS | 5/5 | 0.3 | 11 | 7 | 59,397 | 1,290 | – |
+| opencode-t6-2 | PASS | 5/5 | 0.3 | 8 | 7 | 90,317 | 779 | 59.9 |
+| pibox-t6-2 | PASS | 5/5 | 0.5 | 9 | 10 | 60,065 | 1,182 | 73.9 |
+| mini3-t1-3 | FAIL | 3/4 | 2.9 | 48 | 49 | 1,609,655 | 12,370 | – |
+| opencode-t1-3 | FAIL | 3/4 | 7.4 | 183 | 173 | 3,924,146 | 23,760 | 62.4 |
+| pibox-t1-3 | FAIL | 1/4 | 3.0 | 138 | 138 | 4,862,671 | 15,846 | 109.5 |
+| mini3-t2-3 | PASS | 8/8 | 1.4 | 27 | 31 | 622,181 | 6,380 | – |
+| opencode-t2-3 | PASS | 8/8 | 3.3 | 58 | 59 | 1,096,434 | 10,549 | 64.8 |
+| pibox-t2-3 | PASS | 8/8 | 1.6 | 27 | 26 | 499,347 | 6,606 | 82.0 |
+| mini3-t6-3 | PASS | 5/5 | 0.3 | 7 | 7 | 43,365 | 1,118 | – |
+| opencode-t6-3 | PASS | 5/5 | 0.3 | 8 | 7 | 90,299 | 777 | 59.8 |
+| pibox-t6-3 | PASS | 5/5 | 0.5 | 10 | 11 | 69,391 | 1,543 | 81.2 |
+| **Total** | **20/27 passed** | | **141.8** | **4,517** | **4,502** | **102.74M** | **582k** | |
+
+## Windows PC: Qwen3.8-Flash-Next GSQ-RCO IQ3_S, Strata (6 Oct)
+
+Data: `results/win-strata-iq3s.json`
+
+| Run | Result | Hidden tests | Time (min) | Model calls | Tool calls | Tokens in | Tokens out | Gen tok/s |
+|---|---|---|---|---|---|---|---|---|
+| mini3-t1-1 | PASS | 4/4 | 1.5 | 25 | 23 | 388,013 | 4,223 | – |
+| opencode-t1-1 | PASS | 4/4 | 1.7 | 29 | 26 | 524,882 | 3,608 | 48.8 |
+| pibox-t1-1 | PASS | 4/4 | 2.3 | 28 | 34 | 689,397 | 6,853 | 66.5 |
+| mini3-t2-1 | PASS | 8/8 | 2.1 | 27 | 35 | 725,366 | 7,661 | – |
+| opencode-t2-1 | PASS | 8/8 | 8.8 | 45 | 44 | 736,419 | 7,408 | 53.5 |
+| pibox-t2-1 | PASS | 8/8 | 2.0 | 23 | 29 | 494,560 | 7,218 | 70.8 |
+| mini3-t6-1 | FAIL | 2/5 | 15.6 | 60 | 61 | 1,171,254 | 10,969 | – |
+| opencode-t6-1 | FAIL | 4/5 | 0.8 | 14 | 14 | 172,196 | 2,603 | 62.0 |
+| pibox-t6-1 | PASS | 5/5 | 0.8 | 12 | 13 | 75,280 | 2,119 | 58.9 |
+| mini3-t1-2 | PASS | 4/4 | 3.5 | 45 | 44 | 1,025,771 | 12,056 | – |
+| opencode-t1-2 | PASS | 4/4 | 2.9 | 45 | 42 | 874,465 | 8,478 | 61.9 |
+| pibox-t1-2 | PASS | 4/4 | 3.7 | 45 | 49 | 1,450,535 | 11,101 | 66.5 |
+| mini3-t2-2 | PASS | 8/8 | 2.1 | 29 | 36 | 781,247 | 8,288 | – |
+| opencode-t2-2 | FAIL | 0/8 | 1.0 | 19 | 20 | 304,041 | 2,049 | 39.6 |
+| pibox-t2-2 | PASS | 8/8 | 2.6 | 37 | 45 | 950,321 | 10,288 | 74.2 |
+| mini3-t6-2 | PASS | 5/5 | 4.3 | 10 | 10 | 67,675 | 1,679 | – |
+| opencode-t6-2 | PASS | 5/5 | 0.4 | 9 | 8 | 99,703 | 866 | 43.3 |
+| pibox-t6-2 | PASS | 5/5 | 0.6 | 10 | 11 | 55,373 | 1,530 | 58.8 |
+| mini3-t1-3 | PASS | 4/4 | 3.0 | 57 | 56 | 1,477,090 | 8,980 | – |
+| opencode-t1-3 | PASS | 4/4 | 0.9 | 19 | 17 | 305,139 | 2,366 | 55.6 |
+| pibox-t1-3 | PASS | 4/4 | 1.8 | 30 | 39 | 625,831 | 5,142 | 62.3 |
+| mini3-t2-3 | PASS | 8/8 | 1.3 | 18 | 23 | 349,558 | 5,388 | – |
+| opencode-t2-3 | PASS | 8/8 | 2.4 | 40 | 39 | 728,825 | 7,952 | 60.2 |
+| pibox-t2-3 | PASS | 8/8 | 2.0 | 32 | 37 | 726,723 | 7,919 | 70.4 |
+| mini3-t6-3 | PASS | 5/5 | 4.2 | 10 | 11 | 68,064 | 1,530 | – |
+| opencode-t6-3 | FAIL | 4/5 | 0.5 | 10 | 10 | 109,223 | 1,123 | 51.0 |
+| pibox-t6-3 | PASS | 5/5 | 0.7 | 12 | 14 | 68,013 | 1,416 | 67.4 |
+| **Total** | **23/27 passed** | | **73.5** | **740** | **790** | **15.04M** | **151k** | |
