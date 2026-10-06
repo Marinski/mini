@@ -27,6 +27,12 @@ POLL = float(os.environ.get("FREEZE_POLL_SECONDS", 30))
 STALL = float(os.environ.get("FREEZE_STALL_SECONDS", 120))
 PROGRESS = ("vllm:generation_tokens_total", "vllm:prompt_tokens_total", "vllm:kv_cache_usage_perc")
 QUEUE = ("vllm:num_requests_running", "vllm:num_requests_waiting")
+# SGLang's /metrics names for the same counters, read into the vLLM keys (SGLang trial, Oct 2026).
+SGLANG = {"sglang:generation_tokens_total": "vllm:generation_tokens_total",
+          "sglang:prompt_tokens_total": "vllm:prompt_tokens_total",
+          "sglang:token_usage": "vllm:kv_cache_usage_perc",
+          "sglang:num_running_reqs": "vllm:num_requests_running",
+          "sglang:num_queue_reqs": "vllm:num_requests_waiting"}
 LABEL = os.environ.get("MODEL_LABEL", "Qwen")
 AGENTPIPE_ENV = os.path.expanduser(os.environ.get("NOTIFY_ENV_FILE", "~/repos/agentpipe/.env"))
 
@@ -35,6 +41,7 @@ def read_metrics():
     values = dict.fromkeys(PROGRESS + QUEUE, 0.0)
     for line in urllib.request.urlopen(METRICS, timeout=10).read().decode().splitlines():
         name = line.split("{", 1)[0].split(" ", 1)[0]
+        name = SGLANG.get(name, name)
         if name in values:
             values[name] += float(line.rsplit(" ", 1)[1])
     return values

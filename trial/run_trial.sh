@@ -14,7 +14,7 @@ BATCH=${BATCH:-batch6}
 B=$DATA/$BATCH
 H=$1; TK=$2; REP=$3; ID=$H-$TK-$REP; R=$B/runs/$ID; L=$B/logs/$ID; RM=$B/remotes/$ID
 ST=$B/state/$ID
-MODEL=vllm-qwen3.8-nothink; GW=http://172.17.0.1:4000/v1; KEYS=${TRIAL_KEYS:-$HOME/.config/agent-trial}
+MODEL=${TRIAL_MODEL:-vllm-qwen3.8-nothink}; GW=http://172.17.0.1:4000/v1; KEYS=${TRIAL_KEYS:-$HOME/.config/agent-trial}
 # Qwen now lives on the head (gx10-833a), not on the trial host, so localhost:8001 is nothing.
 METRICS=${QWEN_METRICS_URL:-http://192.168.50.232:8001/metrics}
 IMAGE=${TRIAL_IMAGE:-agent-trial:5}
@@ -109,7 +109,8 @@ STEP_CAP() {  # STEP_CAP <logfile> <max_steps>: stop the container once the cap 
 case $H in
   opencode)
     # A variant config from trial/variants/ when it exists, else the inline V0 config.
-    if [ -f "$KIT/variants/$VARIANT.json" ]; then OC_CFG=$(cat "$KIT/variants/$VARIANT.json")
+    # TRIAL_MODEL swaps the gateway alias inside the variant config too (e.g. the SGLang trial).
+    if [ -f "$KIT/variants/$VARIANT.json" ]; then OC_CFG=$(sed "s/vllm-qwen3\.8-nothink/$MODEL/g" "$KIT/variants/$VARIANT.json")
     else
       # Only used if variants/$VARIANT.json is missing; kept identical to variants/V0.json
       # (including limit.context 45056) so a lost file cannot silently measure a different baseline.
@@ -197,6 +198,6 @@ VS1=$(VLLM_START)
 # subshell variables); read it back here. Non-H runs have no file and keep an empty list.
 SESS='[]'
 [ "$SCENARIO" = H ] && [ -f "$L.sessions.json" ] && SESS=$(cat "$L.sessions.json")
-echo "{\"id\":\"$ID\",\"harness\":\"$H\",\"task\":\"$TK\",\"variant\":\"$VARIANT\",\"scenario\":\"$SCENARIO\",\"sessions\":$SESS,\"h_steps\":$H_STEPS,\"image\":\"$IMAGE\",\"key_file\":\"$OC_KEYFILE\",\"timeout\":$TMO,\"rep\":\"$REP\",\"rc\":$RC,\"start\":$START,\"end\":$END,\"wall_s\":$((END-START)),\"vllm_start_begin\":\"$VS0\",\"vllm_start_end\":\"$VS1\"}" > $L.meta.json
+echo "{\"id\":\"$ID\",\"harness\":\"$H\",\"task\":\"$TK\",\"variant\":\"$VARIANT\",\"scenario\":\"$SCENARIO\",\"sessions\":$SESS,\"h_steps\":$H_STEPS,\"image\":\"$IMAGE\",\"model\":\"$MODEL\",\"key_file\":\"$OC_KEYFILE\",\"timeout\":$TMO,\"rep\":\"$REP\",\"rc\":$RC,\"start\":$START,\"end\":$END,\"wall_s\":$((END-START)),\"vllm_start_begin\":\"$VS0\",\"vllm_start_end\":\"$VS1\"}" > $L.meta.json
 $DATA/venv/bin/python $KIT/grade.py $TK "$R" $([ $TK = t6 ] && echo $RM/origin.git) > $L.grade.json 2>> $L.err
 echo "$(date +%H:%M) $ID rc=$RC wall=$((END-START))s $(python3 -c "import json;d=json.load(open('$L.grade.json'));print('PASS' if d['pass'] else 'FAIL', d['hidden'], 'traps' if (d.get('traps') or {}).get('any') else '')" 2>/dev/null)"
