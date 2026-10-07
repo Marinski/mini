@@ -214,3 +214,15 @@ python bench/bench.py compare <run-a> <run-b>
 ```
 
 Tests (no model calls): `python -m pytest test/bench`.
+
+### Review follow-ups (7 Oct 2026)
+
+- **Prefill tok/s** is recorded per sub-job: `(prompt_tokens − cached_tokens) / TTFT`
+  when the server reports cached tokens.
+- The **per-endpoint lock** lives under the host temp dir (`mini-bench-locks/`), keyed by
+  endpoint URL, so two runs on one endpoint wait even with different `--results` dirs.
+- **Step 9 parity** is `bench compare <our-run> <protorikis-run>`: a Protorikis export must be
+  converted to the run schema first (their per-sub-job results are not exposed by the API).
+  `compare` reports pass/fail agreement and TTFT, tokens/s and chunk/s ratios with a 10% flag.
+- Step 10 tables render from `results/bench/index.jsonl`; they are meant to sit beside the
+  agent-trial tables by hand, not merged automatically.

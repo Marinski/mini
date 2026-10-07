@@ -46,9 +46,6 @@ class ContextWindow:
     tokens: int | None
     source: str
 
-    def as_dict(self) -> dict[str, Any]:
-        return {"tokens": self.tokens, "source": self.source}
-
 
 class Client:
     def __init__(
@@ -98,7 +95,6 @@ class Client:
         max_tokens: int | None = None,
         thinking: bool = True,
         preserve_thinking: bool = False,
-        extra_body: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         payload: dict[str, Any] = {
             "model": self.model,
@@ -118,8 +114,6 @@ class Client:
             payload["temperature"] = temperature
         if max_tokens is not None:
             payload["max_tokens"] = max_tokens
-        if extra_body:
-            payload.update(extra_body)
         return payload
 
     def stream_chat(
@@ -130,7 +124,6 @@ class Client:
         max_tokens: int | None = None,
         thinking: bool = True,
         preserve_thinking: bool = False,
-        extra_body: dict[str, Any] | None = None,
         timeout: float | None = None,
     ) -> StreamResult:
         payload = self.build_payload(
@@ -139,7 +132,6 @@ class Client:
             max_tokens=max_tokens,
             thinking=thinking,
             preserve_thinking=preserve_thinking,
-            extra_body=extra_body,
         )
         result = StreamResult()
         content_parts: list[str] = []
@@ -280,8 +272,8 @@ def _absorb_usage(result: StreamResult, usage: dict[str, Any]) -> None:
         result.cached_tokens = details["cached_tokens"]
 
 
-def estimate_tokens(text: str, chars_per_token: int = _CHARS_PER_TOKEN) -> int:
-    return max(1, len(text.encode("utf-8")) // chars_per_token)
+def estimate_tokens(text: str) -> int:
+    return max(1, len(text.encode("utf-8")) // _CHARS_PER_TOKEN)
 
 
 def normalize_endpoint(endpoint: str) -> str:

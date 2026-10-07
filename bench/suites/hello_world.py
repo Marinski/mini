@@ -8,8 +8,6 @@ turn 3 must recall turn 2's answer.
 
 from __future__ import annotations
 
-from typing import Any, ClassVar
-
 from bench.suites import checks
 from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
@@ -34,12 +32,6 @@ PROMPTS = [
 class HelloWorld(Suite):
     id = "hello_world"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {
-        "thinking": False,
-        "temperature": 0.0,
-        "multi_turn": True,
-        "preserve_thinking": False,
-    }
 
     def build(self, profile, ctx):
         return [Job(id="hello_world", prompts=list(PROMPTS), params=dict(self.default_params))]

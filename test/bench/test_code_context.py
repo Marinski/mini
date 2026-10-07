@@ -66,6 +66,19 @@ def test_multi_turn_2_check():
     assert "cache-speed" in slow[3].reason
 
 
+def test_context_caching_requires_served_cache():
+    suite = ContextCaching1()
+    job = Job(id="w", prompts=[], params={})
+    subs = [
+        _sub("OK", 30.0),
+        _sub("OK", 1.0),  # fast but no cached tokens reported -> checked below
+    ]
+    subs[1].cached_tokens = 0
+    suite.apply_checks(job, subs)
+    assert subs[1].status == "fail"
+    assert "cached" in subs[1].reason
+
+
 def test_context_caching_check():
     suite = ContextCaching1()
     job = Job(id="w", prompts=[], params={})

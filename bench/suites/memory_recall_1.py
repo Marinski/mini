@@ -51,12 +51,7 @@ def _prompt(name: str, context: str) -> str:
 class MemoryRecall1(Suite):
     id = "memory_recall_1"
     profiles = ("eighths", "quarters", "halves", "full")
-    default_params: ClassVar[dict[str, Any]] = {
-        "thinking": False,
-        "temperature": 0.0,
-        "multi_turn": False,
-        "preserve_thinking": False,
-    }
+    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False}
 
     def build(self, profile, ctx):
         if profile not in PROFILE_JOBS:

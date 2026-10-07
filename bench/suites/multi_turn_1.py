@@ -5,8 +5,6 @@ Prompts recovered verbatim from Protorikis's agent log (6 Oct 2026).
 
 from __future__ import annotations
 
-from typing import Any, ClassVar
-
 from bench.suites import checks
 from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
@@ -33,12 +31,6 @@ PROMPTS = [
 class MultiTurn1(Suite):
     id = "multi_turn_1"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {
-        "thinking": False,
-        "temperature": 0.0,
-        "multi_turn": True,
-        "preserve_thinking": False,
-    }
 
     def build(self, profile, ctx):
         return [Job(id="multi_turn_1", prompts=list(PROMPTS), params=dict(self.default_params))]

@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from typing import Any
 
-SCHEMA_VERSION = 1
+from bench.results import SCHEMA_VERSION
+from bench.suites.base import STATUSES
 
 RUN_REQUIRED = {
     "schema_version": int,
@@ -41,6 +42,7 @@ SUBJOB_REQUIRED = {
     "chunk_count": int,
     "cached_tokens": (int, type(None)),
     "tokens_per_second": (float, int, type(None)),
+    "prefill_tokens_per_second": (float, int, type(None)),
     "response": str,
     "reasoning": str,
     "status": str,
@@ -60,7 +62,7 @@ SUMMARY_REQUIRED = {
     "median_cached_tokens": (float, int, type(None)),
 }
 
-VALID_STATUSES = {"pass", "fail", "error", "skipped", "ok"}
+VALID_STATUSES = set(STATUSES)
 
 
 class SchemaError(ValueError):

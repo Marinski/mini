@@ -26,10 +26,6 @@ class DataMissing(RuntimeError):
         )
 
 
-def data_dir() -> Path:
-    return DATA_DIR
-
-
 def require(path: Path) -> Path:
     if not Path(path).exists():
         raise DataMissing(Path(path))

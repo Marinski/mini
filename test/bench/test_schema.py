@@ -39,6 +39,7 @@ def minimal_run():
                         "chunk_count": 2,
                         "cached_tokens": 0,
                         "tokens_per_second": 10.0,
+                        "prefill_tokens_per_second": 5.0,
                         "response": "ok",
                         "reasoning": "",
                         "status": "pass",

@@ -64,6 +64,20 @@ class SubJob:
             return None
         return self.output_tokens / self.generation_seconds
 
+    @property
+    def prefill_tokens_per_second(self) -> float | None:
+        """Prompt tokens not served from cache over TTFT, when reported."""
+        if (
+            self.prompt_tokens is None
+            or self.cached_tokens is None
+            or not self.ttft_seconds
+        ):
+            return None
+        prefill = self.prompt_tokens - self.cached_tokens
+        if prefill < 0:
+            return None
+        return prefill / self.ttft_seconds
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "label": self.label,
@@ -77,6 +91,7 @@ class SubJob:
             "chunk_count": self.chunk_count,
             "cached_tokens": self.cached_tokens,
             "tokens_per_second": self.tokens_per_second,
+            "prefill_tokens_per_second": self.prefill_tokens_per_second,
             "response": self.response,
             "reasoning": self.reasoning,
             "status": self.status,
@@ -103,7 +118,12 @@ class Suite:
     id: str = ""
     profiles: ClassVar[tuple[str, ...]] = ("default",)
     # Default per-suite parameters, merged over the CLI defaults.
-    default_params: ClassVar[dict[str, Any]] = {}
+    default_params: ClassVar[dict[str, Any]] = {
+        "thinking": False,
+        "temperature": 0.0,
+        "multi_turn": True,
+        "preserve_thinking": False,
+    }
 
     def build(self, profile: str, ctx: Any) -> list[Job]:
         raise NotImplementedError

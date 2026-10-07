@@ -24,12 +24,7 @@ def _prompt(chunk: str) -> str:
 class ContextCaching1(Suite):
     id = "context_caching_1"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {
-        "thinking": False,
-        "temperature": 0.0,
-        "multi_turn": False,
-        "preserve_thinking": False,
-    }
+    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False}
 
     def build(self, profile, ctx):
         lines = require_lines(ctx)
@@ -61,6 +56,8 @@ class ContextCaching1(Suite):
     def _repeat(self, sub: SubJob) -> Check:
         if sub.ttft_seconds is None:
             return Check(FAIL, "no TTFT for the repeat")
+        if sub.cached_tokens is not None and sub.cached_tokens <= 0:
+            return Check(FAIL, "repeat served no cached tokens (prefix caching off?)")
         if sub.ttft_seconds >= CACHE_TTFT_SECONDS:
             return Check(
                 FAIL,

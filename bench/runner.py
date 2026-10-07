@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import fcntl
+import tempfile
 import threading
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
@@ -17,7 +18,14 @@ from pathlib import Path
 from typing import Any
 
 from bench.client import DEFAULT_TEMPERATURE, Client, StreamResult
-from bench.results import append_index, make_run_id, summarize, utc_now, write_run
+from bench.results import (
+    SCHEMA_VERSION,
+    append_index,
+    make_run_id,
+    summarize,
+    utc_now,
+    write_run,
+)
 from bench.suites.base import ERROR, OK, SKIPPED, Job, Prompt, SubJob, Suite
 
 GLOBAL_DEFAULTS: dict[str, Any] = {
@@ -126,7 +134,7 @@ def run(
         run_id = make_run_id(suite.id, profile, client.model, started_at)
         run_params = {**GLOBAL_DEFAULTS, **suite.default_params, **overrides}
         return {
-            "schema_version": 1,
+            "schema_version": SCHEMA_VERSION,
             "run_id": run_id,
             "suite": suite.id,
             "profile": profile,
@@ -142,7 +150,7 @@ def run(
         }
 
     if lock:
-        directory = lock_dir or (Path(results_dir) / ".locks")
+        directory = lock_dir or (Path(tempfile.gettempdir()) / "mini-bench-locks")
         with endpoint_lock(lock_path(client.endpoint, directory)):
             record = _body()
     else:

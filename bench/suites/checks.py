@@ -50,23 +50,18 @@ def ints(text: str) -> list[int]:
     return [int(m) for m in re.findall(r"-?\d+", text or "")]
 
 
-def find_number_groups(text: str) -> list[str]:
-    """Runs of digits of any length, in order."""
-    return re.findall(r"\d+", text or "")
-
-
 def find_digit_runs(text: str, length: int) -> list[str]:
     return [run for run in re.findall(rf"\d{{{length}}}", text or "")]
 
 
 def is_identifier(text: str) -> bool:
-    """A plausible model-identifier string: short, non-empty, not a refusal."""
+    """A plausible model-identifier string: non-empty, not a refusal."""
     value = first_line(text)
     if not value or len(value) > 120:
         return False
     if _REFUSAL.search(value):
         return False
-    return bool(re.search(r"[A-Za-z]", value)) and bool(re.search(r"\d", value))
+    return bool(re.search(r"[A-Za-z]", value))
 
 
 def numbers_equal(answer: str, expected: int) -> bool:

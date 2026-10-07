@@ -36,6 +36,7 @@
                 "label", "prompt_bytes", "prompt_tokens", "prompt_tokens_estimated",
                 "ttft_seconds", "generation_seconds", "stream_seconds",
                 "output_tokens", "chunk_count", "cached_tokens", "tokens_per_second",
+                "prefill_tokens_per_second",
                 "response", "reasoning", "status", "reason"
               ],
               "properties": {
@@ -50,6 +51,7 @@
                 "chunk_count": {"type": "integer"},
                 "cached_tokens": {"type": ["integer", "null"]},
                 "tokens_per_second": {"type": ["number", "null"]},
+                "prefill_tokens_per_second": {"type": ["number", "null"]},
                 "response": {"type": "string"},
                 "reasoning": {"type": "string"},
                 "status": {"enum": ["pass", "fail", "error", "skipped", "ok"]},

@@ -11,6 +11,7 @@ small relative tolerance for float noise.
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from typing import Any, ClassVar
 
 from bench import data
@@ -18,6 +19,7 @@ from bench.suites.base import FAIL, PASS, Check, Job, Prompt, Suite
 
 NUMBER = re.compile(r"-?(?:\d+(?:\.\d+)?|\.\d+)\s*%?")
 PURE_NUMBER = re.compile(r"^\s*-?\$?\s*(?:[\d,]+(?:\.\d+)?|\.\d+)\s*%?\s*$")
+UNITS = (("billion", 1e9), ("million", 1e6), ("thousand", 1e3))
 REL_TOLERANCE = 1e-4
 ABS_TOLERANCE = 1e-5
 ANSWER_INSTRUCTION = (
@@ -31,16 +33,22 @@ def extract_number(text: str) -> float | None:
     if not text:
         return None
     cleaned = text.replace(",", "").replace("$", "")
-    matches = NUMBER.findall(cleaned)
+    matches = list(NUMBER.finditer(cleaned))
     if not matches:
         return None
-    token = matches[-1].strip()
+    match = matches[-1]
+    token = match.group().strip()
     try:
         if token.endswith("%"):
             return float(token[:-1].strip()) / 100.0
-        return float(token)
+        value = float(token)
     except ValueError:
         return None
+    tail = cleaned[match.end() : match.end() + 10].strip().lower()
+    for word, scale in UNITS:
+        if tail.startswith(word):
+            return value * scale
+    return value
 
 
 def is_yes_no(text: str) -> bool:
@@ -51,19 +59,23 @@ def is_pure_number(text: str) -> bool:
     return bool(PURE_NUMBER.match(str(text)))
 
 
-def gold_reference(answer, exe_ans) -> tuple[str, float | None]:
-    """The value to compare a prediction against, and its numeric form.
+@dataclass(frozen=True)
+class Gold:
+    kind: str  # "yes_no" | "number" | "text"
+    number: float | None
+    digits: int
 
-    Returns ``(kind, number)`` where kind is ``yes_no``, ``number`` or ``text``.
-    """
+
+def gold_reference(answer: object, exe_ans: object) -> Gold:
+    """The value to compare a prediction against, with its precision."""
     text = "" if answer is None else str(answer)
     if is_yes_no(text):
-        return "yes_no", None
+        return Gold("yes_no", None, 0)
     if is_pure_number(text):
-        return "number", extract_number(text)
+        return Gold("number", extract_number(text), _decimals(text))
     if isinstance(exe_ans, (int, float)):
-        return "number", float(exe_ans)
-    return "text", None
+        return Gold("number", float(exe_ans), _decimals(str(exe_ans)))
+    return Gold("text", None, 0)
 
 
 def _decimals(text: str) -> int:
@@ -79,17 +91,16 @@ def _close(predicted: float, gold: float, digits: int) -> bool:
     return abs(predicted - gold) <= max(ABS_TOLERANCE, REL_TOLERANCE * abs(gold))
 
 
-def answers_match(response: str, answer, exe_ans=None) -> bool:
-    kind, gold = gold_reference(answer, exe_ans)
-    if kind == "yes_no":
+def answers_match(response: str, answer: object, exe_ans: object = None) -> bool:
+    gold = gold_reference(answer, exe_ans)
+    if gold.kind == "yes_no":
         return _yes_no(response) == str(answer).strip().lower()
-    if kind == "text":
+    if gold.kind == "text":
         return str(answer).strip().lower() in (response or "").strip().lower()
     predicted = extract_number(response)
-    if predicted is None or gold is None:
+    if predicted is None or gold.number is None:
         return False
-    source = str(answer) if is_pure_number(answer) else str(exe_ans)
-    return _close(predicted, gold, _decimals(source))
+    return _close(predicted, gold.number, gold.digits)
 
 
 def _yes_no(text: str) -> str | None:
@@ -111,12 +122,7 @@ def format_prompt(example: dict) -> str:
 class FinQA(Suite):
     id = "finqa"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {
-        "thinking": False,
-        "temperature": 0.0,
-        "multi_turn": False,
-        "preserve_thinking": False,
-    }
+    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False}
 
     def build(self, profile, ctx):
         examples = getattr(ctx, "finqa", None) or data.finqa_examples()

@@ -52,9 +52,14 @@ def test_answers_match_yes_no_is_exact():
 
 def test_answers_match_falls_back_to_exe_ans():
     # an empty / descriptive gold answer uses the executed value
-    assert gold_reference("", 1.1197)[0] == "number"
+    assert gold_reference("", 1.1197).kind == "number"
     assert answers_match("1.1197", "", 1.1197)
     assert not answers_match("2.0", "", 1.1197)
+
+
+def test_extract_number_scales_word_units():
+    assert extract_number("411.91 million") == pytest.approx(411_910_000)
+    assert extract_number("2 billion") == pytest.approx(2e9)
 
 
 def test_format_prompt_has_question_and_table():
@@ -76,7 +81,7 @@ def test_all_1147_gold_answers_pass_the_extractor():
     for example in examples:
         qa = example["qa"]
         answer, exe_ans = qa.get("answer"), qa.get("exe_ans")
-        kind, _ = gold_reference(answer, exe_ans)
+        kind = gold_reference(answer, exe_ans).kind
         if kind == "yes_no":
             reference = str(answer)
         elif kind == "number":

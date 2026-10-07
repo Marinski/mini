@@ -32,8 +32,6 @@ class PreserveThinking1(Suite):
     profiles = ("default",)
     default_params: ClassVar[dict[str, Any]] = {
         "thinking": True,
-        "temperature": 0.0,
-        "multi_turn": True,
         "preserve_thinking": True,
     }
 

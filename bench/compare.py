@@ -7,6 +7,7 @@ actually checked (pass/fail); errors and skips are not agreement.
 
 from __future__ import annotations
 
+import statistics
 from typing import Any
 
 METRICS = (
@@ -47,6 +48,17 @@ def _within_10(ratio: float | None) -> bool | None:
     return None if ratio is None else 0.9 <= ratio <= 1.1
 
 
+def chunk_tokens_per_second(run: dict[str, Any]) -> float | None:
+    """Median chunk rate, the metric comparable with Protorikis's chunk count."""
+    rates = []
+    for job in run["jobs"]:
+        for sub in job["sub_jobs"]:
+            generation, chunks = sub.get("generation_seconds"), sub.get("chunk_count")
+            if generation and chunks:
+                rates.append(chunks / generation)
+    return statistics.median(rates) if rates else None
+
+
 def compare_runs(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     sa, sb = a["summary"], b["summary"]
     metrics = [
@@ -54,6 +66,7 @@ def compare_runs(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     ]
     ttft_ratio = _ratio(sa.get("median_ttft_seconds"), sb.get("median_ttft_seconds"))
     tps_ratio = _ratio(sa.get("median_tokens_per_second"), sb.get("median_tokens_per_second"))
+    chunk_ratio = _ratio(chunk_tokens_per_second(a), chunk_tokens_per_second(b))
     ka, kb = _keyed(a), _keyed(b)
     shared = set(ka) & set(kb)
     comparable = [k for k in shared if ka[k] in ("pass", "fail") and kb[k] in ("pass", "fail")]
@@ -66,8 +79,10 @@ def compare_runs(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
         "speed": {
             "ttft_ratio": ttft_ratio,
             "tokens_per_second_ratio": tps_ratio,
+            "chunk_tokens_per_second_ratio": chunk_ratio,
             "ttft_within_10pct": _within_10(ttft_ratio),
             "tokens_per_second_within_10pct": _within_10(tps_ratio),
+            "chunk_tokens_per_second_within_10pct": _within_10(chunk_ratio),
         },
         "agreement": {
             "comparable": len(comparable),
@@ -102,6 +117,11 @@ def render_compare(result: dict[str, Any]) -> str:
         "| tokens/s | "
         f"{_fmt(speed.get('tokens_per_second_ratio'))} | "
         f"{speed.get('tokens_per_second_within_10pct')} |"
+    )
+    lines.append(
+        "| chunks/s (Protorikis-shaped) | "
+        f"{_fmt(speed.get('chunk_tokens_per_second_ratio'))} | "
+        f"{speed.get('chunk_tokens_per_second_within_10pct')} |"
     )
     agreement = result["agreement"]
     lines += ["", f"**Agreement:** {agreement['agree']}/{agreement['comparable']}", ""]

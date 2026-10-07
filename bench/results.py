@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from bench.suites.base import STATUSES
+
 SCHEMA_VERSION = 1
 
 
@@ -34,7 +36,7 @@ def make_run_id(suite: str, profile: str, model: str, started_at: str) -> str:
 
 def summarize(jobs: list[dict[str, Any]]) -> dict[str, Any]:
     subs = [s for job in jobs for s in job["sub_jobs"]]
-    counts = {status: 0 for status in ("pass", "fail", "error", "skipped", "ok")}
+    counts = {status: 0 for status in STATUSES}
     for sub in subs:
         counts[sub["status"]] = counts.get(sub["status"], 0) + 1
     ttfts = [s["ttft_seconds"] for s in subs if s["ttft_seconds"] is not None]
