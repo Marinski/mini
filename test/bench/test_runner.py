@@ -195,5 +195,51 @@ def test_endpoint_lock_across_processes(tmp_path):
     assert b["start"] >= a["end"] - 0.01 or a["start"] >= b["end"] - 0.01
 
 
+THREE = Path(__file__).resolve().parents[2] / "bench" / "data" / "three.module.js"
+
+
+@pytest.mark.skipif(not THREE.exists(), reason="run bench/data/setup.py")
+def test_multi_turn_2_turn4_skipped_with_context_reason(tmp_path):
+    import bench.data as data
+    from bench.runner import render_messages
+    from bench.suites.multi_turn_2 import MultiTurn2
+
+    ctx = data.Context(three_js_lines=data.three_js_lines())
+    job = MultiTurn2().build("default", ctx)[0]
+    # Token counts the mock tokenizer (scale 4) will report per turn, with the
+    # short "ok" answers the responder gives.
+    history = []
+    sizes = []
+    for prompt in job.prompts:
+        messages = history + [{"role": "user", "content": prompt.text}]
+        sizes.append(len(render_messages(messages).encode()) // 4)
+        history += [
+            {"role": "user", "content": prompt.text},
+            {"role": "assistant", "content": "ok"},
+        ]
+    window = sizes[2] + 50  # turn 3 fits, turn 4 (16 max_tokens) does not
+
+    state = MockState(
+        tokenize_scale=4,
+        models=[{"id": "m", "max_model_len": window}],
+        responder=lambda p: [{"content": "ok"}],
+    )
+    with MockServer(state) as server:
+        record = run(
+            MultiTurn2(),
+            "default",
+            Client(server.url, "m"),
+            overrides={"max_tokens": 16},
+            ctx=ctx,
+            results_dir=tmp_path,
+            lock=False,
+        )
+    subs = record["jobs"][0]["sub_jobs"]
+    assert [s["status"] for s in subs[:3]] == ["pass", "pass", "pass"]
+    assert subs[3]["status"] == "skipped"
+    assert "exceeds context" in subs[3]["reason"]
+    assert len(state.requests) == 3  # the fourth turn was never sent
+
+
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__]))

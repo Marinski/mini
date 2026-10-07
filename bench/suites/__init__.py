@@ -12,8 +12,11 @@ def _load() -> None:
     if _LOADED:
         return
     from bench.suites import (  # noqa: F401
+        context_caching_1,
         hello_world,
+        memory_recall_1,
         multi_turn_1,
+        multi_turn_2,
         preserve_thinking_1,
     )
 

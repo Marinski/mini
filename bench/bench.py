@@ -79,8 +79,24 @@ def cmd_run(args: argparse.Namespace) -> int:
         overrides["preserve_thinking"] = True
 
     suite = get_suite(args.suite)
+    profile = args.profile
+    if profile is None:
+        if len(suite.profiles) == 1:
+            profile = suite.profiles[0]
+        else:
+            print(
+                f"bench: suite {suite.id} needs --profile ({', '.join(suite.profiles)})",
+                file=sys.stderr,
+            )
+            return 2
+    elif profile not in suite.profiles:
+        print(
+            f"bench: {suite.id} has no profile {profile!r} ({', '.join(suite.profiles)})",
+            file=sys.stderr,
+        )
+        return 2
     client = Client(args.endpoint, args.model, api_key=args.api_key, timeout=args.timeout)
-    ctx = build_context(suite.id, args.profile)
+    ctx = build_context(suite.id, profile)
     results_dir = Path(args.results)
 
     def on_sub(sub: SubJob) -> None:
@@ -89,7 +105,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     record = run_suite(
         suite,
-        args.profile,
+        profile,
         client,
         overrides=overrides,
         ctx=ctx,

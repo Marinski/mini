@@ -60,5 +60,5 @@ def human_eval_problems() -> list[dict]:
 def finqa_examples() -> list[dict]:
     import json
 
-    path = require(DATA_DIR / "finqa" / "dev.json")
+    path = require(DATA_DIR / "finqa" / "test.json")
     return json.loads(path.read_text())

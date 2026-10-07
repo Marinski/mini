@@ -25,6 +25,19 @@ def strip_markdown(text: str) -> str:
     return text.strip()
 
 
+def code_lines(text: str) -> list[str]:
+    """Output lines with code fences and surrounding blank lines removed."""
+    text = (text or "").strip()
+    text = re.sub(r"^```[a-zA-Z0-9]*\s*\n", "", text)
+    text = re.sub(r"\n?```\s*$", "", text)
+    lines = [line.rstrip() for line in text.splitlines()]
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return lines
+
+
 def yes_no(text: str) -> str | None:
     """Return 'yes', 'no' or None for a one-word yes/no answer."""
     word = re.sub(r"[^A-Za-z]", "", first_line(text)).lower()
