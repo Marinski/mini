@@ -100,12 +100,35 @@ Each run holds a **lock per endpoint URL**, so a second run on the same endpoint
 sharing the model — run different endpoints in parallel, one model at a time. A request that would
 not fit the context window is recorded as `skipped: exceeds context`, not as a model failure.
 
-Results (`results/bench/`, committed; data and locks are gitignored):
+### Running a batch
+
+There is no scheduler built in (cross-machine job scheduling is out of scope); a shell loop is the
+batch. The per-endpoint lock keeps a loop on one endpoint sequential, so run one endpoint per loop
+and different endpoints concurrently:
+
+```bash
+EP=http://host:8001/v1
+for model in qwen3.8-27b gemma-3-27b; do
+  for suite in hello_world multi_turn_1 multi_turn_2 preserve_thinking_1 \
+               context_caching_1 memory_recall_1 human_eval finqa; do
+    python bench/bench.py run "$suite" --endpoint "$EP" --model "$model" --quiet
+  done
+done
+```
+
+Run it detached (`setsid nohup … &`) for a long batch, or from a cron job / systemd timer to schedule
+one. Because an oversized request is `skipped` rather than failed, the same loop over models with
+different context windows stays clean.
+
+### Results
+
+Results go in `results/bench/`, committed with the repo (fetched datasets and runtime locks are
+gitignored):
 
 - `results/bench/<run-id>.json` — the whole run: every sub-job's prompt bytes, tokens, TTFT,
   tokens/s (and prefill tokens/s when the server reports cached tokens), chunk count, and pass/fail.
   `<run-id>` = `<suite>__<profile>__<model>__<UTC stamp>`.
-- `results/bench/index.jsonl` — one summary line per run.
+- `results/bench/index.jsonl` — one summary line per run, appended in run order.
 - `python bench/bench.py report --out results/bench/REPORT.md` — per-model tables (pass rate, median
   TTFT, tokens/s), the same columns as the wiki Results page.
 - `python bench/bench.py compare <run-a> <run-b>` — pass/fail agreement and TTFT / tokens/s / chunks/s
