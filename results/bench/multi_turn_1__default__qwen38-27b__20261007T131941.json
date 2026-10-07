@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "run_id": "multi_turn_1__default__qwen38-27b__20261007T131941",
+  "suite": "multi_turn_1",
+  "profile": "default",
+  "model": "qwen38-27b",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": true,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T13:19:41+00:00",
+  "finished_at": "2026-10-07T13:19:46+00:00",
+  "context_window": 262144,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "multi_turn_1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": true,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "The first number is 333",
+          "prompt_bytes": 23,
+          "prompt_tokens": 20,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4703201539996371,
+          "generation_seconds": 1.2511952569984715,
+          "stream_seconds": 1.7598728019984264,
+          "output_tokens": 91,
+          "chunk_count": 90,
+          "cached_tokens": 0,
+          "tokens_per_second": 72.73045473198367,
+          "prefill_tokens_per_second": 42.52422489216873,
+          "response": "Understood. The first number is **333**.\n\nHow would you like to proceed? For example:\n*   Do you want to perform a calculation with this number?\n*   Is this part of a sequence where you want me to find the next number?\n*   Do you want to convert it to another base (e.g., binary, hexadecimal)?\n*   Or is there another specific task you have in mind?",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "The second number is 778",
+          "prompt_bytes": 24,
+          "prompt_tokens": 132,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.34189953500026604,
+          "generation_seconds": 1.3966096590011148,
+          "stream_seconds": 1.7751602990028914,
+          "output_tokens": 102,
+          "chunk_count": 101,
+          "cached_tokens": 112,
+          "tokens_per_second": 73.03400727799104,
+          "prefill_tokens_per_second": 58.49671600163024,
+          "response": "Understood. The second number is **778**.\n\nSo far, we have:\n1.  **333**\n2.  **778**\n\nHow would you like to proceed? For example:\n*   Do you want to add, subtract, multiply, or divide these two numbers?\n*   Is this part of a sequence where you want me to find the next number?\n*   Do you want to analyze these numbers in some other way?",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the first number? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 85,
+          "prompt_tokens": 262,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3199714770016726,
+          "generation_seconds": 0.0485712039990176,
+          "stream_seconds": 0.3688137140015897,
+          "output_tokens": 4,
+          "chunk_count": 3,
+          "cached_tokens": 235,
+          "tokens_per_second": 82.35332194114241,
+          "prefill_tokens_per_second": 84.38252138286333,
+          "response": "333",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the sum of both numbers? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 92,
+          "prompt_tokens": 296,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.440161797003384,
+          "generation_seconds": 0.05178136599715799,
+          "stream_seconds": 0.5307914900004107,
+          "output_tokens": 5,
+          "chunk_count": 4,
+          "cached_tokens": 265,
+          "tokens_per_second": 96.55983197265256,
+          "prefill_tokens_per_second": 70.42864739976893,
+          "response": "1111",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 4,
+    "passed": 4,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 0.391030666001825,
+    "median_tokens_per_second": 77.69366460956672,
+    "median_cached_tokens": 173.5
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "run_id": "context_caching_1__default__qwen38-27b__20261007T134236",
+  "suite": "context_caching_1",
+  "profile": "default",
+  "model": "qwen38-27b",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": false,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T13:42:36+00:00",
+  "finished_at": "2026-10-07T13:44:51+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "window-1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-1",
+          "prompt_bytes": 65606,
+          "prompt_tokens": 25700,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 19.98796454499825,
+          "generation_seconds": 0.0,
+          "stream_seconds": 20.04517824999857,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1285.7737436016776,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-1-rep",
+          "prompt_bytes": 65606,
+          "prompt_tokens": 25700,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3546179429977201,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.4417510069979471,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 25696,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 11.279745086180585,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-2",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-2",
+          "prompt_bytes": 65609,
+          "prompt_tokens": 26168,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 19.68771243500305,
+          "generation_seconds": 0.0,
+          "stream_seconds": 19.751648421002756,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1329.1539119331894,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-2-rep",
+          "prompt_bytes": 65609,
+          "prompt_tokens": 26168,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.30920381199757685,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.391537833998882,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 26164,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 12.936451119921339,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-3",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-3",
+          "prompt_bytes": 65632,
+          "prompt_tokens": 21826,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 16.152998850000586,
+          "generation_seconds": 0.0,
+          "stream_seconds": 16.212514622002345,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1351.2042068893734,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-3-rep",
+          "prompt_bytes": 65632,
+          "prompt_tokens": 21826,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.29807172200162313,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.3647463740016974,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 21822,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 13.41958899401473,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-4",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-4",
+          "prompt_bytes": 66147,
+          "prompt_tokens": 21753,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 15.796132103001582,
+          "generation_seconds": 0.0,
+          "stream_seconds": 15.856633810002677,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1377.1092732167322,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-4-rep",
+          "prompt_bytes": 66147,
+          "prompt_tokens": 21753,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.2526308099986636,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.31037453099997947,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 21749,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 15.833381526272111,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-5",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-5",
+          "prompt_bytes": 66101,
+          "prompt_tokens": 21678,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 16.028054988000804,
+          "generation_seconds": 0.0,
+          "stream_seconds": 16.088400753000315,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1352.5034707098869,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-5-rep",
+          "prompt_bytes": 66101,
+          "prompt_tokens": 21678,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3010848949998035,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.37934401199891,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 21674,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 13.285289519431423,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-6",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-6",
+          "prompt_bytes": 65611,
+          "prompt_tokens": 19551,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.115276882999751,
+          "generation_seconds": 0.0,
+          "stream_seconds": 14.171430113998213,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1385.0950400800823,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-6-rep",
+          "prompt_bytes": 65611,
+          "prompt_tokens": 19551,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.30338814799688407,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.3543203919980442,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 19547,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 13.184430658909859,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-7",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-7",
+          "prompt_bytes": 65605,
+          "prompt_tokens": 20235,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.635337789000914,
+          "generation_seconds": 0.0,
+          "stream_seconds": 14.695074389001093,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1382.6124338043958,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-7-rep",
+          "prompt_bytes": 65605,
+          "prompt_tokens": 20235,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.2658130300005723,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.31645068999932846,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 20231,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 15.048171265311515,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "window-8",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "window-8",
+          "prompt_bytes": 65611,
+          "prompt_tokens": 19053,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 13.889630825000495,
+          "generation_seconds": 0.0,
+          "stream_seconds": 13.94709621400034,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 1371.74272232677,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "window-8-rep",
+          "prompt_bytes": 65611,
+          "prompt_tokens": 19053,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3475052629983111,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.40576805399905425,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 19049,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 11.510617034940966,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 8,
+    "sub_jobs": 16,
+    "passed": 16,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 7.1221243839991075,
+    "median_tokens_per_second": null,
+    "median_cached_tokens": 9524.5
+  }
+}

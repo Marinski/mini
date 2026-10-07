@@ -1,0 +1,4953 @@
+{
+  "schema_version": 1,
+  "run_id": "human_eval__default__qwen38-27b__20261007T135346",
+  "suite": "human_eval",
+  "profile": "default",
+  "model": "qwen38-27b",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": false,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T13:53:46+00:00",
+  "finished_at": "2026-10-07T13:57:46+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "HumanEval/0",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "has_close_elements",
+          "prompt_bytes": 511,
+          "prompt_tokens": 163,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 1.5627218329973402,
+          "generation_seconds": 0.5433559450029861,
+          "stream_seconds": 2.1063496239985398,
+          "output_tokens": 43,
+          "chunk_count": 42,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.13781085024051,
+          "prefill_tokens_per_second": 104.30519146671283,
+          "response": "for i in range(len(numbers)):\n    for j in range(i + 1, len(numbers)):\n        if abs(numbers[i] - numbers[j]) < threshold:\n            return True\nreturn False",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "separate_paren_groups",
+          "prompt_bytes": 669,
+          "prompt_tokens": 155,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5250040329992771,
+          "generation_seconds": 1.246358065000095,
+          "stream_seconds": 1.8092689820005035,
+          "output_tokens": 97,
+          "chunk_count": 95,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.82675197756483,
+          "prefill_tokens_per_second": 295.2358272649944,
+          "response": "result = []\n    current = []\n    depth = 0\n    for char in paren_string:\n        if char == '(':\n            depth += 1\n            current.append(char)\n        elif char == ')':\n            depth -= 1\n            current.append(char)\n            if depth == 0:\n                result.append(''.join(current))\n                current = []\n        # Ignore spaces and any other characters\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/2",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "truncate_number",
+          "prompt_bytes": 494,
+          "prompt_tokens": 124,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.518149949999497,
+          "generation_seconds": 0.07685272099843132,
+          "stream_seconds": 0.5953045940004813,
+          "output_tokens": 7,
+          "chunk_count": 6,
+          "cached_tokens": 0,
+          "tokens_per_second": 91.08330725392118,
+          "prefill_tokens_per_second": 239.3129633615141,
+          "response": "return number - int(number)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/3",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "below_zero",
+          "prompt_bytes": 611,
+          "prompt_tokens": 158,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.40696744399974705,
+          "generation_seconds": 0.36939635400267434,
+          "stream_seconds": 0.7767288120012381,
+          "output_tokens": 31,
+          "chunk_count": 30,
+          "cached_tokens": 0,
+          "tokens_per_second": 83.92069836123929,
+          "prefill_tokens_per_second": 388.237443386499,
+          "response": "balance = 0\nfor op in operations:\n    balance += op\n    if balance < 0:\n        return True\nreturn False",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/4",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "mean_absolute_deviation",
+          "prompt_bytes": 593,
+          "prompt_tokens": 157,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.49542958899837686,
+          "generation_seconds": 0.48363507600151934,
+          "stream_seconds": 1.0170133789979445,
+          "output_tokens": 42,
+          "chunk_count": 40,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.84233647244406,
+          "prefill_tokens_per_second": 316.8966962942425,
+          "response": "if not numbers:\n        return 0.0\n    mean = sum(numbers) / len(numbers)\n    return sum(abs(x - mean) for x in numbers) / len(numbers)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/5",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "intersperse",
+          "prompt_bytes": 450,
+          "prompt_tokens": 133,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4577676770022663,
+          "generation_seconds": 0.6236583780009823,
+          "stream_seconds": 1.1156471210015297,
+          "output_tokens": 54,
+          "chunk_count": 52,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.58586480163495,
+          "prefill_tokens_per_second": 290.5403912984043,
+          "response": "if not numbers:\n        return []\n    result = []\n    for i, num in enumerate(numbers):\n        result.append(num)\n        if i != len(numbers) - 1:\n            result.append(delimeter)\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/6",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "parse_nested_parens",
+          "prompt_bytes": 599,
+          "prompt_tokens": 153,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.49364317700019456,
+          "generation_seconds": 1.0157849889983481,
+          "stream_seconds": 1.5097242629999528,
+          "output_tokens": 82,
+          "chunk_count": 80,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.72574500324039,
+          "prefill_tokens_per_second": 309.94047346052895,
+          "response": "result = []\n    for group in paren_string.split():\n        depth = 0\n        max_depth = 0\n        for char in group:\n            if char == '(':\n                depth += 1\n                max_depth = max(max_depth, depth)\n            elif char == ')':\n                depth -= 1\n        result.append(max_depth)\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/7",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "filter_by_substring",
+          "prompt_bytes": 493,
+          "prompt_tokens": 133,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4492587380009354,
+          "generation_seconds": 0.15806419699947583,
+          "stream_seconds": 0.6075417789979838,
+          "output_tokens": 13,
+          "chunk_count": 12,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.24506401056219,
+          "prefill_tokens_per_second": 296.04321240764176,
+          "response": "return [s for s in strings if substring in s]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/8",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sum_product",
+          "prompt_bytes": 535,
+          "prompt_tokens": 155,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4968067150002753,
+          "generation_seconds": 0.5094030389991531,
+          "stream_seconds": 1.0446878900002048,
+          "output_tokens": 43,
+          "chunk_count": 41,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.41253135137164,
+          "prefill_tokens_per_second": 311.99256233868357,
+          "response": "total_sum = 0\n    total_product = 1\n    for num in numbers:\n        total_sum += num\n        total_product *= num\n    return (total_sum, total_product)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/9",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "rolling_max",
+          "prompt_bytes": 451,
+          "prompt_tokens": 139,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.48206164599832846,
+          "generation_seconds": 0.5452622090015211,
+          "stream_seconds": 1.0275383879998117,
+          "output_tokens": 46,
+          "chunk_count": 44,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.36308117563246,
+          "prefill_tokens_per_second": 288.3448645082251,
+          "response": "result = []\n    current_max = float('-inf')\n    for num in numbers:\n        if num > current_max:\n            current_max = num\n        result.append(current_max)\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/10",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "make_palindrome",
+          "prompt_bytes": 743,
+          "prompt_tokens": 189,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4979517350002425,
+          "generation_seconds": 0.5663677119991917,
+          "stream_seconds": 1.064616036001098,
+          "output_tokens": 41,
+          "chunk_count": 40,
+          "cached_tokens": 0,
+          "tokens_per_second": 72.39113235335442,
+          "prefill_tokens_per_second": 379.5548578616921,
+          "response": "for i in range(len(string), -1, -1):\n    if string[:i] == string[:i][::-1]:\n        return string + string[i:][::-1]",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/11",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "string_xor",
+          "prompt_bytes": 422,
+          "prompt_tokens": 122,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5565611989986792,
+          "generation_seconds": 0.2625371760004782,
+          "stream_seconds": 0.8555962369973713,
+          "output_tokens": 23,
+          "chunk_count": 21,
+          "cached_tokens": 0,
+          "tokens_per_second": 87.60664051615343,
+          "prefill_tokens_per_second": 219.203207516968,
+          "response": "return ''.join(str(int(x) ^ int(y)) for x, y in zip(a, b))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/12",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "longest",
+          "prompt_bytes": 539,
+          "prompt_tokens": 144,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4747673740021128,
+          "generation_seconds": 0.19158402899847715,
+          "stream_seconds": 0.7049116780035547,
+          "output_tokens": 17,
+          "chunk_count": 16,
+          "cached_tokens": 0,
+          "tokens_per_second": 88.73391007000447,
+          "prefill_tokens_per_second": 303.3064357100477,
+          "response": "if not strings:\n    return None\nreturn max(strings, key=len)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/13",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "greatest_common_divisor",
+          "prompt_bytes": 380,
+          "prompt_tokens": 110,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5508346899987373,
+          "generation_seconds": 0.20192970600328408,
+          "stream_seconds": 0.791828853001789,
+          "output_tokens": 20,
+          "chunk_count": 18,
+          "cached_tokens": 0,
+          "tokens_per_second": 99.04436744772327,
+          "prefill_tokens_per_second": 199.6969362990776,
+          "response": "while b:\n        a, b = b, a % b\n    return a",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/14",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "all_prefixes",
+          "prompt_bytes": 373,
+          "prompt_tokens": 97,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5129090320006071,
+          "generation_seconds": 0.2254672160015616,
+          "stream_seconds": 0.7386180749999767,
+          "output_tokens": 22,
+          "chunk_count": 20,
+          "cached_tokens": 0,
+          "tokens_per_second": 97.57516143654173,
+          "prefill_tokens_per_second": 189.11735599907544,
+          "response": "return [string[:i] for i in range(1, len(string) + 1)]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/15",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "string_sequence",
+          "prompt_bytes": 382,
+          "prompt_tokens": 109,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4248605300017516,
+          "generation_seconds": 0.18923082800029078,
+          "stream_seconds": 0.6522905720012204,
+          "output_tokens": 17,
+          "chunk_count": 16,
+          "cached_tokens": 0,
+          "tokens_per_second": 89.83737047313389,
+          "prefill_tokens_per_second": 256.5547804583085,
+          "response": "return ' '.join(str(i) for i in range(n + 1))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/16",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "count_distinct_characters",
+          "prompt_bytes": 425,
+          "prompt_tokens": 108,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4960511979988951,
+          "generation_seconds": 0.03902158200071426,
+          "stream_seconds": 0.5740312189991528,
+          "output_tokens": 8,
+          "chunk_count": 6,
+          "cached_tokens": 0,
+          "tokens_per_second": 205.01475311415015,
+          "prefill_tokens_per_second": 217.71946209520203,
+          "response": "return len(set(string.lower()))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/17",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "parse_music",
+          "prompt_bytes": 696,
+          "prompt_tokens": 213,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5769933260016842,
+          "generation_seconds": 0.47868985400054953,
+          "stream_seconds": 1.09042936500191,
+          "output_tokens": 39,
+          "chunk_count": 37,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.47237647521818,
+          "prefill_tokens_per_second": 369.15504980967194,
+          "response": "beats = {'o': 4, 'o|': 2, '.|': 1}\n    return [beats[note] for note in music_string.split()]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/18",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "how_many_times",
+          "prompt_bytes": 458,
+          "prompt_tokens": 128,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4534746070021356,
+          "generation_seconds": 0.6805620169980102,
+          "stream_seconds": 1.1344535540010838,
+          "output_tokens": 53,
+          "chunk_count": 52,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.87681162957844,
+          "prefill_tokens_per_second": 282.26497806832475,
+          "response": "count = 0\nstart = 0\nwhile True:\n    index = string.find(substring, start)\n    if index == -1:\n        break\n    count += 1\n    start = index + 1\nreturn count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/19",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sort_numbers",
+          "prompt_bytes": 546,
+          "prompt_tokens": 145,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4497033779989579,
+          "generation_seconds": 1.7016023169999244,
+          "stream_seconds": 2.151566044998617,
+          "output_tokens": 133,
+          "chunk_count": 131,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.16162370681934,
+          "prefill_tokens_per_second": 322.43475831826197,
+          "response": "number_map = {\n        'zero': 0,\n        'one': 1,\n        'two': 2,\n        'three': 3,\n        'four': 4,\n        'five': 5,\n        'six': 6,\n        'seven': 7,\n        'eight': 8,\n        'nine': 9\n    }\n    \n    if not numbers.strip():\n        return \"\"\n    \n    words = numbers.split()\n    sorted_words = sorted(words, key=lambda w: number_map[w])\n    return ' '.join(sorted_words)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/20",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "find_closest_elements",
+          "prompt_bytes": 614,
+          "prompt_tokens": 207,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.49707239100098377,
+          "generation_seconds": 1.4678494299987506,
+          "stream_seconds": 2.0042256179985998,
+          "output_tokens": 119,
+          "chunk_count": 117,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.07098559836706,
+          "prefill_tokens_per_second": 416.4383372473212,
+          "response": "min_diff = float('inf')\n    closest_pair = (numbers[0], numbers[1])\n    for i in range(len(numbers) - 1):\n        for j in range(i + 1, len(numbers)):\n            diff = abs(numbers[i] - numbers[j])\n            if diff < min_diff:\n                min_diff = diff\n                if numbers[i] <= numbers[j]:\n                    closest_pair = (numbers[i], numbers[j])\n                else:\n                    closest_pair = (numbers[j], numbers[i])\n    return closest_pair",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/21",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "rescale_to_unit",
+          "prompt_bytes": 513,
+          "prompt_tokens": 164,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5140881010011071,
+          "generation_seconds": 0.7765576230012812,
+          "stream_seconds": 1.329640758001915,
+          "output_tokens": 64,
+          "chunk_count": 62,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.4150045075205,
+          "prefill_tokens_per_second": 319.01146842464425,
+          "response": "min_val = min(numbers)\n    max_val = max(numbers)\n    range_val = max_val - min_val\n    if range_val == 0:\n        return [0.0] * len(numbers)\n    return [(x - min_val) / range_val for x in numbers]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/22",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "filter_integers",
+          "prompt_bytes": 432,
+          "prompt_tokens": 132,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4339615019998746,
+          "generation_seconds": 0.22087467500023195,
+          "stream_seconds": 0.6557862650006427,
+          "output_tokens": 22,
+          "chunk_count": 20,
+          "cached_tokens": 0,
+          "tokens_per_second": 99.60399488975771,
+          "prefill_tokens_per_second": 304.1744472532454,
+          "response": "return [x for x in values if isinstance(x, int) and not isinstance(x, bool)]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/23",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "strlen",
+          "prompt_bytes": 296,
+          "prompt_tokens": 82,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5094774339995638,
+          "generation_seconds": 0.03999507499975152,
+          "stream_seconds": 0.549750469999708,
+          "output_tokens": 6,
+          "chunk_count": 4,
+          "cached_tokens": 0,
+          "tokens_per_second": 150.01847102517686,
+          "prefill_tokens_per_second": 160.94922861700329,
+          "response": "return len(string)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/24",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "largest_divisor",
+          "prompt_bytes": 335,
+          "prompt_tokens": 90,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4071766849992855,
+          "generation_seconds": 0.32816186800118885,
+          "stream_seconds": 0.7355885750002926,
+          "output_tokens": 31,
+          "chunk_count": 29,
+          "cached_tokens": 0,
+          "tokens_per_second": 94.46557635967532,
+          "prefill_tokens_per_second": 221.034266734005,
+          "response": "for i in range(n - 1, 0, -1):\n        if n % i == 0:\n            return i",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/25",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "factorize",
+          "prompt_bytes": 612,
+          "prompt_tokens": 172,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5862100190024648,
+          "generation_seconds": 0.5885102229985932,
+          "stream_seconds": 1.1750179160007974,
+          "output_tokens": 51,
+          "chunk_count": 49,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.65949716241703,
+          "prefill_tokens_per_second": 293.4102018465788,
+          "response": "factors = []\n    divisor = 2\n    while n > 1:\n        while n % divisor == 0:\n            factors.append(divisor)\n            n //= divisor\n        divisor += 1\n    return factors",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/26",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "remove_duplicates",
+          "prompt_bytes": 448,
+          "prompt_tokens": 124,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4426829149997502,
+          "generation_seconds": 0.48898066000037943,
+          "stream_seconds": 0.9319464019972656,
+          "output_tokens": 42,
+          "chunk_count": 40,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.89296762773279,
+          "prefill_tokens_per_second": 280.110200322662,
+          "response": "seen = set()\n    result = []\n    for num in numbers:\n        if num not in seen:\n            seen.add(num)\n            result.append(num)\n    return result",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/27",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "flip_case",
+          "prompt_bytes": 342,
+          "prompt_tokens": 86,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4639535509995767,
+          "generation_seconds": 0.08003886000005878,
+          "stream_seconds": 0.5833370170003036,
+          "output_tokens": 6,
+          "chunk_count": 5,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.96358643783275,
+          "prefill_tokens_per_second": 185.36338349973846,
+          "response": "return string.swapcase()",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/28",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "concatenate",
+          "prompt_bytes": 376,
+          "prompt_tokens": 98,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.41910584500146797,
+          "generation_seconds": 0.0809362499967392,
+          "stream_seconds": 0.5003176229984092,
+          "output_tokens": 6,
+          "chunk_count": 5,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.13241903648526,
+          "prefill_tokens_per_second": 233.83114592366695,
+          "response": "return ''.join(strings)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/29",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "filter_by_prefix",
+          "prompt_bytes": 475,
+          "prompt_tokens": 128,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.44445873600125196,
+          "generation_seconds": 0.17493277499670512,
+          "stream_seconds": 0.6196317440007988,
+          "output_tokens": 13,
+          "chunk_count": 12,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.31426157988322,
+          "prefill_tokens_per_second": 287.9907393689736,
+          "response": "return [s for s in strings if s.startswith(prefix)]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/30",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "get_positive",
+          "prompt_bytes": 393,
+          "prompt_tokens": 159,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5829089040016697,
+          "generation_seconds": 0.17338750699855154,
+          "stream_seconds": 0.791304371003207,
+          "output_tokens": 14,
+          "chunk_count": 13,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.7439950106495,
+          "prefill_tokens_per_second": 272.76989407515475,
+          "response": "return [x for x in l if x > 0]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/31",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_prime",
+          "prompt_bytes": 472,
+          "prompt_tokens": 150,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.41671533599946997,
+          "generation_seconds": 0.9661963560029108,
+          "stream_seconds": 1.3831455409999762,
+          "output_tokens": 75,
+          "chunk_count": 74,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.62397315414223,
+          "prefill_tokens_per_second": 359.95795460762884,
+          "response": "if n < 2:\n    return False\nif n == 2:\n    return True\nif n % 2 == 0:\n    return False\nfor i in range(3, int(n**0.5) + 1, 2):\n    if n % i == 0:\n        return False\nreturn True",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/32",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "find_zero",
+          "prompt_bytes": 922,
+          "prompt_tokens": 305,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6972746689971245,
+          "generation_seconds": 1.358992378001858,
+          "stream_seconds": 2.091914424996503,
+          "output_tokens": 107,
+          "chunk_count": 105,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.73480508943202,
+          "prefill_tokens_per_second": 437.4172955955435,
+          "response": "lo, hi = -1.0, 1.0\n    while poly(xs, lo) * poly(xs, hi) > 0:\n        hi *= 2\n    while hi - lo > 1e-6:\n        mid = (lo + hi) / 2\n        if poly(xs, lo) * poly(xs, mid) <= 0:\n            hi = mid\n        else:\n            lo = mid\n    return (lo + hi) / 2",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: timeout"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/33",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sort_third",
+          "prompt_bytes": 589,
+          "prompt_tokens": 191,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5787680720022763,
+          "generation_seconds": 0.7863945259996399,
+          "stream_seconds": 1.3654155479998735,
+          "output_tokens": 60,
+          "chunk_count": 58,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.29758094225019,
+          "prefill_tokens_per_second": 330.0112933652788,
+          "response": "third = [l[i] for i in range(len(l)) if i % 3 == 0]\n    third.sort()\n    result = l[:]\n    for i, val in enumerate(third):\n        result[i * 3] = val\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/34",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "unique",
+          "prompt_bytes": 312,
+          "prompt_tokens": 115,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46384822799882386,
+          "generation_seconds": 0.0481244170005084,
+          "stream_seconds": 0.51215291400149,
+          "output_tokens": 7,
+          "chunk_count": 5,
+          "cached_tokens": 0,
+          "tokens_per_second": 145.45630755227745,
+          "prefill_tokens_per_second": 247.9259228738319,
+          "response": "return sorted(set(l))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/35",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "max_element",
+          "prompt_bytes": 348,
+          "prompt_tokens": 126,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4208481799978472,
+          "generation_seconds": 0.03706650100139086,
+          "stream_seconds": 0.4582166749969474,
+          "output_tokens": 6,
+          "chunk_count": 4,
+          "cached_tokens": 0,
+          "tokens_per_second": 161.87122706227004,
+          "prefill_tokens_per_second": 299.39537816379425,
+          "response": "return max(l)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/36",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fizz_buzz",
+          "prompt_bytes": 391,
+          "prompt_tokens": 124,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5103157310004462,
+          "generation_seconds": 0.5889950920027331,
+          "stream_seconds": 1.0996944100006658,
+          "output_tokens": 50,
+          "chunk_count": 48,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.89035083465174,
+          "prefill_tokens_per_second": 242.98682652189603,
+          "response": "count = 0\n    for i in range(n):\n        if i % 11 == 0 or i % 13 == 0:\n            count += str(i).count('7')\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/37",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sort_even",
+          "prompt_bytes": 508,
+          "prompt_tokens": 164,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5195675819995813,
+          "generation_seconds": 0.7754846659991017,
+          "stream_seconds": 1.2953370590003033,
+          "output_tokens": 58,
+          "chunk_count": 56,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.79193663394395,
+          "prefill_tokens_per_second": 315.6470990142186,
+          "response": "even = sorted(l[i] for i in range(0, len(l), 2))\n    result = l[:]\n    for i, val in zip(range(0, len(l), 2), even):\n        result[i] = val\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/38",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "decode_cyclic",
+          "prompt_bytes": 730,
+          "prompt_tokens": 205,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.47788362199935364,
+          "generation_seconds": 1.3242305109997687,
+          "stream_seconds": 1.8023651049988985,
+          "output_tokens": 106,
+          "chunk_count": 104,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.04648671021182,
+          "prefill_tokens_per_second": 428.9747347739766,
+          "response": "# split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # cycle elements in each group. Unless group has fewer elements than 3.\n    groups = [(group[-1] + group[:-1]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/39",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "prime_fib",
+          "prompt_bytes": 423,
+          "prompt_tokens": 142,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.49013154999920516,
+          "generation_seconds": 1.8306207460009318,
+          "stream_seconds": 2.321003949000442,
+          "output_tokens": 144,
+          "chunk_count": 142,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.66184206344982,
+          "prefill_tokens_per_second": 289.7181379167088,
+          "response": "def is_prime(num):\n        if num < 2:\n            return False\n        if num == 2:\n            return True\n        if num % 2 == 0:\n            return False\n        for i in range(3, int(num**0.5) + 1, 2):\n            if num % i == 0:\n                return False\n        return True\n\n    count = 0\n    a, b = 1, 1\n    while True:\n        a, b = b, a + b\n        if is_prime(a):\n            count += 1\n            if count == n:\n                return a",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/40",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "triples_sum_to_zero",
+          "prompt_bytes": 647,
+          "prompt_tokens": 203,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5764483549974102,
+          "generation_seconds": 0.7879373160030809,
+          "stream_seconds": 1.3646728299972892,
+          "output_tokens": 63,
+          "chunk_count": 61,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.95559890420732,
+          "prefill_tokens_per_second": 352.15643906367296,
+          "response": "for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            for k in range(j + 1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/41",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "car_race_collision",
+          "prompt_bytes": 810,
+          "prompt_tokens": 192,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5039703250004095,
+          "generation_seconds": 0.05500757399931899,
+          "stream_seconds": 0.6113161760004004,
+          "output_tokens": 5,
+          "chunk_count": 4,
+          "cached_tokens": 0,
+          "tokens_per_second": 90.89657362569564,
+          "prefill_tokens_per_second": 380.9748123559537,
+          "response": "return n * n",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/42",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "incr_list",
+          "prompt_bytes": 375,
+          "prompt_tokens": 154,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4931506590000936,
+          "generation_seconds": 0.1088025099998049,
+          "stream_seconds": 0.6021815460007929,
+          "output_tokens": 13,
+          "chunk_count": 11,
+          "cached_tokens": 0,
+          "tokens_per_second": 119.48253767328815,
+          "prefill_tokens_per_second": 312.27779419832586,
+          "response": "return [x + 1 for x in l]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/43",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "pairs_sum_to_zero",
+          "prompt_bytes": 625,
+          "prompt_tokens": 201,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5124900090013398,
+          "generation_seconds": 0.5212086190003902,
+          "stream_seconds": 1.0339471029983542,
+          "output_tokens": 45,
+          "chunk_count": 43,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.33778943698994,
+          "prefill_tokens_per_second": 392.20276779966366,
+          "response": "for i in range(len(l)):\n        for j in range(i + 1, len(l)):\n            if l[i] + l[j] == 0:\n                return True\n    return False",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/44",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "change_base",
+          "prompt_bytes": 463,
+          "prompt_tokens": 142,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5050691739998001,
+          "generation_seconds": 0.5629755379995913,
+          "stream_seconds": 1.1059380189981312,
+          "output_tokens": 50,
+          "chunk_count": 48,
+          "cached_tokens": 0,
+          "tokens_per_second": 88.81380561873773,
+          "prefill_tokens_per_second": 281.1496074398241,
+          "response": "if x == 0:\n        return '0'\n    digits = []\n    while x > 0:\n        digits.append(str(x % base))\n        x //= base\n    return ''.join(reversed(digits))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/45",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "triangle_area",
+          "prompt_bytes": 301,
+          "prompt_tokens": 84,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.43394124599944917,
+          "generation_seconds": 0.06827576800060342,
+          "stream_seconds": 0.5024543539984734,
+          "output_tokens": 9,
+          "chunk_count": 7,
+          "cached_tokens": 0,
+          "tokens_per_second": 131.81836343342866,
+          "prefill_tokens_per_second": 193.57459281505274,
+          "response": "return a * h / 2",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/46",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fib4",
+          "prompt_bytes": 616,
+          "prompt_tokens": 214,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5312339190022612,
+          "generation_seconds": 1.3294602149981074,
+          "stream_seconds": 1.8609669899997243,
+          "output_tokens": 106,
+          "chunk_count": 104,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.7316074630717,
+          "prefill_tokens_per_second": 402.83572329478665,
+          "response": "if n == 0 or n == 1:\n        return 0\n    if n == 2:\n        return 2\n    if n == 3:\n        return 0\n    \n    a, b, c, d = 0, 0, 2, 0\n    for _ in range(4, n + 1):\n        a, b, c, d = b, c, d, a + b + c + d\n    return d",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/47",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "median",
+          "prompt_bytes": 331,
+          "prompt_tokens": 120,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4766299050024827,
+          "generation_seconds": 0.7141118069994263,
+          "stream_seconds": 1.2295794260026014,
+          "output_tokens": 61,
+          "chunk_count": 59,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.42079741870029,
+          "prefill_tokens_per_second": 251.76766866815655,
+          "response": "l = sorted(l)\n    n = len(l)\n    if n % 2 == 1:\n        return l[n // 2]\n    else:\n        return (l[n // 2 - 1] + l[n // 2]) / 2",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/48",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_palindrome",
+          "prompt_bytes": 407,
+          "prompt_tokens": 113,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4168325390019163,
+          "generation_seconds": 0.08380273299917462,
+          "stream_seconds": 0.5372752080002101,
+          "output_tokens": 8,
+          "chunk_count": 7,
+          "cached_tokens": 0,
+          "tokens_per_second": 95.46228044947881,
+          "prefill_tokens_per_second": 271.0920799767038,
+          "response": "return text == text[::-1]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/49",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "modp",
+          "prompt_bytes": 387,
+          "prompt_tokens": 158,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3942291359999217,
+          "generation_seconds": 0.11705338400133769,
+          "stream_seconds": 0.5114854009989358,
+          "output_tokens": 10,
+          "chunk_count": 9,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.4311055192195,
+          "prefill_tokens_per_second": 400.7821481769713,
+          "response": "return pow(2, n, p)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/50",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "decode_shift",
+          "prompt_bytes": 496,
+          "prompt_tokens": 134,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.44054048500038334,
+          "generation_seconds": 0.4120346490017255,
+          "stream_seconds": 0.8528273219999392,
+          "output_tokens": 33,
+          "chunk_count": 32,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.09035181859622,
+          "prefill_tokens_per_second": 304.17181748888163,
+          "response": "return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/51",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "remove_vowels",
+          "prompt_bytes": 545,
+          "prompt_tokens": 173,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5538681199977873,
+          "generation_seconds": 0.3297368009989441,
+          "stream_seconds": 0.883920540996769,
+          "output_tokens": 28,
+          "chunk_count": 26,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.91621170331443,
+          "prefill_tokens_per_second": 312.3487230149501,
+          "response": "vowels = set('aeiouAEIOU')\n    return ''.join(char for char in text if char not in vowels)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/52",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "below_threshold",
+          "prompt_bytes": 388,
+          "prompt_tokens": 123,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.38792037299936055,
+          "generation_seconds": 0.12014326099961181,
+          "stream_seconds": 0.5425360799999908,
+          "output_tokens": 11,
+          "chunk_count": 10,
+          "cached_tokens": 0,
+          "tokens_per_second": 91.55736167370671,
+          "prefill_tokens_per_second": 317.07538082874225,
+          "response": "return all(x < t for x in l)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/53",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "add",
+          "prompt_bytes": 278,
+          "prompt_tokens": 92,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4028613160007808,
+          "generation_seconds": 0.036924858999555,
+          "stream_seconds": 0.4400176420022035,
+          "output_tokens": 6,
+          "chunk_count": 4,
+          "cached_tokens": 0,
+          "tokens_per_second": 162.49215738568722,
+          "prefill_tokens_per_second": 228.36642870873632,
+          "response": "return x + y",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/54",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "same_chars",
+          "prompt_bytes": 594,
+          "prompt_tokens": 184,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4584992899981444,
+          "generation_seconds": 0.11654713100142544,
+          "stream_seconds": 0.57528622099926,
+          "output_tokens": 12,
+          "chunk_count": 10,
+          "cached_tokens": 0,
+          "tokens_per_second": 102.96263749172198,
+          "prefill_tokens_per_second": 401.3092364892096,
+          "response": "return set(s0) == set(s1)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/55",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fib",
+          "prompt_bytes": 293,
+          "prompt_tokens": 95,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46827981599926716,
+          "generation_seconds": 0.7885262349991535,
+          "stream_seconds": 1.257161419998738,
+          "output_tokens": 66,
+          "chunk_count": 64,
+          "cached_tokens": 0,
+          "tokens_per_second": 83.70044910436093,
+          "prefill_tokens_per_second": 202.8701574448143,
+          "response": "if n <= 0:\n        return 0\n    if n == 1:\n        return 1\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/56",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "correct_bracketing",
+          "prompt_bytes": 511,
+          "prompt_tokens": 134,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4802259150019381,
+          "generation_seconds": 0.6650992059985583,
+          "stream_seconds": 1.181911718002084,
+          "output_tokens": 58,
+          "chunk_count": 56,
+          "cached_tokens": 0,
+          "tokens_per_second": 87.20503569526998,
+          "prefill_tokens_per_second": 279.0353369402382,
+          "response": "count = 0\n    for bracket in brackets:\n        if bracket == \"<\":\n            count += 1\n        elif bracket == \">\":\n            count -= 1\n            if count < 0:\n                return False\n    return count == 0",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/57",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "monotonic",
+          "prompt_bytes": 406,
+          "prompt_tokens": 131,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5171506199985743,
+          "generation_seconds": 0.48112968600253225,
+          "stream_seconds": 0.9985669349989621,
+          "output_tokens": 42,
+          "chunk_count": 40,
+          "cached_tokens": 0,
+          "tokens_per_second": 87.2945511821504,
+          "prefill_tokens_per_second": 253.31111466203242,
+          "response": "return all(l[i] <= l[i+1] for i in range(len(l)-1)) or all(l[i] >= l[i+1] for i in range(len(l)-1))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/58",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "common",
+          "prompt_bytes": 397,
+          "prompt_tokens": 164,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.536641034999775,
+          "generation_seconds": 0.11150259300120524,
+          "stream_seconds": 0.6484923240022908,
+          "output_tokens": 13,
+          "chunk_count": 11,
+          "cached_tokens": 0,
+          "tokens_per_second": 116.58921689704097,
+          "prefill_tokens_per_second": 305.6046580561413,
+          "response": "return sorted(set(l1) & set(l2))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/59",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "largest_prime_factor",
+          "prompt_bytes": 369,
+          "prompt_tokens": 108,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.439823389002413,
+          "generation_seconds": 1.0590041389987164,
+          "stream_seconds": 1.499142867000046,
+          "output_tokens": 81,
+          "chunk_count": 79,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.486953182813,
+          "prefill_tokens_per_second": 245.55310768024543,
+          "response": "largest = 2\n    while n % 2 == 0:\n        n //= 2\n    i = 3\n    while i * i <= n:\n        while n % i == 0:\n            largest = i\n            n //= i\n        i += 2\n    if n > 1:\n        largest = n\n    return largest",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/60",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sum_to_n",
+          "prompt_bytes": 397,
+          "prompt_tokens": 146,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4934784370016132,
+          "generation_seconds": 0.14501862799806986,
+          "stream_seconds": 0.6387585530028446,
+          "output_tokens": 14,
+          "chunk_count": 12,
+          "cached_tokens": 0,
+          "tokens_per_second": 96.53932183240855,
+          "prefill_tokens_per_second": 295.8589252391644,
+          "response": "return n * (n + 1) // 2",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/61",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "correct_bracketing",
+          "prompt_bytes": 511,
+          "prompt_tokens": 133,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5697020449988486,
+          "generation_seconds": 0.6902394370008551,
+          "stream_seconds": 1.2601571179984603,
+          "output_tokens": 58,
+          "chunk_count": 56,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.02881216410147,
+          "prefill_tokens_per_second": 233.45536700727274,
+          "response": "count = 0\n    for bracket in brackets:\n        if bracket == '(':\n            count += 1\n        elif bracket == ')':\n            count -= 1\n            if count < 0:\n                return False\n    return count == 0",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/62",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "derivative",
+          "prompt_bytes": 449,
+          "prompt_tokens": 152,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4747335909996764,
+          "generation_seconds": 0.18432491500061587,
+          "stream_seconds": 0.659270092000952,
+          "output_tokens": 19,
+          "chunk_count": 17,
+          "cached_tokens": 0,
+          "tokens_per_second": 103.07884856443046,
+          "prefill_tokens_per_second": 320.1795762543873,
+          "response": "return [i * xs[i] for i in range(1, len(xs))]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/63",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fibfib",
+          "prompt_bytes": 590,
+          "prompt_tokens": 192,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4480219390025013,
+          "generation_seconds": 0.9910010200001125,
+          "stream_seconds": 1.4783764130006602,
+          "output_tokens": 82,
+          "chunk_count": 80,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.74461715487507,
+          "prefill_tokens_per_second": 428.5504420329917,
+          "response": "if n == 0 or n == 1:\n        return 0\n    if n == 2:\n        return 1\n    a, b, c = 0, 0, 1\n    for _ in range(3, n + 1):\n        a, b, c = b, c, a + b + c\n    return c",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/64",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "vowels_count",
+          "prompt_bytes": 588,
+          "prompt_tokens": 170,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46915265200004796,
+          "generation_seconds": 0.860402278998663,
+          "stream_seconds": 1.3297875819989713,
+          "output_tokens": 70,
+          "chunk_count": 68,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.35729263928272,
+          "prefill_tokens_per_second": 362.3554066576663,
+          "response": "vowels = set('aeiou')\n    count = 0\n    for i, char in enumerate(s):\n        if char.lower() in vowels:\n            count += 1\n        elif char.lower() == 'y' and i == len(s) - 1:\n            count += 1\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/65",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "circular_shift",
+          "prompt_bytes": 459,
+          "prompt_tokens": 128,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5216742049997265,
+          "generation_seconds": 0.44029410900111543,
+          "stream_seconds": 0.9621574270022393,
+          "output_tokens": 38,
+          "chunk_count": 36,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.30594691854878,
+          "prefill_tokens_per_second": 245.36386651524606,
+          "response": "s = str(x)\n    if shift > len(s):\n        return s[::-1]\n    else:\n        return s[-shift:] + s[:-shift]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/66",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "digitSum",
+          "prompt_bytes": 526,
+          "prompt_tokens": 159,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.44829343400124344,
+          "generation_seconds": 0.15536437300033867,
+          "stream_seconds": 0.6039068610007234,
+          "output_tokens": 16,
+          "chunk_count": 14,
+          "cached_tokens": 0,
+          "tokens_per_second": 102.98371300327085,
+          "prefill_tokens_per_second": 354.67840467982177,
+          "response": "return sum(ord(c) for c in s if c.isupper())",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/67",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fruit_distribution",
+          "prompt_bytes": 929,
+          "prompt_tokens": 265,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5461889450016315,
+          "generation_seconds": 0.34576044399727834,
+          "stream_seconds": 0.8922258679995139,
+          "output_tokens": 28,
+          "chunk_count": 26,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.98092331296405,
+          "prefill_tokens_per_second": 485.18008726670297,
+          "response": "apples = int(s.split()[0])\n    oranges = int(s.split()[3])\n    return n - apples - oranges",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/68",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "pluck",
+          "prompt_bytes": 1330,
+          "prompt_tokens": 372,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6471887890002108,
+          "generation_seconds": 1.0848487309995107,
+          "stream_seconds": 1.7322247820011398,
+          "output_tokens": 90,
+          "chunk_count": 88,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.96087503100982,
+          "prefill_tokens_per_second": 574.7936403142465,
+          "response": "if not arr:\n        return []\n    min_even = None\n    min_index = None\n    for i, val in enumerate(arr):\n        if val % 2 == 0:\n            if min_even is None or val < min_even:\n                min_even = val\n                min_index = i\n    if min_even is None:\n        return []\n    return [min_even, min_index]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/69",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "search",
+          "prompt_bytes": 654,
+          "prompt_tokens": 205,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5224703229978331,
+          "generation_seconds": 0.7098643160024949,
+          "stream_seconds": 1.2689969159982866,
+          "output_tokens": 57,
+          "chunk_count": 55,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.29703524328116,
+          "prefill_tokens_per_second": 392.36678329163243,
+          "response": "from collections import Counter\n    freq = Counter(lst)\n    result = -1\n    for num, count in freq.items():\n        if num > 0 and count >= num:\n            if num > result:\n                result = num\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/70",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "strange_sort_list",
+          "prompt_bytes": 548,
+          "prompt_tokens": 168,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4737701259982714,
+          "generation_seconds": 0.6547093770022911,
+          "stream_seconds": 1.1288229259989748,
+          "output_tokens": 46,
+          "chunk_count": 45,
+          "cached_tokens": 0,
+          "tokens_per_second": 70.26018202247167,
+          "prefill_tokens_per_second": 354.60234991813934,
+          "response": "result = []\n    while lst:\n        result.append(min(lst))\n        lst.remove(min(lst))\n        if lst:\n            result.append(max(lst))\n            lst.remove(max(lst))\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/71",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "triangle_area",
+          "prompt_bytes": 582,
+          "prompt_tokens": 162,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5453705720028665,
+          "generation_seconds": 0.9113514569980907,
+          "stream_seconds": 1.4569893990010314,
+          "output_tokens": 78,
+          "chunk_count": 76,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.58717869056241,
+          "prefill_tokens_per_second": 297.0457305847234,
+          "response": "if a + b <= c or a + c <= b or b + c <= a:\n        return -1\n    s = (a + b + c) / 2\n    area = (s * (s - a) * (s - b) * (s - c)) ** 0.5\n    return round(area, 2)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/72",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "will_it_fly",
+          "prompt_bytes": 894,
+          "prompt_tokens": 274,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5150054670011741,
+          "generation_seconds": 0.17408702399916365,
+          "stream_seconds": 0.7258129479996569,
+          "output_tokens": 14,
+          "chunk_count": 13,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.41954924835328,
+          "prefill_tokens_per_second": 532.0331871338666,
+          "response": "return q == q[::-1] and sum(q) <= w",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/73",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "smallest_change",
+          "prompt_bytes": 635,
+          "prompt_tokens": 196,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.47119102900251164,
+          "generation_seconds": 0.6199563349982782,
+          "stream_seconds": 1.0913935000025958,
+          "output_tokens": 49,
+          "chunk_count": 47,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.03782449474622,
+          "prefill_tokens_per_second": 415.9671724118399,
+          "response": "count = 0\n    n = len(arr)\n    for i in range(n // 2):\n        if arr[i] != arr[n - 1 - i]:\n            count += 1\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/74",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "total_match",
+          "prompt_bytes": 786,
+          "prompt_tokens": 237,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5020680380002887,
+          "generation_seconds": 0.6606133269997372,
+          "stream_seconds": 1.1628759160012123,
+          "output_tokens": 49,
+          "chunk_count": 48,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.17349604880056,
+          "prefill_tokens_per_second": 472.04757535245403,
+          "response": "total1 = sum(len(s) for s in lst1)\ntotal2 = sum(len(s) for s in lst2)\nif total1 <= total2:\n    return lst1\nelse:\n    return lst2",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/75",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_multiply_prime",
+          "prompt_bytes": 432,
+          "prompt_tokens": 121,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5100986770012241,
+          "generation_seconds": 1.9040101930004312,
+          "stream_seconds": 2.4143400259999908,
+          "output_tokens": 148,
+          "chunk_count": 146,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.73067630839437,
+          "prefill_tokens_per_second": 237.20900573853012,
+          "response": "def is_prime(n):\n        if n < 2:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n\n    count = 0\n    for i in range(2, a):\n        if a % i == 0:\n            if is_prime(i):\n                count += 1\n                a = a // i\n            else:\n                return False\n    if a > 1:\n        if is_prime(a):\n            count += 1\n        else:\n            return False\n    return count == 3",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/76",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_simple_power",
+          "prompt_bytes": 589,
+          "prompt_tokens": 180,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5141377350009861,
+          "generation_seconds": 0.5028987359983148,
+          "stream_seconds": 1.0172796090009797,
+          "output_tokens": 39,
+          "chunk_count": 37,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.55040370618606,
+          "prefill_tokens_per_second": 350.10073711017293,
+          "response": "if n == 1:\n        return x == 1\n    power = 1\n    while power < x:\n        power *= n\n    return power == x",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/77",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "iscube",
+          "prompt_bytes": 522,
+          "prompt_tokens": 153,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4517393099995388,
+          "generation_seconds": 0.5867756059997191,
+          "stream_seconds": 1.038766597997892,
+          "output_tokens": 46,
+          "chunk_count": 44,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.3945336678192,
+          "prefill_tokens_per_second": 338.6909144571815,
+          "response": "if a >= 0:\n        return round(a ** (1/3)) ** 3 == a\n    else:\n        return round(-a ** (1/3)) ** 3 == -a",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/78",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "hex_key",
+          "prompt_bytes": 1090,
+          "prompt_tokens": 362,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5692238330011605,
+          "generation_seconds": 0.4850103399985528,
+          "stream_seconds": 1.0544476009999926,
+          "output_tokens": 41,
+          "chunk_count": 39,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.53428023848386,
+          "prefill_tokens_per_second": 635.953695212305,
+          "response": "prime_hex_digits = {'2', '3', '5', '7', 'B', 'D'}\n    return sum(1 for digit in num if digit in prime_hex_digits)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/79",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "decimal_to_binary",
+          "prompt_bytes": 723,
+          "prompt_tokens": 189,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5202833120019932,
+          "generation_seconds": 0.20456010300040361,
+          "stream_seconds": 0.7250943680010096,
+          "output_tokens": 16,
+          "chunk_count": 14,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.21662076484401,
+          "prefill_tokens_per_second": 363.2636212619404,
+          "response": "return \"db\" + bin(decimal)[2:] + \"db\"",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/80",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_happy",
+          "prompt_bytes": 550,
+          "prompt_tokens": 160,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4264621449983679,
+          "generation_seconds": 0.8205021819994727,
+          "stream_seconds": 1.247300634997373,
+          "output_tokens": 66,
+          "chunk_count": 65,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.43854294106242,
+          "prefill_tokens_per_second": 375.1798415791684,
+          "response": "if len(s) < 3:\n    return False\nfor i in range(len(s) - 2):\n    if s[i] == s[i+1] or s[i] == s[i+2] or s[i+1] == s[i+2]:\n        return False\nreturn True",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/81",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "numerical_letter_grade",
+          "prompt_bytes": 1198,
+          "prompt_tokens": 317,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5950079760004883,
+          "generation_seconds": 3.142185201999382,
+          "stream_seconds": 3.7375474810032756,
+          "output_tokens": 248,
+          "chunk_count": 246,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.92596523024704,
+          "prefill_tokens_per_second": 532.7659674930809,
+          "response": "result = []\n    for gpa in grades:\n        if gpa == 4.0:\n            result.append('A+')\n        elif gpa > 3.7:\n            result.append('A')\n        elif gpa > 3.3:\n            result.append('A-')\n        elif gpa > 3.0:\n            result.append('B+')\n        elif gpa > 2.7:\n            result.append('B')\n        elif gpa > 2.3:\n            result.append('B-')\n        elif gpa > 2.0:\n            result.append('C+')\n        elif gpa > 1.7:\n            result.append('C')\n        elif gpa > 1.3:\n            result.append('C-')\n        elif gpa > 1.0:\n            result.append('D+')\n        elif gpa > 0.7:\n            result.append('D')\n        elif gpa > 0.0:\n            result.append('D-')\n        else:\n            result.append('E')\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/82",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "prime_length",
+          "prompt_bytes": 476,
+          "prompt_tokens": 117,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5194637849999708,
+          "generation_seconds": 0.7123335139986011,
+          "stream_seconds": 1.2688469919994532,
+          "output_tokens": 58,
+          "chunk_count": 56,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.42253433286294,
+          "prefill_tokens_per_second": 225.23225560374064,
+          "response": "length = len(string)\n    if length < 2:\n        return False\n    for i in range(2, int(length ** 0.5) + 1):\n        if length % i == 0:\n            return False\n    return True",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/83",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "starts_one_ends",
+          "prompt_bytes": 327,
+          "prompt_tokens": 82,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4956656540016411,
+          "generation_seconds": 0.7400383789972693,
+          "stream_seconds": 1.2767552400000568,
+          "output_tokens": 62,
+          "chunk_count": 60,
+          "cached_tokens": 0,
+          "tokens_per_second": 83.77943868804239,
+          "prefill_tokens_per_second": 165.43409723468253,
+          "response": "if n == 1:\n        return 9\n    total = 9 * (10 ** (n - 1)) + 9 * (10 ** (n - 1)) - 9 * (10 ** (n - 2))\n    return total",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/84",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "solve",
+          "prompt_bytes": 647,
+          "prompt_tokens": 190,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5481229149991123,
+          "generation_seconds": 0.22375585400004638,
+          "stream_seconds": 0.7721097450012167,
+          "output_tokens": 18,
+          "chunk_count": 16,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.44482268605258,
+          "prefill_tokens_per_second": 346.63757854441775,
+          "response": "return bin(sum(int(digit) for digit in str(N)))[2:]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/85",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "add",
+          "prompt_bytes": 330,
+          "prompt_tokens": 92,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.48933355899862363,
+          "generation_seconds": 0.33737961800216,
+          "stream_seconds": 0.8270003869984066,
+          "output_tokens": 31,
+          "chunk_count": 29,
+          "cached_tokens": 0,
+          "tokens_per_second": 91.88462594027102,
+          "prefill_tokens_per_second": 188.01081247783125,
+          "response": "return sum(lst[i] for i in range(1, len(lst), 2) if lst[i] % 2 == 0)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/86",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "anti_shuffle",
+          "prompt_bytes": 705,
+          "prompt_tokens": 174,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4879017439998279,
+          "generation_seconds": 0.22055588199873455,
+          "stream_seconds": 0.7087144139986776,
+          "output_tokens": 20,
+          "chunk_count": 18,
+          "cached_tokens": 0,
+          "tokens_per_second": 90.67996654070079,
+          "prefill_tokens_per_second": 356.629182288927,
+          "response": "return ' '.join(''.join(sorted(word)) for word in s.split(' '))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/87",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "get_row",
+          "prompt_bytes": 917,
+          "prompt_tokens": 311,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5898591410004883,
+          "generation_seconds": 0.7940984919987386,
+          "stream_seconds": 1.3842020209995098,
+          "output_tokens": 55,
+          "chunk_count": 54,
+          "cached_tokens": 0,
+          "tokens_per_second": 69.26092991508585,
+          "prefill_tokens_per_second": 527.2445205689244,
+          "response": "result = []\nfor i, row in enumerate(lst):\n    cols = [j for j, val in enumerate(row) if val == x]\n    for j in sorted(cols, reverse=True):\n        result.append((i, j))\nreturn result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/88",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sort_array",
+          "prompt_bytes": 741,
+          "prompt_tokens": 250,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5708450730016921,
+          "generation_seconds": 0.8128077850014961,
+          "stream_seconds": 1.3839148960032617,
+          "output_tokens": 60,
+          "chunk_count": 59,
+          "cached_tokens": 0,
+          "tokens_per_second": 73.81819060688446,
+          "prefill_tokens_per_second": 437.94719762652477,
+          "response": "if not array:\n    return []\nif len(array) == 1:\n    return array[:]\nif (array[0] + array[-1]) % 2 == 1:\n    return sorted(array)\nelse:\n    return sorted(array, reverse=True)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/89",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "encrypt",
+          "prompt_bytes": 598,
+          "prompt_tokens": 152,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5116387880007096,
+          "generation_seconds": 0.5031662029978179,
+          "stream_seconds": 1.0537127559982764,
+          "output_tokens": 40,
+          "chunk_count": 38,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.4965952833948,
+          "prefill_tokens_per_second": 297.08459085746483,
+          "response": "return ''.join(chr((ord(c) - ord('a') + 4) % 26 + ord('a')) if c.islower() else c for c in s)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/90",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "next_smallest",
+          "prompt_bytes": 524,
+          "prompt_tokens": 164,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5510539839997364,
+          "generation_seconds": 0.48015321899947594,
+          "stream_seconds": 1.0315207189996727,
+          "output_tokens": 43,
+          "chunk_count": 41,
+          "cached_tokens": 0,
+          "tokens_per_second": 89.55474689850394,
+          "prefill_tokens_per_second": 297.6114949929814,
+          "response": "if len(lst) < 2:\n        return None\n    unique = sorted(set(lst))\n    if len(unique) < 2:\n        return None\n    return unique[1]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/91",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_bored",
+          "prompt_bytes": 535,
+          "prompt_tokens": 149,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46216337000078056,
+          "generation_seconds": 0.7048928479998722,
+          "stream_seconds": 1.1673214809998171,
+          "output_tokens": 49,
+          "chunk_count": 48,
+          "cached_tokens": 0,
+          "tokens_per_second": 69.514111455432,
+          "prefill_tokens_per_second": 322.39681825011,
+          "response": "count = 0\n    for sentence in S.replace('?', '.').replace('!', '.').split('.'):\n        sentence = sentence.strip()\n        if sentence.startswith(\"I\"):\n            count += 1\n    return count",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/92",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "any_int",
+          "prompt_bytes": 557,
+          "prompt_tokens": 175,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46651211800053716,
+          "generation_seconds": 0.5637780500001099,
+          "stream_seconds": 1.030622376001702,
+          "output_tokens": 45,
+          "chunk_count": 44,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.81864494368169,
+          "prefill_tokens_per_second": 375.1242320350583,
+          "response": "if not (isinstance(x, int) and isinstance(y, int) and isinstance(z, int)):\n    return False\nreturn x == y + z or y == x + z or z == x + y",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/93",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "encode",
+          "prompt_bytes": 578,
+          "prompt_tokens": 151,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5299167209996085,
+          "generation_seconds": 2.1697206380013085,
+          "stream_seconds": 2.7335487970012764,
+          "output_tokens": 161,
+          "chunk_count": 159,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.20310116435502,
+          "prefill_tokens_per_second": 284.9504346931365,
+          "response": "vowels = 'aeiouAEIOU'\n    result = []\n    for char in message:\n        if char in vowels:\n            # Find the position in the alphabet (case-insensitive)\n            lower_char = char.lower()\n            index = ord(lower_char) - ord('a')\n            # Move 2 places ahead\n            new_index = (index + 2) % 26\n            new_char = chr(ord('a') + new_index)\n            # Preserve the original case\n            if char.isupper():\n                new_char = new_char.upper()\n            result.append(new_char)\n        else:\n            # Swap case for non-vowels\n            result.append(char.swapcase())\n    return ''.join(result)",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/94",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "skjkasdkd",
+          "prompt_bytes": 771,
+          "prompt_tokens": 366,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5996228290023282,
+          "generation_seconds": 1.699276903000282,
+          "stream_seconds": 2.299179216999619,
+          "output_tokens": 137,
+          "chunk_count": 135,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.62252818131624,
+          "prefill_tokens_per_second": 610.3836983808014,
+          "response": "def is_prime(n):\n        if n < 2:\n            return False\n        if n == 2:\n            return True\n        if n % 2 == 0:\n            return False\n        for i in range(3, int(n**0.5) + 1, 2):\n            if n % i == 0:\n                return False\n        return True\n\n    primes = [x for x in lst if is_prime(x)]\n    if not primes:\n        return 0\n    largest_prime = max(primes)\n    return sum(int(d) for d in str(largest_prime))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/95",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "check_dict_case",
+          "prompt_bytes": 823,
+          "prompt_tokens": 218,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6027112169977045,
+          "generation_seconds": 0.8477834310033359,
+          "stream_seconds": 1.4898360459992546,
+          "output_tokens": 60,
+          "chunk_count": 59,
+          "cached_tokens": 0,
+          "tokens_per_second": 70.7727915005264,
+          "prefill_tokens_per_second": 361.69892620536757,
+          "response": "if not dict:\n    return False\nall_lower = all(isinstance(key, str) and key == key.lower() for key in dict.keys())\nall_upper = all(isinstance(key, str) and key == key.upper() for key in dict.keys())\nreturn all_lower or all_upper",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/96",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "count_up_to",
+          "prompt_bytes": 559,
+          "prompt_tokens": 199,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4980442079977365,
+          "generation_seconds": 0.9952640539995627,
+          "stream_seconds": 1.493515734000539,
+          "output_tokens": 75,
+          "chunk_count": 74,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.35688614353688,
+          "prefill_tokens_per_second": 399.5629239420939,
+          "response": "primes = []\nfor i in range(2, n):\n    is_prime = True\n    for j in range(2, int(i**0.5) + 1):\n        if i % j == 0:\n            is_prime = False\n            break\n    if is_prime:\n        primes.append(i)\nreturn primes",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/97",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "multiply",
+          "prompt_bytes": 509,
+          "prompt_tokens": 156,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5453433660004521,
+          "generation_seconds": 0.20207970100091188,
+          "stream_seconds": 0.7476618440014136,
+          "output_tokens": 18,
+          "chunk_count": 16,
+          "cached_tokens": 0,
+          "tokens_per_second": 89.07376599848975,
+          "prefill_tokens_per_second": 286.058306978416,
+          "response": "return (a % 10) * (b % 10)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/98",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "count_upper",
+          "prompt_bytes": 405,
+          "prompt_tokens": 111,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.413934899999731,
+          "generation_seconds": 0.4036770099992282,
+          "stream_seconds": 0.8178563569999824,
+          "output_tokens": 35,
+          "chunk_count": 33,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.70298068266736,
+          "prefill_tokens_per_second": 268.1581089202001,
+          "response": "return sum(1 for i, c in enumerate(s) if i % 2 == 0 and c.isupper() and c in 'AEIOU')",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/99",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "closest_integer",
+          "prompt_bytes": 776,
+          "prompt_tokens": 206,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5601233080014936,
+          "generation_seconds": 0.48605103500085534,
+          "stream_seconds": 1.0863082300020324,
+          "output_tokens": 41,
+          "chunk_count": 39,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.35328195510961,
+          "prefill_tokens_per_second": 367.77616117244435,
+          "response": "num = float(value)\n    if num >= 0:\n        return int(num + 0.5)\n    else:\n        return int(num - 0.5)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/100",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "make_a_pile",
+          "prompt_bytes": 638,
+          "prompt_tokens": 178,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5532369350003137,
+          "generation_seconds": 0.6362403769999219,
+          "stream_seconds": 1.1897234290008782,
+          "output_tokens": 55,
+          "chunk_count": 53,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.44531530573822,
+          "prefill_tokens_per_second": 321.74279904124455,
+          "response": "result = []\n    current = n\n    for _ in range(n):\n        result.append(current)\n        if n % 2 == 1:\n            current += 2\n        else:\n            current += 2\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/101",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "words_string",
+          "prompt_bytes": 557,
+          "prompt_tokens": 157,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.45220637699821964,
+          "generation_seconds": 0.18970423599967035,
+          "stream_seconds": 0.6422155979998934,
+          "output_tokens": 9,
+          "chunk_count": 8,
+          "cached_tokens": 0,
+          "tokens_per_second": 47.44227219056742,
+          "prefill_tokens_per_second": 347.18661209993974,
+          "response": "return s.replace(\",\", \" \").split()",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/102",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "choose_num",
+          "prompt_bytes": 479,
+          "prompt_tokens": 137,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.48832274899905315,
+          "generation_seconds": 0.569679594002082,
+          "stream_seconds": 1.0582361579981807,
+          "output_tokens": 45,
+          "chunk_count": 44,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.99177094244934,
+          "prefill_tokens_per_second": 280.55215588628175,
+          "response": "if x > y:\n    return -1\nfor i in range(y, x - 1, -1):\n    if i % 2 == 0:\n        return i\nreturn -1",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/103",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "rounded_avg",
+          "prompt_bytes": 603,
+          "prompt_tokens": 192,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5656778580014361,
+          "generation_seconds": 0.7140488029981498,
+          "stream_seconds": 1.2800051810008881,
+          "output_tokens": 56,
+          "chunk_count": 54,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.42601201047754,
+          "prefill_tokens_per_second": 339.4157951989568,
+          "response": "if n > m:\n        return -1\n    total = sum(range(n, m + 1))\n    count = m - n + 1\n    avg = total / count\n    rounded = round(avg)\n    return bin(rounded)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/104",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "unique_digits",
+          "prompt_bytes": 501,
+          "prompt_tokens": 158,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5453379159989709,
+          "generation_seconds": 0.32740444500086596,
+          "stream_seconds": 0.9107861189986579,
+          "output_tokens": 28,
+          "chunk_count": 26,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.52113579253923,
+          "prefill_tokens_per_second": 289.7286166331742,
+          "response": "return sorted([i for i in x if all(int(d) % 2 != 0 for d in str(i))])",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/105",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "by_length",
+          "prompt_bytes": 972,
+          "prompt_tokens": 328,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6005307380000886,
+          "generation_seconds": 1.2567478609998943,
+          "stream_seconds": 1.895189680999465,
+          "output_tokens": 99,
+          "chunk_count": 97,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.7747511431876,
+          "prefill_tokens_per_second": 546.1835327402536,
+          "response": "names = {1: \"One\", 2: \"Two\", 3: \"Three\", 4: \"Four\", 5: \"Five\", 6: \"Six\", 7: \"Seven\", 8: \"Eight\", 9: \"Nine\"}\n    filtered = [x for x in arr if 1 <= x <= 9]\n    filtered.sort()\n    filtered.reverse()\n    return [names[x] for x in filtered]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/106",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "f",
+          "prompt_bytes": 563,
+          "prompt_tokens": 168,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5698678259977896,
+          "generation_seconds": 1.0737048580012925,
+          "stream_seconds": 1.6798217869982182,
+          "output_tokens": 86,
+          "chunk_count": 84,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.09649892065262,
+          "prefill_tokens_per_second": 294.8052027781116,
+          "response": "result = []\n    for i in range(1, n + 1):\n        if i % 2 == 0:\n            factorial = 1\n            for j in range(1, i + 1):\n                factorial *= j\n            result.append(factorial)\n        else:\n            result.append(i * (i + 1) // 2)\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/107",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "even_odd_palindrome",
+          "prompt_bytes": 839,
+          "prompt_tokens": 262,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.619812978002301,
+          "generation_seconds": 1.0091302769978938,
+          "stream_seconds": 1.6292068980001204,
+          "output_tokens": 83,
+          "chunk_count": 81,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.24904345048526,
+          "prefill_tokens_per_second": 422.7081543927068,
+          "response": "even_count = 0\n    odd_count = 0\n    for i in range(1, n + 1):\n        s = str(i)\n        if s == s[::-1]:\n            if i % 2 == 0:\n                even_count += 1\n            else:\n                odd_count += 1\n    return (even_count, odd_count)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/108",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "count_nums",
+          "prompt_bytes": 559,
+          "prompt_tokens": 168,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5970579790009651,
+          "generation_seconds": 2.6630345459998352,
+          "stream_seconds": 3.2602932660010993,
+          "output_tokens": 202,
+          "chunk_count": 200,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.85331564828017,
+          "prefill_tokens_per_second": 281.37970835111884,
+          "response": "count = 0\n    for num in arr:\n        if num < 0:\n            # For negative numbers, the first digit is negative\n            # e.g., -123 -> -1, 2, 3 -> sum = -1 + 2 + 3 = 4\n            s = str(num)\n            total = 0\n            for i, ch in enumerate(s):\n                if i == 0 and ch == '-':\n                    continue\n                digit = int(ch)\n                if i == 1:  # The first digit after the sign\n                    total -= digit\n                else:\n                    total += digit\n            if total > 0:\n                count += 1\n        else:\n            # For non-negative numbers, sum of digits\n            total = sum(int(ch) for ch in str(num))\n            if total > 0:\n                count += 1\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/109",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "move_one_ball",
+          "prompt_bytes": 1428,
+          "prompt_tokens": 343,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5768535120005254,
+          "generation_seconds": 0.6323069179998129,
+          "stream_seconds": 1.245471334001195,
+          "output_tokens": 53,
+          "chunk_count": 52,
+          "cached_tokens": 0,
+          "tokens_per_second": 83.82005398210065,
+          "prefill_tokens_per_second": 594.6050303316653,
+          "response": "if not arr:\n    return True\ncount = 0\nfor i in range(len(arr)):\n    if arr[i] > arr[(i + 1) % len(arr)]:\n        count += 1\nreturn count <= 1",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/110",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "exchange",
+          "prompt_bytes": 836,
+          "prompt_tokens": 242,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5531791069988685,
+          "generation_seconds": 0.7350990849990922,
+          "stream_seconds": 1.3232701669985545,
+          "output_tokens": 60,
+          "chunk_count": 58,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.62164968559864,
+          "prefill_tokens_per_second": 437.47133060196177,
+          "response": "odd_count = sum(1 for x in lst1 if x % 2 != 0)\n    even_count = sum(1 for x in lst2 if x % 2 == 0)\n    return \"YES\" if even_count >= odd_count else \"NO\"",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/111",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "histogram",
+          "prompt_bytes": 662,
+          "prompt_tokens": 195,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.577626574999158,
+          "generation_seconds": 0.8698081100010313,
+          "stream_seconds": 1.4476463179998973,
+          "output_tokens": 70,
+          "chunk_count": 68,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.47752049577579,
+          "prefill_tokens_per_second": 337.5883458968006,
+          "response": "if not test:\n        return {}\n    counts = {}\n    for char in test.split():\n        counts[char] = counts.get(char, 0) + 1\n    max_count = max(counts.values())\n    return {char: count for char, count in counts.items() if count == max_count}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/112",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "reverse_delete",
+          "prompt_bytes": 761,
+          "prompt_tokens": 204,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5712259840001934,
+          "generation_seconds": 0.3425894860010885,
+          "stream_seconds": 0.9140930409994326,
+          "output_tokens": 29,
+          "chunk_count": 27,
+          "cached_tokens": 0,
+          "tokens_per_second": 84.64941624013487,
+          "prefill_tokens_per_second": 357.12661138315957,
+          "response": "result = ''.join(ch for ch in s if ch not in c)\n    return (result, result == result[::-1])",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/113",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "odd_count",
+          "prompt_bytes": 753,
+          "prompt_tokens": 225,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5541355759996804,
+          "generation_seconds": 2.4021043419998023,
+          "stream_seconds": 2.990125207001256,
+          "output_tokens": 186,
+          "chunk_count": 184,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.43210681895322,
+          "prefill_tokens_per_second": 406.0378177201345,
+          "response": "return [\"the number of odd elements {}n the str{}ng {} of the {}nput.\".format(lst[i].count('1') + lst[i].count('3') + lst[i].count('5') + lst[i].count('7') + lst[i].count('9'), lst[i].count('1') + lst[i].count('3') + lst[i].count('5') + lst[i].count('7') + lst[i].count('9'), lst[i].count('1') + lst[i].count('3') + lst[i].count('5') + lst[i].count('7') + lst[i].count('9'), lst[i].count('1') + lst[i].count('3') + lst[i].count('5') + lst[i].count('7') + lst[i].count('9')) for i in range(len(lst))]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/114",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "minSubArraySum",
+          "prompt_bytes": 399,
+          "prompt_tokens": 126,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5209099290004815,
+          "generation_seconds": 0.7595583369984524,
+          "stream_seconds": 1.3178384439997899,
+          "output_tokens": 62,
+          "chunk_count": 60,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.62638335984234,
+          "prefill_tokens_per_second": 241.88442758572094,
+          "response": "min_sum = float('inf')\n    current_sum = 0\n    for num in nums:\n        current_sum += num\n        min_sum = min(min_sum, current_sum)\n        if current_sum > 0:\n            current_sum = 0\n    return min_sum",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/115",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "max_fill",
+          "prompt_bytes": 1213,
+          "prompt_tokens": 375,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.677275287998782,
+          "generation_seconds": 0.3152866679993167,
+          "stream_seconds": 0.9927738389997103,
+          "output_tokens": 24,
+          "chunk_count": 22,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.12120154745018,
+          "prefill_tokens_per_second": 553.6891817034293,
+          "response": "total_water = sum(sum(row) for row in grid)\n    return math.ceil(total_water / capacity)",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/116",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sort_array",
+          "prompt_bytes": 625,
+          "prompt_tokens": 213,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5433747589995619,
+          "generation_seconds": 0.20311775099980878,
+          "stream_seconds": 0.7810689939979056,
+          "output_tokens": 20,
+          "chunk_count": 18,
+          "cached_tokens": 0,
+          "tokens_per_second": 98.4650524218281,
+          "prefill_tokens_per_second": 391.99465281045883,
+          "response": "return sorted(arr, key=lambda x: (bin(x).count('1'), x))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/117",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "select_words",
+          "prompt_bytes": 865,
+          "prompt_tokens": 226,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5789891319982416,
+          "generation_seconds": 0.924123464999866,
+          "stream_seconds": 1.54192985699774,
+          "output_tokens": 73,
+          "chunk_count": 71,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.99377384602023,
+          "prefill_tokens_per_second": 390.3354786989099,
+          "response": "consonants = set('bcdfghjklmnpqrstvwxyz')\n    words = s.split()\n    result = []\n    for word in words:\n        count = sum(1 for c in word.lower() if c in consonants)\n        if count == n:\n            result.append(word)\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/118",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "get_closest_vowel",
+          "prompt_bytes": 734,
+          "prompt_tokens": 192,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5270056209992617,
+          "generation_seconds": 0.8242082889992162,
+          "stream_seconds": 1.4041720089990122,
+          "output_tokens": 68,
+          "chunk_count": 66,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.50341680325502,
+          "prefill_tokens_per_second": 364.3224898359651,
+          "response": "vowels = set('aeiouAEIOU')\n    for i in range(len(word) - 2, 0, -1):\n        if word[i] in vowels and word[i-1] not in vowels and word[i+1] not in vowels:\n            return word[i]\n    return \"\"",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/119",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "match_parens",
+          "prompt_bytes": 804,
+          "prompt_tokens": 212,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5365549499983899,
+          "generation_seconds": 1.1895817430013267,
+          "stream_seconds": 1.7263322769977094,
+          "output_tokens": 92,
+          "chunk_count": 90,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.33810689451494,
+          "prefill_tokens_per_second": 395.1133057306361,
+          "response": "for s in [lst[0] + lst[1], lst[1] + lst[0]]:\n        balance = 0\n        for c in s:\n            if c == '(':\n                balance += 1\n            else:\n                balance -= 1\n            if balance < 0:\n                break\n        if balance == 0:\n            return 'Yes'\n    return 'No'",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/120",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "maximum",
+          "prompt_bytes": 776,
+          "prompt_tokens": 271,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5242025109982933,
+          "generation_seconds": 0.11084965400004876,
+          "stream_seconds": 0.6353202369973587,
+          "output_tokens": 11,
+          "chunk_count": 9,
+          "cached_tokens": 0,
+          "tokens_per_second": 99.23350775632697,
+          "prefill_tokens_per_second": 516.9757761821983,
+          "response": "return sorted(arr, reverse=True)[:k]",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/121",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "solution",
+          "prompt_bytes": 430,
+          "prompt_tokens": 140,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46518416500111925,
+          "generation_seconds": 0.35136086700003943,
+          "stream_seconds": 0.8167553390012472,
+          "output_tokens": 31,
+          "chunk_count": 29,
+          "cached_tokens": 0,
+          "tokens_per_second": 88.22837974155078,
+          "prefill_tokens_per_second": 300.95607403072967,
+          "response": "return sum(lst[i] for i in range(0, len(lst), 2) if lst[i] % 2 != 0)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/122",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "add_elements",
+          "prompt_bytes": 545,
+          "prompt_tokens": 178,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5644132320012432,
+          "generation_seconds": 0.21886633000030997,
+          "stream_seconds": 0.7835168349993182,
+          "output_tokens": 22,
+          "chunk_count": 20,
+          "cached_tokens": 0,
+          "tokens_per_second": 100.51797368726767,
+          "prefill_tokens_per_second": 315.37177002187633,
+          "response": "return sum(x for x in arr[:k] if abs(x) < 100)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/123",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "get_odd_collatz",
+          "prompt_bytes": 1006,
+          "prompt_tokens": 275,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.626314100001764,
+          "generation_seconds": 1.1050328199999058,
+          "stream_seconds": 1.7315474960014399,
+          "output_tokens": 82,
+          "chunk_count": 80,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.20594077921324,
+          "prefill_tokens_per_second": 439.0768146513474,
+          "response": "odd_numbers = []\n    while n != 1:\n        if n % 2 == 1:\n            odd_numbers.append(n)\n        if n % 2 == 0:\n            n = n // 2\n        else:\n            n = 3 * n + 1\n    odd_numbers.append(1)\n    return sorted(odd_numbers)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/124",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "valid_date",
+          "prompt_bytes": 1014,
+          "prompt_tokens": 330,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6437121130002197,
+          "generation_seconds": 2.4475314090013853,
+          "stream_seconds": 3.091433102003066,
+          "output_tokens": 198,
+          "chunk_count": 196,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.89783823480565,
+          "prefill_tokens_per_second": 512.651530607266,
+          "response": "if not date:\n        return False\n    parts = date.split('-')\n    if len(parts) != 3:\n        return False\n    try:\n        month = int(parts[0])\n        day = int(parts[1])\n        year = int(parts[2])\n    except ValueError:\n        return False\n    if month < 1 or month > 12:\n        return False\n    if month in [1, 3, 5, 7, 8, 10, 12]:\n        if day < 1 or day > 31:\n            return False\n    elif month in [4, 6, 9, 11]:\n        if day < 1 or day > 30:\n            return False\n    else:\n        if day < 1 or day > 29:\n            return False\n    return True",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/125",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "split_words",
+          "prompt_bytes": 657,
+          "prompt_tokens": 180,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5183780979969015,
+          "generation_seconds": 0.8517675220027741,
+          "stream_seconds": 1.3704104629978247,
+          "output_tokens": 63,
+          "chunk_count": 62,
+          "cached_tokens": 0,
+          "tokens_per_second": 73.96384385714441,
+          "prefill_tokens_per_second": 347.2368927150852,
+          "response": "if ' ' in txt:\n        return txt.split(' ')\n    elif ',' in txt:\n        return txt.split(',')\n    else:\n        return sum(1 for c in txt if c.islower() and (ord(c) - ord('a')) % 2 == 1)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/126",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_sorted",
+          "prompt_bytes": 755,
+          "prompt_tokens": 287,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.585143958000117,
+          "generation_seconds": 1.0115704650015687,
+          "stream_seconds": 1.597055761001684,
+          "output_tokens": 78,
+          "chunk_count": 76,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.10782659108088,
+          "prefill_tokens_per_second": 490.4775928660322,
+          "response": "for i in range(len(lst) - 1):\n        if lst[i] > lst[i + 1]:\n            return False\n    if len(lst) != len(set(lst)):\n        from collections import Counter\n        counts = Counter(lst)\n        for count in counts.values():\n            if count > 2:\n                return False\n    return True",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/127",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "intersection",
+          "prompt_bytes": 1089,
+          "prompt_tokens": 304,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6285861319993273,
+          "generation_seconds": 1.866197261002526,
+          "stream_seconds": 2.4951883370013093,
+          "output_tokens": 149,
+          "chunk_count": 147,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.84150610099857,
+          "prefill_tokens_per_second": 483.62505076762545,
+          "response": "start = max(interval1[0], interval2[0])\n    end = min(interval1[1], interval2[1])\n    \n    if start > end:\n        return \"NO\"\n    \n    length = end - start + 1\n    \n    if length < 2:\n        return \"NO\"\n    \n    if length == 2:\n        return \"YES\"\n    \n    if length % 2 == 0:\n        return \"NO\"\n    \n    for i in range(3, int(length**0.5) + 1, 2):\n        if length % i == 0:\n            return \"NO\"\n    \n    return \"YES\"",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/128",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "prod_signs",
+          "prompt_bytes": 550,
+          "prompt_tokens": 162,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5658472430004622,
+          "generation_seconds": 0.9772550240013516,
+          "stream_seconds": 1.5806215510019683,
+          "output_tokens": 80,
+          "chunk_count": 78,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.8619480434509,
+          "prefill_tokens_per_second": 286.29634941928606,
+          "response": "if not arr:\n        return None\n    sign_product = 1\n    for num in arr:\n        if num > 0:\n            sign_product *= 1\n        elif num < 0:\n            sign_product *= -1\n        else:\n            sign_product *= 0\n    return sign_product * sum(abs(num) for num in arr)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/129",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "minPath",
+          "prompt_bytes": 1523,
+          "prompt_tokens": 446,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.7103777370030002,
+          "generation_seconds": 10.12666918999821,
+          "stream_seconds": 10.875686005001626,
+          "output_tokens": 706,
+          "chunk_count": 704,
+          "cached_tokens": 0,
+          "tokens_per_second": 69.71690165383241,
+          "prefill_tokens_per_second": 627.8349908340615,
+          "response": "n = len(grid)\n    # Find the position of the minimum value (which is 1)\n    min_val = 1\n    start_r, start_c = -1, -1\n    for i in range(n):\n        for j in range(n):\n            if grid[i][j] == min_val:\n                start_r, start_c = i, j\n                break\n        if start_r != -1:\n            break\n    \n    # If k == 1, just return [1]\n    if k == 1:\n        return [1]\n    \n    # We need to find the lexicographically smallest path of length k starting from (start_r, start_c)\n    # Since we want the lexicographically smallest path, at each step we should choose the neighbor\n    # with the smallest value. However, we must be careful: sometimes choosing a slightly larger\n    # value now might lead to a smaller value later, but since we're looking for lexicographic order,\n    # the first element is the most important, then the second, etc.\n    # Actually, since we start at 1 (the global minimum), and we want the lexicographically smallest\n    # sequence, at each step we should pick the neighbor with the smallest value.\n    # But wait: is it always optimal to greedily pick the smallest neighbor?\n    # Let's think: the path is a sequence of values. We want the lexicographically smallest sequence.\n    # At position 0, we have 1. At position 1, we can go to any neighbor of (start_r, start_c).\n    # To minimize the sequence, we should pick the smallest possible value at position 1.\n    # Then at position 2, from that cell, pick the smallest possible value, and so on.\n    # This greedy approach works because lexicographic order is determined by the first differing element.\n    # So if we can make the first element as small as possible, that's best. If there's a tie, we look at the second, etc.\n    # But here, at each step, we're at a specific cell, and we choose the next cell. The value at the next cell\n    # is what matters for the next position in the sequence.\n    # So yes, greedy: at each step, from the current cell, move to the neighbor with the smallest value.\n    # However, we might revisit cells, so we need to track the path.\n    \n    path = [1]\n    r, c = start_r, start_c\n    for _ in range(k - 1):\n        min_next_val = float('inf')\n        next_r, next_c = -1, -1\n        for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < n and 0 <= nc < n:\n                if grid[nr][nc] < min_next_val:\n                    min_next_val = grid[nr][nc]\n                    next_r, next_c = nr, nc\n        path.append(min_next_val)\n        r, c = next_r, next_c\n    \n    return path",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/130",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "tri",
+          "prompt_bytes": 835,
+          "prompt_tokens": 280,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5968414730014047,
+          "generation_seconds": 1.2798113809985807,
+          "stream_seconds": 1.8770010990010633,
+          "output_tokens": 96,
+          "chunk_count": 95,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.0110535234461,
+          "prefill_tokens_per_second": 469.1362994463708,
+          "response": "result = []\n    for i in range(n + 1):\n        if i == 1:\n            result.append(3)\n        elif i % 2 == 0:\n            result.append(1 + i // 2)\n        else:\n            result.append(result[i - 1] + result[i - 2] + result[i + 1] if i + 1 <= n else 0)\n    return result",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/131",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "digits",
+          "prompt_bytes": 376,
+          "prompt_tokens": 113,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.45938734299852513,
+          "generation_seconds": 0.7624142000022402,
+          "stream_seconds": 1.2222584010014543,
+          "output_tokens": 60,
+          "chunk_count": 58,
+          "cached_tokens": 0,
+          "tokens_per_second": 78.69737998036199,
+          "prefill_tokens_per_second": 245.979785299315,
+          "response": "product = 1\n    has_odd = False\n    for digit in str(n):\n        d = int(digit)\n        if d % 2 != 0:\n            product *= d\n            has_odd = True\n    return product if has_odd else 0",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/132",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_nested",
+          "prompt_bytes": 647,
+          "prompt_tokens": 172,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5924841929991089,
+          "generation_seconds": 0.9393135819991585,
+          "stream_seconds": 1.5320174459993723,
+          "output_tokens": 77,
+          "chunk_count": 75,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.9747541988262,
+          "prefill_tokens_per_second": 290.30310349606015,
+          "response": "depth = 0\n    max_depth = 0\n    for char in string:\n        if char == '[':\n            depth += 1\n            max_depth = max(max_depth, depth)\n        elif char == ']':\n            depth -= 1\n            if depth < 0:\n                return False\n    return max_depth >= 2",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/133",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sum_squares",
+          "prompt_bytes": 630,
+          "prompt_tokens": 201,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5620824719990196,
+          "generation_seconds": 0.2172648020023189,
+          "stream_seconds": 0.77955137599929,
+          "output_tokens": 20,
+          "chunk_count": 18,
+          "cached_tokens": 0,
+          "tokens_per_second": 92.05356696381284,
+          "prefill_tokens_per_second": 357.5987688873361,
+          "response": "import math\n    return sum(math.ceil(x) ** 2 for x in lst)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/134",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "check_if_last_char_is_a_letter",
+          "prompt_bytes": 691,
+          "prompt_tokens": 177,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4520418120009708,
+          "generation_seconds": 1.0618835759996728,
+          "stream_seconds": 1.5525836199994956,
+          "output_tokens": 76,
+          "chunk_count": 75,
+          "cached_tokens": 0,
+          "tokens_per_second": 71.570934627605,
+          "prefill_tokens_per_second": 391.55669962587416,
+          "response": "if not txt:\n    return False\nlast_char = txt[-1]\nif not last_char.isalpha():\n    return False\n# Check if the last character is a standalone word (i.e., preceded by a space or is the only character)\nif len(txt) == 1:\n    return True\nreturn txt[-2] == ' '",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/135",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "can_arrange",
+          "prompt_bytes": 524,
+          "prompt_tokens": 141,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5136102459982794,
+          "generation_seconds": 0.5015249620009854,
+          "stream_seconds": 1.0154091650001646,
+          "output_tokens": 39,
+          "chunk_count": 38,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.7628292805162,
+          "prefill_tokens_per_second": 274.52723363402754,
+          "response": "for i in range(len(arr) - 1, 0, -1):\n    if arr[i] < arr[i - 1]:\n        return i\nreturn -1",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/136",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "largest_smallest_integers",
+          "prompt_bytes": 628,
+          "prompt_tokens": 181,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4647936880028283,
+          "generation_seconds": 0.7870930539975234,
+          "stream_seconds": 1.2521390080000856,
+          "output_tokens": 63,
+          "chunk_count": 62,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.04136192033812,
+          "prefill_tokens_per_second": 389.4200904012677,
+          "response": "negatives = [x for x in lst if x < 0]\npositives = [x for x in lst if x > 0]\na = max(negatives) if negatives else None\nb = min(positives) if positives else None\nreturn (a, b)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/137",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "compare_one",
+          "prompt_bytes": 625,
+          "prompt_tokens": 183,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5511123910000606,
+          "generation_seconds": 1.1170528650000051,
+          "stream_seconds": 1.668705152002076,
+          "output_tokens": 84,
+          "chunk_count": 82,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.19787346859329,
+          "prefill_tokens_per_second": 332.0556804537169,
+          "response": "def to_float(x):\n        if isinstance(x, str):\n            return float(x.replace(',', '.'))\n        return float(x)\n    \n    a_val = to_float(a)\n    b_val = to_float(b)\n    \n    if a_val > b_val:\n        return a\n    elif b_val > a_val:\n        return b\n    else:\n        return None",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/138",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "is_equal_to_sum_even",
+          "prompt_bytes": 427,
+          "prompt_tokens": 113,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5573988670003018,
+          "generation_seconds": 0.19885530999818002,
+          "stream_seconds": 0.7565480910016049,
+          "output_tokens": 15,
+          "chunk_count": 13,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.43172973423383,
+          "prefill_tokens_per_second": 202.72735861147493,
+          "response": "return n >= 8 and n % 2 == 0",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/139",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "special_factorial",
+          "prompt_bytes": 488,
+          "prompt_tokens": 138,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.48861607599974377,
+          "generation_seconds": 0.6946795969997765,
+          "stream_seconds": 1.1837168490019394,
+          "output_tokens": 53,
+          "chunk_count": 52,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.29416529418677,
+          "prefill_tokens_per_second": 282.43033084337645,
+          "response": "result = 1\n    for i in range(1, n + 1):\n        factorial = 1\n        for j in range(1, i + 1):\n            factorial *= j\n        result *= factorial\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/140",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "fix_spaces",
+          "prompt_bytes": 555,
+          "prompt_tokens": 147,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4654409430004307,
+          "generation_seconds": 1.388599862002593,
+          "stream_seconds": 1.8542774310008099,
+          "output_tokens": 108,
+          "chunk_count": 107,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.77618517421278,
+          "prefill_tokens_per_second": 315.82954230965447,
+          "response": "result = []\n    i = 0\n    while i < len(text):\n        if text[i] == ' ':\n            count = 0\n            while i < len(text) and text[i] == ' ':\n                count += 1\n                i += 1\n            if count > 2:\n                result.append('-')\n            else:\n                result.append('_')\n        else:\n            result.append(text[i])\n            i += 1\n    return ''.join(result)",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/141",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "file_name_check",
+          "prompt_bytes": 968,
+          "prompt_tokens": 258,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5151152859980357,
+          "generation_seconds": 1.6935930170002393,
+          "stream_seconds": 2.2089296560006915,
+          "output_tokens": 128,
+          "chunk_count": 126,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.57896065650931,
+          "prefill_tokens_per_second": 500.8587533956114,
+          "response": "parts = file_name.split('.')\n    if len(parts) != 2:\n        return 'No'\n    name, ext = parts\n    if ext not in ['txt', 'exe', 'dll']:\n        return 'No'\n    if not name:\n        return 'No'\n    if not name[0].isalpha() or not name[0].isascii():\n        return 'No'\n    digit_count = sum(1 for c in file_name if c.isdigit())\n    if digit_count > 3:\n        return 'No'\n    return 'Yes'",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/142",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sum_squares",
+          "prompt_bytes": 772,
+          "prompt_tokens": 209,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5315900109999347,
+          "generation_seconds": 0.8720737250005186,
+          "stream_seconds": 1.4040104339983372,
+          "output_tokens": 67,
+          "chunk_count": 65,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.82836677593991,
+          "prefill_tokens_per_second": 393.1601340793924,
+          "response": "total = 0\n    for i, num in enumerate(lst):\n        if i % 3 == 0:\n            total += num ** 2\n        elif i % 4 == 0:\n            total += num ** 3\n        else:\n            total += num\n    return total",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/143",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "words_in_sentence",
+          "prompt_bytes": 799,
+          "prompt_tokens": 198,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5837442109987023,
+          "generation_seconds": 1.070584836001217,
+          "stream_seconds": 1.6924435879991506,
+          "output_tokens": 88,
+          "chunk_count": 86,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.19806319010853,
+          "prefill_tokens_per_second": 339.1896592194902,
+          "response": "def is_prime(n):\n        if n < 2:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n    \n    words = sentence.split()\n    result = [word for word in words if is_prime(len(word))]\n    return \" \".join(result)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/144",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "simplify",
+          "prompt_bytes": 749,
+          "prompt_tokens": 196,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4499976039987814,
+          "generation_seconds": 0.7307872620003764,
+          "stream_seconds": 1.1809887519993936,
+          "output_tokens": 56,
+          "chunk_count": 55,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.62968816220439,
+          "prefill_tokens_per_second": 435.55787466044103,
+          "response": "num1, den1 = map(int, x.split('/'))\nnum2, den2 = map(int, n.split('/'))\nresult_num = num1 * num2\nresult_den = den1 * den2\nreturn result_num % result_den == 0",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/145",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "order_by_points",
+          "prompt_bytes": 577,
+          "prompt_tokens": 164,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5195671039982699,
+          "generation_seconds": 0.30384623400095734,
+          "stream_seconds": 0.8611968039986095,
+          "output_tokens": 26,
+          "chunk_count": 24,
+          "cached_tokens": 0,
+          "tokens_per_second": 85.56959767985171,
+          "prefill_tokens_per_second": 315.647389409292,
+          "response": "return sorted(nums, key=lambda x: (sum(int(d) for d in str(abs(x))), nums.index(x)))",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/146",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "specialFilter",
+          "prompt_bytes": 523,
+          "prompt_tokens": 167,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5019943660008721,
+          "generation_seconds": 1.048847490001208,
+          "stream_seconds": 1.5859188089998497,
+          "output_tokens": 80,
+          "chunk_count": 78,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.2741969281996,
+          "prefill_tokens_per_second": 332.6730563340822,
+          "response": "count = 0\n    for num in nums:\n        if num > 10:\n            s = str(num)\n            first_digit = int(s[0])\n            last_digit = int(s[-1])\n            if first_digit % 2 != 0 and last_digit % 2 != 0:\n                count += 1\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/147",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "get_max_triples",
+          "prompt_bytes": 643,
+          "prompt_tokens": 211,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4628469590024906,
+          "generation_seconds": 2.4142422699987947,
+          "stream_seconds": 2.8773068780028552,
+          "output_tokens": 191,
+          "chunk_count": 189,
+          "cached_tokens": 0,
+          "tokens_per_second": 79.11384966352004,
+          "prefill_tokens_per_second": 455.874227746335,
+          "response": "a = [i * i - i + 1 for i in range(1, n + 1)]\n    mod_counts = [0, 0, 0]\n    for val in a:\n        mod_counts[val % 3] += 1\n    count = 0\n    count += mod_counts[0] * (mod_counts[0] - 1) * (mod_counts[0] - 2) // 6\n    count += mod_counts[1] * (mod_counts[1] - 1) * (mod_counts[1] - 2) // 6\n    count += mod_counts[2] * (mod_counts[2] - 1) * (mod_counts[2] - 2) // 6\n    count += mod_counts[0] * mod_counts[1] * mod_counts[2]\n    return count",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/148",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "bf",
+          "prompt_bytes": 938,
+          "prompt_tokens": 252,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5080551249993732,
+          "generation_seconds": 1.3721720879984787,
+          "stream_seconds": 1.8804563140001846,
+          "output_tokens": 107,
+          "chunk_count": 106,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.97855745344285,
+          "prefill_tokens_per_second": 496.009168297064,
+          "response": "planets = [\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\"]\nif planet1 not in planets or planet2 not in planets:\n    return ()\ni1 = planets.index(planet1)\ni2 = planets.index(planet2)\nif i1 > i2:\n    i1, i2 = i2, i1\nreturn tuple(planets[i1+1:i2])",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/149",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "sorted_list_sum",
+          "prompt_bytes": 939,
+          "prompt_tokens": 235,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4970283049988211,
+          "generation_seconds": 0.3746953250010847,
+          "stream_seconds": 0.9101558059992385,
+          "output_tokens": 31,
+          "chunk_count": 29,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.73388519034833,
+          "prefill_tokens_per_second": 472.810094790391,
+          "response": "return sorted([s for s in lst if len(s) % 2 == 0], key=lambda x: (len(x), x))",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/150",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "x_or_y",
+          "prompt_bytes": 406,
+          "prompt_tokens": 128,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4260288439982105,
+          "generation_seconds": 0.6117359349991602,
+          "stream_seconds": 1.075108981000085,
+          "output_tokens": 51,
+          "chunk_count": 49,
+          "cached_tokens": 0,
+          "tokens_per_second": 83.36930541781891,
+          "prefill_tokens_per_second": 300.4491404824638,
+          "response": "if n < 2:\n        return y\n    for i in range(2, int(n ** 0.5) + 1):\n        if n % i == 0:\n            return y\n    return x",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/151",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "double_the_difference",
+          "prompt_bytes": 598,
+          "prompt_tokens": 178,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5437988539997605,
+          "generation_seconds": 0.338257049999811,
+          "stream_seconds": 0.9190836849993502,
+          "output_tokens": 32,
+          "chunk_count": 30,
+          "cached_tokens": 0,
+          "tokens_per_second": 94.60261064778364,
+          "prefill_tokens_per_second": 327.3269126824574,
+          "response": "return sum(x ** 2 for x in lst if isinstance(x, int) and x > 0 and x % 2 != 0)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/152",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "compare",
+          "prompt_bytes": 957,
+          "prompt_tokens": 273,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6065466780019051,
+          "generation_seconds": 0.23450194399993052,
+          "stream_seconds": 0.8413570180018723,
+          "output_tokens": 19,
+          "chunk_count": 17,
+          "cached_tokens": 0,
+          "tokens_per_second": 81.02278248066732,
+          "prefill_tokens_per_second": 450.08902018772994,
+          "response": "return [abs(g - s) for g, s in zip(guess, game)]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/153",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "Strongest_Extension",
+          "prompt_bytes": 1216,
+          "prompt_tokens": 319,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6442090640011884,
+          "generation_seconds": 1.12451698699806,
+          "stream_seconds": 1.7689719000009063,
+          "output_tokens": 91,
+          "chunk_count": 89,
+          "cached_tokens": 0,
+          "tokens_per_second": 80.9236330372633,
+          "prefill_tokens_per_second": 495.1808625893714,
+          "response": "max_strength = float('-inf')\n    strongest = extensions[0]\n    for ext in extensions:\n        cap = sum(1 for c in ext if c.isupper())\n        sm = sum(1 for c in ext if c.islower())\n        strength = cap - sm\n        if strength > max_strength:\n            max_strength = strength\n            strongest = ext\n    return class_name + '.' + strongest",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/154",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "cycpattern_check",
+          "prompt_bytes": 604,
+          "prompt_tokens": 165,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5500977920019068,
+          "generation_seconds": 0.4138230600001407,
+          "stream_seconds": 1.0011135670029034,
+          "output_tokens": 36,
+          "chunk_count": 34,
+          "cached_tokens": 0,
+          "tokens_per_second": 86.99370209090755,
+          "prefill_tokens_per_second": 299.9466683906051,
+          "response": "for i in range(len(b)):\n        rotation = b[i:] + b[:i]\n        if rotation in a:\n            return True\n    return False",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/155",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "even_odd_count",
+          "prompt_bytes": 387,
+          "prompt_tokens": 108,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.49247703100263607,
+          "generation_seconds": 0.7886265059969446,
+          "stream_seconds": 1.3208395360015857,
+          "output_tokens": 65,
+          "chunk_count": 63,
+          "cached_tokens": 0,
+          "tokens_per_second": 82.42177951884847,
+          "prefill_tokens_per_second": 219.29956769785252,
+          "response": "even_count = 0\n    odd_count = 0\n    for digit in str(abs(num)):\n        if int(digit) % 2 == 0:\n            even_count += 1\n        else:\n            odd_count += 1\n    return (even_count, odd_count)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/156",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "int_to_mini_roman",
+          "prompt_bytes": 495,
+          "prompt_tokens": 151,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.47875508699871716,
+          "generation_seconds": 4.115683796000667,
+          "stream_seconds": 4.629847279000387,
+          "output_tokens": 316,
+          "chunk_count": 314,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.7794650082367,
+          "prefill_tokens_per_second": 315.4013484151336,
+          "response": "val = 1000\n    syms = 'm'\n    while val > 0:\n        while number >= val:\n            syms += 'm' if val == 1000 else ''\n            number -= val\n        val //= 10\n        if val == 500:\n            syms += 'd' if number >= 500 else ''\n            number -= 500 if number >= 500 else 0\n        elif val == 100:\n            syms += 'c' if number >= 100 else ''\n            number -= 100 if number >= 100 else 0\n        elif val == 50:\n            syms += 'l' if number >= 50 else ''\n            number -= 50 if number >= 50 else 0\n        elif val == 10:\n            syms += 'x' if number >= 10 else ''\n            number -= 10 if number >= 10 else 0\n        elif val == 5:\n            syms += 'v' if number >= 5 else ''\n            number -= 5 if number >= 5 else 0\n        elif val == 1:\n            syms += 'i' if number >= 1 else ''\n            number -= 1 if number >= 1 else 0\n    return syms[1:]",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/157",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "right_angle_triangle",
+          "prompt_bytes": 546,
+          "prompt_tokens": 149,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5464660239995283,
+          "generation_seconds": 0.4905835789977573,
+          "stream_seconds": 1.0374515369985602,
+          "output_tokens": 38,
+          "chunk_count": 36,
+          "cached_tokens": 0,
+          "tokens_per_second": 77.45876875380233,
+          "prefill_tokens_per_second": 272.66105019573666,
+          "response": "sides = sorted([a, b, c])\n    return sides[0] ** 2 + sides[1] ** 2 == sides[2] ** 2",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/158",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "find_max",
+          "prompt_bytes": 628,
+          "prompt_tokens": 159,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.48472065500027384,
+          "generation_seconds": 0.9715508059998683,
+          "stream_seconds": 1.4565642350025882,
+          "output_tokens": 74,
+          "chunk_count": 72,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.16688653131541,
+          "prefill_tokens_per_second": 328.023983215467,
+          "response": "max_unique = -1\n    result = \"\"\n    for word in words:\n        unique_count = len(set(word))\n        if unique_count > max_unique:\n            max_unique = unique_count\n            result = word\n        elif unique_count == max_unique:\n            if word < result:\n                result = word\n    return result",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/159",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "eat",
+          "prompt_bytes": 1150,
+          "prompt_tokens": 342,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6098529450027854,
+          "generation_seconds": 0.40419944399764063,
+          "stream_seconds": 1.0143019360002654,
+          "output_tokens": 29,
+          "chunk_count": 28,
+          "cached_tokens": 0,
+          "tokens_per_second": 71.74675876142292,
+          "prefill_tokens_per_second": 560.7909296862343,
+          "response": "eaten = min(need, remaining)\ntotal = number + eaten\nleft = remaining - eaten\nreturn [total, left]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/160",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "do_algebra",
+          "prompt_bytes": 975,
+          "prompt_tokens": 253,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.4819127730006585,
+          "generation_seconds": 1.5076444719998108,
+          "stream_seconds": 1.9898541920010757,
+          "output_tokens": 114,
+          "chunk_count": 113,
+          "cached_tokens": 0,
+          "tokens_per_second": 75.61464398087503,
+          "prefill_tokens_per_second": 524.9912726418943,
+          "response": "result = operand[0]\nfor i in range(len(operator)):\n    if operator[i] == '+':\n        result += operand[i + 1]\n    elif operator[i] == '-':\n        result -= operand[i + 1]\n    elif operator[i] == '*':\n        result *= operand[i + 1]\n    elif operator[i] == '//':\n        result //= operand[i + 1]\n    elif operator[i] == '**':\n        result **= operand[i + 1]\nreturn result",
+          "reasoning": "",
+          "status": "fail",
+          "reason": "sandbox: fail"
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/161",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "solve",
+          "prompt_bytes": 530,
+          "prompt_tokens": 153,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5460805719994823,
+          "generation_seconds": 0.6570972369991068,
+          "stream_seconds": 1.2033675620004942,
+          "output_tokens": 50,
+          "chunk_count": 48,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.09223899394964,
+          "prefill_tokens_per_second": 280.17843491444523,
+          "response": "has_letter = any(c.isalpha() for c in s)\n    if not has_letter:\n        return s[::-1]\n    return ''.join(c.swapcase() if c.isalpha() else c for c in s)",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/162",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "string_to_md5",
+          "prompt_bytes": 394,
+          "prompt_tokens": 126,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.46511731400096323,
+          "generation_seconds": 0.26209025899879634,
+          "stream_seconds": 0.7274154780025128,
+          "output_tokens": 25,
+          "chunk_count": 23,
+          "cached_tokens": 0,
+          "tokens_per_second": 95.38698651182916,
+          "prefill_tokens_per_second": 270.8993972211902,
+          "response": "if not text:\n        return None\n    import hashlib\n    return hashlib.md5(text.encode()).hexdigest()",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "HumanEval/163",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "generate_integers",
+          "prompt_bytes": 456,
+          "prompt_tokens": 148,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.5289566949977598,
+          "generation_seconds": 0.41067636600200785,
+          "stream_seconds": 0.9777098240010673,
+          "output_tokens": 38,
+          "chunk_count": 36,
+          "cached_tokens": 0,
+          "tokens_per_second": 92.53028210494638,
+          "prefill_tokens_per_second": 279.7960615672457,
+          "response": "return [i for i in range(min(a, b), max(a, b) + 1) if i % 2 == 0 and i < 10]",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 164,
+    "sub_jobs": 164,
+    "passed": 147,
+    "failed": 17,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 0.8963414634146342,
+    "median_ttft_seconds": 0.5138491734996933,
+    "median_tokens_per_second": 81.04688403951718,
+    "median_cached_tokens": 0.0
+  }
+}
