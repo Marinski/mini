@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import fcntl
+import re
 import tempfile
 import threading
 from collections.abc import Callable, Iterator
@@ -213,7 +214,14 @@ def _run_job(
             preserve_thinking=bool(params.get("preserve_thinking")),
         )
         _absorb(sub, result)
-        if result.status == "error":
+        if result.status == "error" and _context_overflow(result.error):
+            # The pre-check let it through on an estimate (no /tokenize, as on Strata, 7 Oct 2026):
+            # the server's own refusal is the same outcome, not a model failure.
+            sub.status = SKIPPED
+            sub.reason = f"exceeds context (server): {result.error}"
+            if multi_turn:
+                stopped_reason = "previous turn exceeded context"
+        elif result.status == "error":
             if multi_turn:
                 stopped_reason = "previous turn errored"
         elif multi_turn:
@@ -228,6 +236,17 @@ def _run_job(
         if on_subjob:
             on_subjob(sub)
     return subjobs
+
+
+_CONTEXT_OVERFLOW = re.compile(
+    r"exceeds? (the |the available )?context|maximum context length|context length exceeded",
+    re.IGNORECASE,
+)
+
+
+def _context_overflow(error: str | None) -> bool:
+    """A 400 that says the prompt does not fit: llama.cpp, vLLM and Strata each word it differently."""
+    return bool(error) and error.startswith("HTTP 400") and bool(_CONTEXT_OVERFLOW.search(error))
 
 
 def _blank_subjob(prompt: Prompt) -> SubJob:

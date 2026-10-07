@@ -53,20 +53,22 @@ class PreserveThinking1(Suite):
                 Check(FAIL, f"turn 1 reasoning had {len(numbers)} 20-digit numbers, need 2"),
                 Check(FAIL, "turn 2 cannot be checked without two numbers in turn 1 reasoning"),
             ]
-        first_number, second_number = numbers[0], numbers[1]
-        turn1 = self._turn1(first, first_number, second_number)
-        turn2 = self._turn2(second, second_number)
-        return [turn1, turn2]
+        # The first number is the one turn 1 printed, not the first one its reasoning names:
+        # reasoning can mention an example ("like 20000000000000000000") before choosing (7 Oct 2026).
+        printed = _unique(checks.find_digit_runs(first.response, 20))
+        first_number = printed[0] if printed else numbers[0]
+        others = [n for n in numbers if n != first_number]
+        return [self._turn1(printed, numbers), self._turn2(second, others)]
 
-    def _turn1(self, sub: SubJob, first_number: str, second_number: str) -> Check:
-        if second_number in sub.response:
+    def _turn1(self, printed: list[str], numbers: list[str]) -> Check:
+        if len(printed) > 1:
             return Check(FAIL, "turn 1 leaked the second number into its visible answer")
-        if first_number not in sub.response:
+        if not printed or printed[0] not in numbers:
             return Check(FAIL, "turn 1 did not print the first number")
         return Check(PASS)
 
-    def _turn2(self, sub: SubJob, second_number: str) -> Check:
-        if second_number in sub.response:
+    def _turn2(self, sub: SubJob, others: list[str]) -> Check:
+        if any(n in others for n in checks.find_digit_runs(sub.response, 20)):
             return Check(PASS)
         if "don't remember" in sub.response.lower() or "do not remember" in sub.response.lower():
             return Check(FAIL, "turn 2 did not recall the second number from reasoning")

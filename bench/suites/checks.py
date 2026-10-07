@@ -51,7 +51,8 @@ def ints(text: str) -> list[int]:
 
 
 def find_digit_runs(text: str, length: int) -> list[str]:
-    return [run for run in re.findall(rf"\d{{{length}}}", text or "")]
+    """Runs of exactly ``length`` digits (a 21-digit run is not a 20-digit number)."""
+    return re.findall(rf"(?<!\d)\d{{{length}}}(?!\d)", text or "")
 
 
 def is_identifier(text: str) -> bool:

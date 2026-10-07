@@ -35,3 +35,9 @@ def test_numbers_equal_and_strip_markdown():
     assert checks.numbers_equal(" 333 ", 333)
     assert not checks.numbers_equal("334", 333)
     assert not checks.numbers_equal("", 0)
+
+
+def test_find_digit_runs_exact_length_only():
+    assert checks.find_digit_runs("123456789012345678901 and 12345678901234567890", 20) == [
+        "12345678901234567890"
+    ]

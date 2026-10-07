@@ -98,3 +98,16 @@ def test_preserve_thinking_no_recall():
         [("12345678901234567890", REASONING), "I don't remember the number"],
     )
     assert statuses(subs) == ["pass", "fail"]
+
+
+def test_preserve_thinking_example_number_in_reasoning_is_not_the_first():
+    # Q2_0 on 7 Oct 2026: the reasoning names an example before choosing its two numbers.
+    reasoning = (
+        "20 digit means exactly 20 digits? likely 20000000000000000000 etc. "
+        "Could choose two: 12345678901234567890 and 98765432109876543210. Print first."
+    )
+    subs = apply(
+        PreserveThinking1(),
+        [("12345678901234567890", reasoning), "98765432109876543210"],
+    )
+    assert statuses(subs) == ["pass", "pass"]

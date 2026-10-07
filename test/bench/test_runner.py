@@ -262,3 +262,29 @@ def test_multi_turn_2_turn4_skipped_with_context_reason(tmp_path):
 
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__]))
+
+
+def test_server_context_refusal_is_skipped_not_an_error(tmp_path):
+    # Strata has no /tokenize, so the bytes/4 estimate let a 73K-token turn through on a 64K
+    # window and the server refused it with a 400 (7 Oct 2026): that is a skip, like the pre-check.
+    suite = FakeSuite(["a", "b"])
+    state = MockState(
+        status=400,
+        tokenize_scale=None,
+        body='{"error": {"message": "prompt (73706 tokens) + max tokens (1024) exceeds the context (65536)"}}',
+    )
+    with MockServer(state) as server:
+        record = run(
+            suite,
+            "default",
+            Client(server.url, "m"),
+            overrides={"max_tokens": 10},
+            results_dir=tmp_path,
+            ctx_override=99_999,
+            lock=False,
+        )
+    subs = record["jobs"][0]["sub_jobs"]
+    assert subs[0]["status"] == "skipped"
+    assert subs[0]["reason"].startswith("exceeds context (server)")
+    assert subs[1]["status"] == "skipped"
+    assert "previous turn exceeded context" in subs[1]["reason"]
