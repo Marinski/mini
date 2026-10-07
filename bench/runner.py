@@ -198,7 +198,8 @@ def _run_job(
                 f"exceeds context: {prompt_tokens} prompt + "
                 f"{params['max_tokens']} max_tokens > {context_window}"
             )
-            stopped_reason = "previous turn exceeded context"
+            if multi_turn:  # independent prompts in a job do not depend on each other
+                stopped_reason = "previous turn exceeded context"
             subjobs.append(sub)
             if on_subjob:
                 on_subjob(sub)
@@ -213,7 +214,8 @@ def _run_job(
         )
         _absorb(sub, result)
         if result.status == "error":
-            stopped_reason = "previous turn errored"
+            if multi_turn:
+                stopped_reason = "previous turn errored"
         elif multi_turn:
             history.append({"role": "user", "content": prompt.text})
             history.append(

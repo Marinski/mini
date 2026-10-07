@@ -1,11 +1,14 @@
 """finqa: numerical questions over S&P 500 earnings-report excerpts.
 
 The prompt is the report's text and table plus the question. The check takes
-the last number in the model's answer, normalises percent and units, and
-compares it to the gold value: the ``answer`` string when it is purely numeric
-(or ``yes``/``no``), otherwise the executed ``exe_ans``. Comparison is FinQA's
-own shape — round both to the gold answer's precision, exact for yes/no — with a
-small relative tolerance for float noise.
+the last number in the model's answer and compares it to the executed
+``exe_ans`` within 1% relative, accepting the answer as written, as a percent
+(x100) or as a fraction (/100), since FinQA mixes ``27.4%`` with 0.274; yes/no is
+exact. Only when ``exe_ans`` is not a number does it fall back to the ``answer``
+string, rounded to its precision. Re-grading our saved 7 Oct answers this way
+agrees with Protorikis on 1085/1147 prompts (907 vs its 911 passes); the first
+version, rounding to the ``answer`` string's units, failed ``14.46`` against
+``14%`` and passed 564.
 """
 
 from __future__ import annotations
@@ -20,7 +23,7 @@ from bench.suites.base import FAIL, PASS, Check, Job, Prompt, Suite
 NUMBER = re.compile(r"-?(?:\d+(?:\.\d+)?|\.\d+)\s*%?")
 PURE_NUMBER = re.compile(r"^\s*-?\$?\s*(?:[\d,]+(?:\.\d+)?|\.\d+)\s*%?\s*$")
 UNITS = (("billion", 1e9), ("million", 1e6), ("thousand", 1e3))
-REL_TOLERANCE = 1e-4
+REL_TOLERANCE = 1e-2
 ABS_TOLERANCE = 1e-5
 ANSWER_INSTRUCTION = (
     "Answer with only the final number (or yes/no). Do not explain, and do not "
@@ -92,15 +95,40 @@ def _close(predicted: float, gold: float, digits: int) -> bool:
 
 
 def answers_match(response: str, answer: object, exe_ans: object = None) -> bool:
-    gold = gold_reference(answer, exe_ans)
-    if gold.kind == "yes_no":
+    if is_yes_no("" if answer is None else str(answer)):
         return _yes_no(response) == str(answer).strip().lower()
+    if isinstance(exe_ans, (int, float)) and not isinstance(exe_ans, bool):
+        candidates = _candidates(response)
+        # The rounded answer string itself (``14%`` for 0.14464) also passes.
+        stated = _raw_number(str(answer)) if is_pure_number(str(answer)) else None
+        return any(
+            abs(c - exe_ans) <= max(ABS_TOLERANCE, REL_TOLERANCE * abs(exe_ans))
+            or (stated is not None and abs(c - stated) <= ABS_TOLERANCE)
+            for c in candidates
+        )
+    gold = gold_reference(answer, None)
     if gold.kind == "text":
         return str(answer).strip().lower() in (response or "").strip().lower()
     predicted = extract_number(response)
     if predicted is None or gold.number is None:
         return False
     return _close(predicted, gold.number, gold.digits)
+
+
+def _candidates(response: str) -> list[float]:
+    """The answer's number as written and with percent/units applied, each also x100 and /100."""
+    values = {v for v in (_raw_number(response), extract_number(response)) if v is not None}
+    return [c for v in values for c in (v, v * 100, v / 100)]
+
+
+def _raw_number(text: str) -> float | None:
+    matches = list(NUMBER.finditer((text or "").replace(",", "").replace("$", "")))
+    if not matches:
+        return None
+    try:
+        return float(matches[-1].group().strip().rstrip("%").strip())
+    except ValueError:
+        return None
 
 
 def _yes_no(text: str) -> str | None:
@@ -122,7 +150,8 @@ def format_prompt(example: dict) -> str:
 class FinQA(Suite):
     id = "finqa"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False}
+    # As Protorikis sends it (7 Oct 2026): only temperature 0, so rikis leaves thinking on.
+    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False, "thinking": True, "temperature": 0.0}
 
     def build(self, profile, ctx):
         examples = getattr(ctx, "finqa", None) or data.finqa_examples()

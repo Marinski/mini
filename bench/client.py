@@ -222,7 +222,9 @@ class Client:
                         return ContextWindow(value, f"models.{key}")
                 meta = model.get("meta") or {}
                 if isinstance(meta, dict):
-                    value = meta.get("n_ctx_train") or meta.get("n_ctx")
+                    # n_ctx is the server's window (-c); n_ctx_train is only the model's
+                    # trained maximum, which llama-server reports even when -c is smaller.
+                    value = meta.get("n_ctx") or meta.get("n_ctx_train")
                     if isinstance(value, int) and value > 0:
                         return ContextWindow(value, "models.meta.n_ctx")
         except (httpx.HTTPError, ValueError):
@@ -244,11 +246,17 @@ class Client:
         """Return ``(tokens, estimated)`` using the server's tokenizer if it has one."""
         try:
             with self._client(timeout=20.0) as client:
-                resp = client.post(
-                    self._url("/tokenize"),
-                    headers=self._headers(),
-                    json={"content": text, "model": self.model},
-                )
+                # llama-server serves /tokenize at the root, vLLM at the root too;
+                # try the root first, then under /v1, before falling back to an estimate.
+                root = self.endpoint[: -len("/v1")] if self.endpoint.endswith("/v1") else self.endpoint
+                for url in (root + "/tokenize", self._url("/tokenize")):
+                    resp = client.post(
+                        url,
+                        headers=self._headers(),
+                        json={"content": text, "model": self.model},
+                    )
+                    if resp.status_code < 400:
+                        break
                 if resp.status_code < 400:
                     data = resp.json()
                     tokens = data.get("tokens")

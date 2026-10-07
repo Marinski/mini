@@ -39,7 +39,8 @@ def find_functions(
         brace = _brace_index(lines, i)
         if brace is None:
             continue
-        body = _body_lines(lines, brace)
+        indent = line[: len(line) - len(line.lstrip())]
+        body = _body_lines(lines, brace, indent)
         if min_body <= len(body) <= max_body:
             found.append(
                 {
@@ -59,10 +60,13 @@ def _brace_index(lines: list[str], start: int) -> int | None:
     return start
 
 
-def _body_lines(lines: list[str], brace_index: int) -> list[str]:
+def _body_lines(lines: list[str], brace_index: int, indent: str = "") -> list[str]:
+    """The lines up to the function's own closing brace: the ``}`` at the declaration's
+    indentation, not the first nested block's (fixed 7 Oct 2026: that cut WebGLBackground
+    to 20 lines when the function runs well past 100)."""
     body: list[str] = []
     for line in lines[brace_index + 1 :]:
-        if line.strip() == "}":
+        if line.rstrip() in (indent + "}", indent + "};"):
             break
         body.append(line)
         if len(body) >= 200:

@@ -94,3 +94,34 @@ def _sub(response):
     from bench.suites.base import SubJob
 
     return SubJob(label="x", prompt="", prompt_bytes=0, response=response)
+
+
+@needs_three
+def test_body_is_in_the_prompt_context():
+    # The test is retrieval from context, not recitation from training (fixed 7 Oct 2026).
+    ctx = data.Context(three_js_lines=data.three_js_lines())
+    for profile in ("eighths", "full"):
+        for job in MemoryRecall1().build(profile, ctx):
+            for prompt, body in zip(job.prompts, job.meta["expected"]):
+                assert all(line in prompt.text for line in body[:8]), (profile, prompt.label)
+
+
+@needs_three
+def test_eighths_fit_a_64k_window():
+    ctx = data.Context(three_js_lines=data.three_js_lines())
+    largest = max(len(p.text.encode()) for j in MemoryRecall1().build("eighths", ctx) for p in j.prompts)
+    assert largest < 200_000  # Protorikis's eighths top out at 191,543 bytes
+
+
+def test_continuation_into_the_next_function_is_not_extra():
+    # Protorikis compares with the file's continuation (7 Oct 2026): carrying on past the
+    # closing brace into what really follows in the file is fine.
+    continuation = EXPECTED + ["}", "", "function next() {", "  return 2;", "}"]
+    output = "\n".join(EXPECTED + ["}", "function next() {", "  return 2;"])
+    assert body_check(output, continuation).status == "pass"
+
+
+def test_short_body_needs_only_its_lines_and_brace():
+    continuation = ["  a();", "  b();", "}", "", "function other() {", "  c();"]
+    assert body_check("a();\nb();\n}", continuation, required=3).status == "pass"
+    assert body_check("a();\nb();\n}", continuation).status == "fail"  # default demands 8

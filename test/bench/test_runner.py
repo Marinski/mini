@@ -140,6 +140,24 @@ def test_error_stops_the_job(tmp_path):
     assert "previous turn errored" in subs[1]["reason"]
 
 
+def test_error_does_not_stop_independent_prompts(tmp_path):
+    # memory_recall_1 jobs hold independent prompts: one oversized prompt must not skip the rest.
+    suite = FakeSuite(["a", "b"], params={"multi_turn": False})
+    state = MockState(status=400, body="boom")
+    with MockServer(state) as server:
+        record = run(
+            suite,
+            "default",
+            Client(server.url, "m"),
+            overrides={"max_tokens": 10, "multi_turn": False},
+            results_dir=tmp_path,
+            ctx_override=99_999,
+            lock=False,
+        )
+    subs = record["jobs"][0]["sub_jobs"]
+    assert [s["status"] for s in subs] == ["error", "error"]
+
+
 def test_endpoint_lock_serializes_threads(tmp_path):
     path = tmp_path / "e.lock"
     order = []

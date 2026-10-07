@@ -33,6 +33,7 @@ class PreserveThinking1(Suite):
     default_params: ClassVar[dict[str, Any]] = {
         "thinking": True,
         "preserve_thinking": True,
+        "temperature": 1.0,  # as Protorikis sends it (7 Oct 2026)
     }
 
     def build(self, profile, ctx):

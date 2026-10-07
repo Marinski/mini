@@ -43,7 +43,42 @@ def extract_body(prompt: str, response: str) -> str:
 
 def build_program(problem: dict, completion: str) -> str:
     body = extract_body(problem["prompt"], completion)
-    return f"{problem['prompt']}{body}\n{problem['test']}\n\ncheck({problem['entry_point']})\n"
+    entry = problem["entry_point"]
+    if re.search(rf"^def {re.escape(entry)}\s*\(", body, re.M):
+        # The model wrote the whole function: keep the prompt's stub (and its imports and
+        # helpers) with a placeholder body, and let the model's definition replace it.
+        return f"{problem['prompt']}    pass\n\n{body}\n{problem['test']}\n\ncheck({entry})\n"
+    return f"{problem['prompt']}{_indent_body(body)}\n{problem['test']}\n\ncheck({entry})\n"
+
+
+BODY_INDENT = "    "  # every HumanEval function is top-level, so its body sits at 4 spaces
+
+
+def _indent_body(body: str) -> str:
+    """Put a body back inside the function when its indentation was lost.
+
+    Shapes seen 7 Oct 2026 on llama-server (Qwen 3.8), which strips the leading whitespace
+    of a reply: only the first line flush left, or the whole body one level too shallow
+    (some later line flush left as well). Protorikis grades both as correct.
+    """
+    lines = body.split("\n")
+    nonblank = [i for i, line in enumerate(lines) if line.strip()]
+    if not nonblank or lines[nonblank[0]][0].isspace():
+        return body
+    first = lines[nonblank[0]]
+    if len(nonblank) > 1:
+        indent = [len(lines[i]) - len(lines[i].lstrip()) for i in nonblank[1:]]
+        # Where the first line belongs: at the shallowest later level, or one level above it
+        # when the first line opens a block whose first child sits at that shallowest level.
+        target = min(indent)
+        if first.rstrip().endswith(":") and indent[0] == target:
+            target -= len(BODY_INDENT)
+        if target == len(BODY_INDENT):
+            # Only the first line lost its indentation (the server stripped the reply's start).
+            lines[nonblank[0]] = BODY_INDENT + first
+            return "\n".join(lines)
+    # The whole body was written one level too shallow.
+    return "\n".join((BODY_INDENT + line) if line.strip() else line for line in lines)
 
 
 def evaluate(programs: dict[str, str], *, runner: Runner | None = None) -> dict[str, str]:

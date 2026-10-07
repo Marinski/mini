@@ -33,6 +33,16 @@ def test_find_declaration():
     assert code_context.find_declaration(["// nothing"]) is None
 
 
+def test_function_body_ends_at_its_own_brace_not_a_nested_one():
+    # A nested block's "}" ended the body early, so WebGLBackground looked 20 lines long (7 Oct).
+    lines = ["function outer( a ) {", "\tif ( a ) {", "\t\ta = 1;", "\t}"]
+    lines += [f"\tconst v{i} = {i};" for i in range(10)] + ["\treturn a;", "}", "function next() {}"]
+    (fn,) = code_context.find_functions(lines)
+    assert fn["name"] == "outer"
+    assert fn["body"][-1] == "\treturn a;"
+    assert len(fn["body"]) == 14
+
+
 @needs_three
 def test_multi_turn_2_build():
     ctx = data.Context(three_js_lines=data.three_js_lines())

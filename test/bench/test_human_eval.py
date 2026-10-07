@@ -101,3 +101,36 @@ def test_docker_sandbox_passes_canonical_solutions():
         for i, p in enumerate(problems)
     }
     assert all(v == "pass" for v in humaneval.docker_runner(programs).values())
+
+
+# Answer shapes seen 7 Oct 2026 from llama-server, which strips the leading whitespace of a reply.
+_FN = {
+    "prompt": 'def f(xs):\n    """Doc."""\n',
+    "test": "def check(c):\n    assert c([1, 2]) == [1, 2]\n    assert c([]) == []\n",
+    "entry_point": "f",
+}
+
+
+def _runs(completion):
+    ns = {}
+    exec(humaneval.build_program(_FN, completion), ns)  # noqa: S102 - test-only, trusted input
+
+
+def test_first_line_stripped_is_reindented():
+    _runs("if not xs:\n        return []\n    out = []\n    for x in xs:\n        out.append(x)\n    return out")
+
+
+def test_whole_body_one_level_too_shallow_is_reindented():
+    _runs("out = []\nfor x in xs:\n    out.append(x)\nreturn out")
+
+
+def test_first_line_opening_a_block_whose_child_is_shallowest():
+    _runs("for x in [None]:\n    out = list(xs)\n    return out")
+
+
+def test_first_line_opening_a_bracket_keeps_continuation_lines():
+    _runs("table = {\n        'a': 1,\n    }\n    return list(xs)")
+
+
+def test_full_function_answer_replaces_the_stub():
+    _runs("def f(xs):\n    return list(xs)")

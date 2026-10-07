@@ -33,7 +33,8 @@ INSTRUCTION = (
 class HumanEval(Suite):
     id = "human_eval"
     profiles = ("default",)
-    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False}
+    # As Protorikis sends it (7 Oct 2026).
+    default_params: ClassVar[dict[str, Any]] = {"multi_turn": False, "thinking": False, "temperature": 0.0}
     runner = None  # injectable for tests
 
     def build(self, profile, ctx):

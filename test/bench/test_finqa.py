@@ -57,6 +57,17 @@ def test_answers_match_falls_back_to_exe_ans():
     assert not answers_match("2.0", "", 1.1197)
 
 
+def test_answers_match_percent_written_without_sign_or_more_precisely():
+    # 7 Oct parity run: these failed and FinQA scored 564/1147 against Protorikis's 911.
+    assert answers_match("27.4", "27.4%", 0.27401)
+    assert answers_match("14.46", "14%", 0.14464)
+    assert answers_match("9.86", "9.9%", 0.09864)
+    assert answers_match("111.97", "", 1.1197)
+    assert answers_match("14", "14%", 0.14464)  # the rounded answer string itself
+    assert not answers_match("-101.57", "102%", 1.01571)  # the sign counts
+    assert not answers_match("19.53", "20%", 0.20207)
+
+
 def test_extract_number_scales_word_units():
     assert extract_number("411.91 million") == pytest.approx(411_910_000)
     assert extract_number("2 billion") == pytest.approx(2e9)

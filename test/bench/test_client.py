@@ -114,6 +114,15 @@ def test_context_window_from_models():
     assert window.source == "models.max_model_len"
 
 
+def test_context_window_llama_server_meta_prefers_runtime_n_ctx():
+    # llama-server -c 65536 on a 262K model: meta carries both; the window is n_ctx (7 Oct parity run).
+    state = MockState(models=[{"id": "m", "meta": {"n_ctx": 65536, "n_ctx_train": 262144}}])
+    with MockServer(state) as server:
+        window = Client(server.url, "m").context_window()
+    assert window.tokens == 65536
+    assert window.source == "models.meta.n_ctx"
+
+
 def test_context_window_override_wins():
     with MockServer(MockState()) as server:
         window = Client(server.url, "m").context_window(override=1024)
@@ -166,3 +175,16 @@ def test_estimate_tokens_never_zero():
 
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__]))
+
+
+def test_count_tokens_uses_root_tokenize_when_v1_has_none():
+    # llama-server serves /tokenize at the root only; /v1/tokenize is a 404 there.
+    import httpx
+
+    with MockServer(MockState(tokenize_scale=4)) as server:
+        client = Client(server.url, "m")
+        assert client.endpoint.endswith("/v1")
+        tokens, estimated = client.count_tokens("a" * 40)
+        root_hit = httpx.post(client.endpoint[:-3] + "/tokenize", json={"content": "a" * 40}).status_code
+    assert estimated is False and tokens == 10
+    assert root_hit == 200
