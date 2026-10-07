@@ -8,10 +8,12 @@ context. The fourth turn is where a 65,536-token server runs out of room
 
 from __future__ import annotations
 
+from typing import Any, ClassVar
+
 from bench import code_context, data
 from bench.code_context import require_lines
 from bench.suites import checks
-from bench.suites.base import Check, FAIL, PASS, Job, Prompt, SubJob, Suite
+from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
 CACHE_TTFT_SECONDS = 5.0
 
@@ -26,7 +28,7 @@ def _chunk_prompt(part: int, chunk: str) -> str:
 class MultiTurn2(Suite):
     id = "multi_turn_2"
     profiles = ("default",)
-    default_params = {
+    default_params: ClassVar[dict[str, Any]] = {
         "thinking": False,
         "temperature": 0.0,
         "multi_turn": True,

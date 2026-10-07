@@ -14,7 +14,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any
+from typing import Any, Self
 
 
 @dataclass
@@ -59,7 +59,7 @@ class _Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         if self.path.endswith("/models"):
             self._json(200, {"object": "list", "data": self.state.models})
         elif self.path.endswith("/props"):
@@ -70,7 +70,7 @@ class _Handler(BaseHTTPRequestHandler):
         else:
             self._json(404, {"error": "not found"})
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         length = int(self.headers.get("Content-Length") or 0)
         raw = self.rfile.read(length)
         try:
@@ -158,10 +158,10 @@ class MockServer:
         host, port = self._server.server_address
         self.url = f"http://{host}:{port}/v1"
 
-    def __enter__(self) -> MockServer:
+    def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, *exc: Any) -> None:
+    def __exit__(self, *exc: object) -> None:
         self.stop()
 
     def stop(self) -> None:

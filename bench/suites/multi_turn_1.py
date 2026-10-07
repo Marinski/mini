@@ -5,8 +5,10 @@ Prompts recovered verbatim from Protorikis's agent log (6 Oct 2026).
 
 from __future__ import annotations
 
+from typing import Any, ClassVar
+
 from bench.suites import checks
-from bench.suites.base import Check, FAIL, PASS, Job, Prompt, SubJob, Suite
+from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
 FIRST = 333
 SECOND = 778
@@ -31,7 +33,7 @@ PROMPTS = [
 class MultiTurn1(Suite):
     id = "multi_turn_1"
     profiles = ("default",)
-    default_params = {
+    default_params: ClassVar[dict[str, Any]] = {
         "thinking": False,
         "temperature": 0.0,
         "multi_turn": True,

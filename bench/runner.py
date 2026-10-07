@@ -11,13 +11,14 @@ from __future__ import annotations
 
 import fcntl
 import threading
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Iterator
+from typing import Any
 
 from bench.client import DEFAULT_TEMPERATURE, Client, StreamResult
 from bench.results import append_index, make_run_id, summarize, utc_now, write_run
-from bench.suites.base import ERROR, SKIPPED, OK, Job, Prompt, SubJob, Suite
+from bench.suites.base import ERROR, OK, SKIPPED, Job, Prompt, SubJob, Suite
 
 GLOBAL_DEFAULTS: dict[str, Any] = {
     "thinking": False,
@@ -50,13 +51,12 @@ def endpoint_lock(path: Path) -> Iterator[None]:
     """Block until this process (and this thread) owns the endpoint's lock."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with _thread_lock(str(path)):
-        with path.open("w") as handle:
-            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
-            try:
-                yield
-            finally:
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+    with _thread_lock(str(path)), path.open("w") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
 def effective_params(job_params: dict[str, Any], overrides: dict[str, Any]) -> dict[str, Any]:
@@ -103,10 +103,12 @@ def run(
     def _body() -> dict[str, Any]:
         jobs = suite.build(profile, ctx)
         run_jobs: list[dict[str, Any]] = []
+        pairs: list[tuple[Job, list[SubJob]]] = []
         for job in jobs:
             params = effective_params(job.params, overrides)
             subjobs = _run_job(suite, job, client, params, window.tokens, on_subjob)
             suite.apply_checks(job, subjobs)
+            pairs.append((job, subjobs))
             for sub in subjobs:
                 if on_subjob:
                     on_subjob(sub)
@@ -117,6 +119,10 @@ def run(
                     "sub_jobs": [s.to_dict() for s in subjobs],
                 }
             )
+        suite.finalize(pairs)
+        # finalize may change verdicts after on_subjob already reported; re-sync
+        for (job, subjobs), record in zip(pairs, run_jobs):
+            record["sub_jobs"] = [s.to_dict() for s in subjobs]
         run_id = make_run_id(suite.id, profile, client.model, started_at)
         run_params = {**GLOBAL_DEFAULTS, **suite.default_params, **overrides}
         return {

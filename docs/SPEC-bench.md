@@ -169,3 +169,48 @@ Each step lands with its tests, and says how we know it works.
    traffic like the trials, or always hit the engine directly as Protorikis does?
 8. Where should results live: `results/bench/` in this public repo (the prompts and answers would
    be public), or under `$TRIAL_DATA` with only summaries committed?
+
+---
+
+## Answers (recorded 7 Oct 2026)
+
+1. **Python**, standard library plus `httpx` (tests also need `pytest`). Matches the trial kit and HumanEval.
+2. **Recovered, then improved.** Protorikis's exact prompt texts *are* recoverable: `rikis` prints each
+   label verbatim, so `hello_world`, `multi_turn_1` and `preserve_thinking_1` use the exact strings from
+   `~/agent-trials/llama-benchy/rikis-agent.log`. The code-context and QA prompts are ours (Protorikis
+   never exposes them); they keep the same shape and the recovered labels (`human_eval` function names,
+   `finqa` questions).
+3. **three.js r150, `build/three.module.js`, size-matched chunks.** r150's 500 lines are only ~13.6 KB,
+   not the spec's 115 KB, so a chunk is sized in bytes (64 KiB ≈ 2,900 lines) to reproduce the 115/191 KB
+   prompts and the 65,536-token skip. See `bench/code_context.py`.
+4. **three.js** for `memory_recall_1` too — one pinned dataset, credited once. (Our own repos would avoid
+   memorisation; kept as a future profile.)
+5. **FinQA's own shape.** The last number is extracted (percent/units normalised); the gold is the
+   `answer` string when purely numeric (or `yes`/`no`), otherwise `exe_ans`; comparison rounds to the gold
+   answer's precision, exact for yes/no. All 1,147 gold answers pass the extractor.
+6. **Per-mode defaults with override.** `max_tokens` is 1024 thinking-off, 8192 thinking-on, overridable
+   with `--max-tokens`. Protorikis sends no `max_tokens`; ours is a documented deviation.
+7. **Direct by default**, gateway optional: pass aigate's URL as `--endpoint` and a key as `--api-key`
+   (or `$BENCH_API_KEY`) so spend logs can record bench traffic when wanted.
+8. **`results/bench/` in the repo** (public): `<run-id>.json` per run plus `index.jsonl`, beside the
+   agent-trial batches.
+
+### Deviations from the table
+
+- `memory_recall_1` grouping is ours: 16 recalls per profile, shown the source up to the opening brace
+  preceded by 1/8, 1/4, 1/2 or the whole file (jobs 8/4/2/1). Protorikis's grouping is not exposed.
+- `multi_turn_2`/`context_caching_1` prompt wording is ours; the three.js chunks match in size, not in
+  bytes (see answer 3).
+
+### Running it
+
+```bash
+python bench/data/setup.py                 # fetch three.js, HumanEval, FinQA
+python bench/bench.py list
+python bench/bench.py run hello_world --endpoint http://host:8001/v1 --model qwen3.8-27b
+python bench/bench.py run memory_recall_1 --profile full --endpoint ... --model ...
+python bench/bench.py report --out results/bench/REPORT.md
+python bench/bench.py compare <run-a> <run-b>
+```
+
+Tests (no model calls): `python -m pytest test/bench`.

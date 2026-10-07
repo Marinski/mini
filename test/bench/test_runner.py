@@ -1,14 +1,15 @@
 import threading
 import time
 from pathlib import Path
+from typing import ClassVar
 
 import pytest
 
 from bench.client import Client
-from bench.results import iter_index, load_run
+from bench.results import iter_index
 from bench.runner import endpoint_lock, run
 from bench.schemas import validate_run
-from bench.suites.base import Check, Job, PASS, Prompt, Suite
+from bench.suites.base import PASS, Check, Job, Prompt, Suite
 from bench.suites.hello_world import HelloWorld
 from test.bench.mock_server import MockServer, MockState
 
@@ -18,7 +19,7 @@ ROOT = str(Path(__file__).resolve().parents[2])
 class FakeSuite(Suite):
     id = "fake"
     profiles = ("default",)
-    default_params = {
+    default_params: ClassVar[dict] = {
         "thinking": False,
         "temperature": 0.0,
         "multi_turn": True,
@@ -200,7 +201,7 @@ THREE = Path(__file__).resolve().parents[2] / "bench" / "data" / "three.module.j
 
 @pytest.mark.skipif(not THREE.exists(), reason="run bench/data/setup.py")
 def test_multi_turn_2_turn4_skipped_with_context_reason(tmp_path):
-    import bench.data as data
+    from bench import data
     from bench.runner import render_messages
     from bench.suites.multi_turn_2 import MultiTurn2
 

@@ -8,8 +8,10 @@ Protorikis's agent log (6 Oct 2026).
 
 from __future__ import annotations
 
+from typing import Any, ClassVar
+
 from bench.suites import checks
-from bench.suites.base import Check, FAIL, PASS, Job, Prompt, SubJob, Suite
+from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
 TURN1 = (
     "Generate two 20 digit numbers. Make sure to think of two numbers - I'll "
@@ -28,7 +30,7 @@ PROMPTS = [Prompt(TURN1, TURN1), Prompt(TURN2, TURN2)]
 class PreserveThinking1(Suite):
     id = "preserve_thinking_1"
     profiles = ("default",)
-    default_params = {
+    default_params: ClassVar[dict[str, Any]] = {
         "thinking": True,
         "temperature": 0.0,
         "multi_turn": True,

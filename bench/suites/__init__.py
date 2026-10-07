@@ -13,7 +13,9 @@ def _load() -> None:
         return
     from bench.suites import (  # noqa: F401
         context_caching_1,
+        finqa,
         hello_world,
+        human_eval,
         memory_recall_1,
         multi_turn_1,
         multi_turn_2,

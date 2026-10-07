@@ -7,9 +7,11 @@ only holds when the server serves the repeated prompt from its prefix cache.
 
 from __future__ import annotations
 
+from typing import Any, ClassVar
+
 from bench import code_context
 from bench.code_context import require_lines
-from bench.suites.base import Check, FAIL, PASS, Job, Prompt, SubJob, Suite
+from bench.suites.base import FAIL, PASS, Check, Job, Prompt, SubJob, Suite
 
 CACHE_TTFT_SECONDS = 5.0
 WINDOWS = 8
@@ -22,7 +24,7 @@ def _prompt(chunk: str) -> str:
 class ContextCaching1(Suite):
     id = "context_caching_1"
     profiles = ("default",)
-    default_params = {
+    default_params: ClassVar[dict[str, Any]] = {
         "thinking": False,
         "temperature": 0.0,
         "multi_turn": False,

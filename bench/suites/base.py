@@ -8,7 +8,7 @@ A *sub-job* is one request inside a job.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, ClassVar
 
 # Sub-job status values.
 OK = "ok"  # streamed successfully, not yet checked
@@ -101,9 +101,9 @@ class Suite:
     """Base class: a benchmark knows how to build jobs and how to check them."""
 
     id: str = ""
-    profiles: tuple[str, ...] = ("default",)
+    profiles: ClassVar[tuple[str, ...]] = ("default",)
     # Default per-suite parameters, merged over the CLI defaults.
-    default_params: dict[str, Any] = {}
+    default_params: ClassVar[dict[str, Any]] = {}
 
     def build(self, profile: str, ctx: Any) -> list[Job]:
         raise NotImplementedError
@@ -128,3 +128,10 @@ class Suite:
                 continue  # a failed request is not a failed answer
             sub.status = verdict.status
             sub.reason = verdict.reason
+
+    def finalize(self, jobs: list[tuple[Job, list[SubJob]]]) -> None:
+        """Optional post-pass over every job, e.g. batch code execution.
+
+        Runs after all per-job checks; may overwrite pass/fail verdicts but
+        never touches errors or skips.
+        """

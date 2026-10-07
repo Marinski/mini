@@ -71,6 +71,16 @@ def test_compare_agreement():
     assert "2/3" in text
 
 
+def test_compare_speed_within_ten_percent():
+    a = record("a", "m", "s", "t0", ttft=1.0, tps=20.0)
+    b = record("b", "m", "s", "t1", ttft=1.05, tps=21.0)
+    result = compare_runs(a, b)
+    assert result["speed"]["ttft_within_10pct"] is True
+    assert result["speed"]["tokens_per_second_within_10pct"] is True
+    far = record("c", "m", "s", "t2", ttft=2.0, tps=20.0)
+    assert compare_runs(a, far)["speed"]["ttft_within_10pct"] is False
+
+
 def test_compare_ignores_errors_and_skips():
     a = record("a", "m", "s", "t0", passed=1, failed=0)
     a["jobs"][0]["sub_jobs"].append({"label": "err", "status": "error"})

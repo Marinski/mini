@@ -17,11 +17,12 @@ or extra lines, and at most 100 output lines.
 from __future__ import annotations
 
 from collections import Counter
+from typing import Any, ClassVar
 
 from bench import code_context
 from bench.code_context import require_lines
 from bench.suites import checks
-from bench.suites.base import Check, FAIL, PASS, Job, Prompt, SubJob, Suite
+from bench.suites.base import FAIL, PASS, Check, Job, Prompt, Suite
 
 PROFILE_JOBS = {"eighths": 8, "quarters": 4, "halves": 2, "full": 1}
 PROFILE_FRACTION = {"eighths": 1 / 8, "quarters": 1 / 4, "halves": 1 / 2, "full": 1.0}
@@ -50,7 +51,7 @@ def _prompt(name: str, context: str) -> str:
 class MemoryRecall1(Suite):
     id = "memory_recall_1"
     profiles = ("eighths", "quarters", "halves", "full")
-    default_params = {
+    default_params: ClassVar[dict[str, Any]] = {
         "thinking": False,
         "temperature": 0.0,
         "multi_turn": False,
