@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "run_id": "preserve_thinking_1__default__qwen3.8-flash-next-q2_0__20261007T195250",
+  "suite": "preserve_thinking_1",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-q2_0",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": true,
+    "temperature": 1.0,
+    "multi_turn": true,
+    "preserve_thinking": true,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T19:52:50+00:00",
+  "finished_at": "2026-10-07T19:52:56+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "preserve_thinking_1",
+      "params": {
+        "thinking": true,
+        "temperature": 1.0,
+        "multi_turn": true,
+        "preserve_thinking": true,
+        "max_tokens": 8192
+      },
+      "sub_jobs": [
+        {
+          "label": "Generate two 20 digit numbers. Make sure to think of two numbers - I'll ask about the 2nd one later. But print only the first number - nothing else. Don't return Python code - return just the number.",
+          "prompt_bytes": 199,
+          "prompt_tokens": 100,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6746221180001157,
+          "generation_seconds": 1.8579282460050308,
+          "stream_seconds": 2.567709606002609,
+          "output_tokens": 215,
+          "chunk_count": 212,
+          "cached_tokens": 0,
+          "tokens_per_second": 115.72029246140103,
+          "prefill_tokens_per_second": 148.23113166885946,
+          "response": "12345678901234567890",
+          "reasoning": "We need respond to user: Generate two 20 digit numbers. Make sure to think of two numbers - I'll ask about the 2nd one later. But print only the first number - nothing else. Don't return Python code - return just the number.\n\nNeed likely include private thinking? We need final only first number. Need choose two 20 digit numbers, print first only. 20 digit means exactly 20 digits? likely 20000000000000000000 etc. Need only first number, nothing else. Ensure no code. Could choose two: 12345678901234567890 and 98765432109876543210. Print first. Must be 20 digits. Need final only number.\n",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "Now print the second number you generated in the previous step. Do not generate new numbers - use the number you thought of in the first step. If you don't remember it, or didn't think of one, say 'I don't remember the number'.",
+          "prompt_bytes": 227,
+          "prompt_tokens": 382,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.8174187769982382,
+          "generation_seconds": 1.8780921409997973,
+          "stream_seconds": 2.695868741000595,
+          "output_tokens": 218,
+          "chunk_count": 215,
+          "cached_tokens": 95,
+          "tokens_per_second": 116.07524212520707,
+          "prefill_tokens_per_second": 351.10522057486156,
+          "response": "98765432109876543210",
+          "reasoning": "We need answer user: \"Now print the second number you generated in the previous step. Do not generate new numbers - use the number you thought of in the first step. If you don't remember it, or didn't think of one, say 'I don't remember the number'.\"\n\nWe need output. Need consider prompt compliance: earlier asked generate two 20 digit numbers, thought of two, print only first. We did print first; thinking said two numbers: 12345678901234567890 and 98765432109876543210. Now print second number. Must only return just the number? It says now print the second number. likely only number. Ensure 20 digit. Output 98765432109876543210.\n",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 2,
+    "passed": 2,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 0.746020447499177,
+    "median_tokens_per_second": 115.89776729330404,
+    "median_cached_tokens": 47.5
+  },
+  "regraded": {
+    "at": "2026-10-07",
+    "why": "preserve_thinking checker: the first number is the one turn 1 printed, not the first 20-digit run in its reasoning (an example number there was taken as the first)"
+  }
+}

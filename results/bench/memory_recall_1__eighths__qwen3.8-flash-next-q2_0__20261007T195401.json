@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "run_id": "memory_recall_1__eighths__qwen3.8-flash-next-q2_0__20261007T195401",
+  "suite": "memory_recall_1",
+  "profile": "eighths",
+  "model": "qwen3.8-flash-next-q2_0",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": false,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T19:54:01+00:00",
+  "finished_at": "2026-10-07T19:57:04+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "eighths-1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "generateUUID",
+          "prompt_bytes": 149592,
+          "prompt_tokens": 57914,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 19.540452349996485,
+          "generation_seconds": 3.1979746620054357,
+          "stream_seconds": 22.738910731000942,
+          "output_tokens": 344,
+          "chunk_count": 333,
+          "cached_tokens": 0,
+          "tokens_per_second": 107.56808178845267,
+          "prefill_tokens_per_second": 2963.8003748674946,
+          "response": "const d0 = Math.random() * 0xffffffff | 0;\n\tconst d1 = Math.random() * 0xffffffff | 0;\n\tconst d2 = Math.random() * 0xffffffff | 0;\n\tconst d3 = Math.random() * 0xffffffff | 0;\n\tconst uuid = _lut[ d0 & 0xff ] + _lut[ d0 >> 8 & 0xff ] + _lut[ d0 >> 16 & 0xff ] + _lut[ d0 >> 24 & 0xff ] + '-' +\n\t\t\t_lut[ d1 & 0xff ] + _lut[ d1 >> 8 & 0xff ] + '-' + _lut[ d1 >> 16 & 0x0f | 0x40 ] + _lut[ d1 >> 24 & 0xff ] + '-' +\n\t\t\t_lut[ d2 & 0x3f | 0x80 ] + _lut[ d2 >> 8 & 0xff ] + '-' + _lut[ d2 >> 16 & 0xff ] + _lut[ d2 >> 24 & 0xff ] +\n\t\t\t_lut[ d3 & 0xff ] + _lut[ d3 >> 8 & 0xff ] + _lut[ d3 >> 16 & 0xff ] + _lut[ d3 >> 24 & 0xff ];\n\n\t// .toLowerCase() here flattens concatenated strings to save heap memory space.\n\treturn uuid.toLowerCase();\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "normalize",
+          "prompt_bytes": 148041,
+          "prompt_tokens": 56908,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 2.9882535400029155,
+          "generation_seconds": 1.147367908997694,
+          "stream_seconds": 4.136398132999602,
+          "output_tokens": 143,
+          "chunk_count": 126,
+          "cached_tokens": 49152,
+          "tokens_per_second": 124.63308314498745,
+          "prefill_tokens_per_second": 2595.495963167982,
+          "response": "```javascript\n\n\t\tswitch ( array.constructor ) {\n\n\t\tcase Float32Array:\n\n\t\t\treturn value;\n\n\t\tcase Uint16Array:\n\n\t\t\treturn Math.round( value * 65535.0 );\n\n\t\tcase Uint8Array:\n\n\t\t\treturn Math.round( value * 255.0 );\n\n\t\tcase Int16Array:\n\n\t\t\treturn Math.round( value * 32767.0 );\n\n\t\tcase Int8Array:\n\n\t\t\treturn Math.round( value * 127.0 );\n\n\t\tdefault:\n\n\t\t\tthrow new Error( 'Invalid component type.' );\n\n\t\t}\n\n\t}\n```",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-2",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "extractFromCache",
+          "prompt_bytes": 155378,
+          "prompt_tokens": 52211,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 17.416613225999754,
+          "generation_seconds": 0.4208228540010168,
+          "stream_seconds": 17.837893844000064,
+          "output_tokens": 50,
+          "chunk_count": 42,
+          "cached_tokens": 0,
+          "tokens_per_second": 118.81483984203763,
+          "prefill_tokens_per_second": 2997.769963798629,
+          "response": "const values = [];\n\n\t\t\tfor ( const key in cache ) {\n\n\t\t\t\tconst data = cache[ key ];\n\t\t\t\tdelete data.metadata;\n\t\t\t\tvalues.push( data );\n\n\t\t\t}\n\n\t\t\treturn values;\n\n\t\t}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "mergeUniforms",
+          "prompt_bytes": 154755,
+          "prompt_tokens": 52039,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 1.8447106530002202,
+          "generation_seconds": 0.5134879800025374,
+          "stream_seconds": 2.358635005002725,
+          "output_tokens": 72,
+          "chunk_count": 63,
+          "cached_tokens": 49152,
+          "tokens_per_second": 140.2174983719078,
+          "prefill_tokens_per_second": 1565.0150853222483,
+          "response": "const merged = {};\n\n\tfor ( let u = 0; u < uniforms.length; u ++ ) {\n\n\t\tconst tmp = cloneUniforms( uniforms[ u ] );\n\n\t\tfor ( const p in tmp ) {\n\n\t\t\tmerged[ p ] = tmp[ p ];\n\n\t\t}\n\n\t}\n\n\treturn merged;\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-3",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "setup",
+          "prompt_bytes": 141499,
+          "prompt_tokens": 42948,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.686084829998435,
+          "generation_seconds": 2.1461084640031913,
+          "stream_seconds": 16.832593817001907,
+          "output_tokens": 291,
+          "chunk_count": 260,
+          "cached_tokens": 0,
+          "tokens_per_second": 135.59426509934647,
+          "prefill_tokens_per_second": 2924.400920814004,
+          "response": "let updateBuffers = false;\n\n\t\tif ( vaoAvailable ) {\n\n\t\t\tconst state = getBindingState( geometry, program, material );\n\n\t\t\tif ( currentState !== state ) {\n\n\t\t\t\tcurrentState = state;\n\t\t\t\tbindVertexArrayObject( currentState.object );\n\n\t\t\t}\n\n\t\t\tupdateBuffers = needsUpdate( object, geometry, program, index );\n\n\t\t\tif ( updateBuffers ) saveCache( object, geometry, program, index );\n\n\t\t} else {\n\n\t\t\tconst wireframe = ( material.wireframe === true );\n\n\t\t\tif ( currentState.geometry !== geometry.id ||\n\t\t\t\tcurrentState.program !== program.id ||\n\t\t\t\tcurrentState.wireframe !== wireframe ) {\n\n\t\t\t\tcurrentState.geometry = geometry.id;\n\t\t\t\tcurrentState.program = program.id;\n\t\t\t\tcurrentState.wireframe = wireframe;\n\n\t\t\t\tupdateBuffers = true;\n\n\t\t\t}\n\n\t\t}\n\n\t\tif ( index !== null ) {\n\n\t\t\tattributes.update( index, 34963 );\n\n\t\t}\n\n\t\tif ( updateBuffers || forceUpdate ) {\n\n\t\t\tforceUpdate = false;\n\n\t\t\tsetupVertexAttributes( object, material, program, geometry );\n\n\t\t\tif ( index !== null ) {\n\n\t\t\t\tgl.bindBuffer( 34963, attributes.get( index ).buffer );\n\n\t\t\t}\n\n\t\t}\n\n\t}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "releaseStatesOfProgram",
+          "prompt_bytes": 141316,
+          "prompt_tokens": 42911,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 4.629215323999233,
+          "generation_seconds": 0.7009390160019393,
+          "stream_seconds": 5.3536346279943245,
+          "output_tokens": 105,
+          "chunk_count": 94,
+          "cached_tokens": 32768,
+          "tokens_per_second": 149.79905184748554,
+          "prefill_tokens_per_second": 2191.084080149753,
+          "response": "for ( const geometryId in bindingStates ) {\n\n\t\t\tconst programMap = bindingStates[ geometryId ];\n\n\t\t\tif ( programMap[ program.id ] === undefined ) continue;\n\n\t\t\tconst stateMap = programMap[ program.id ];\n\n\t\t\tfor ( const wireframe in stateMap ) {\n\n\t\t\t\tdeleteVertexArrayObject( stateMap[ wireframe ].object );\n\n\t\t\t\tdelete stateMap[ wireframe ];\n\n\t\t\t}\n\n\t\t\tdelete programMap[ program.id ];\n\n\t\t}\n\n\t}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-4",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "_getCubemapMaterial",
+          "prompt_bytes": 148062,
+          "prompt_tokens": 44450,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.935545225001988,
+          "generation_seconds": 1.5028366569968057,
+          "stream_seconds": 16.438828491001914,
+          "output_tokens": 200,
+          "chunk_count": 178,
+          "cached_tokens": 0,
+          "tokens_per_second": 133.08166198159557,
+          "prefill_tokens_per_second": 2976.121683565394,
+          "response": "return new ShaderMaterial( {\n\n\t\tname: 'CubemapToCubeUV',\n\n\t\tuniforms: {\n\t\t\t'envMap': { value: null },\n\t\t\t'flipEnvMap': { value: - 1 }\n\t\t},\n\n\t\tvertexShader: _getCommonVertexShader(),\n\n\t\tfragmentShader: /* glsl */`\n\n\t\t\tprecision mediump float;\n\t\t\tprecision mediump int;\n\n\t\t\tuniform float flipEnvMap;\n\n\t\t\tvarying vec3 vOutputDirection;\n\n\t\t\tuniform samplerCube envMap;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = textureCube( envMap, vec3( flipEnvMap * vOutputDirection.x, vOutputDirection.yz ) );\n\n\t\t\t}\n\t\t`,\n\n\t\tblending: NoBlending,\n\t\tdepthTest: false,\n\t\tdepthWrite: false\n\n\t} );\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "generateShadowMapTypeDefine",
+          "prompt_bytes": 148150,
+          "prompt_tokens": 44447,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 4.681753870994726,
+          "generation_seconds": 0.900477718001639,
+          "stream_seconds": 5.582651995995548,
+          "output_tokens": 124,
+          "chunk_count": 114,
+          "cached_tokens": 32768,
+          "tokens_per_second": 137.70468443703822,
+          "prefill_tokens_per_second": 2494.5779555725726,
+          "response": "let shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';\n\n\tif ( parameters.shadowMapType === PCFShadowMap ) {\n\n\t\tshadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';\n\n\t} else if ( parameters.shadowMapType === PCFSoftShadowMap ) {\n\n\t\tshadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';\n\n\t} else if ( parameters.shadowMapType === VSMShadowMap ) {\n\n\t\tshadowMapTypeDefine = 'SHADOWMAP_TYPE_VSM';\n\n\t}\n\n\treturn shadowMapTypeDefine;\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-5",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "deleteTexture",
+          "prompt_bytes": 147894,
+          "prompt_tokens": 42176,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.651291804999346,
+          "generation_seconds": 0.5084307639990584,
+          "stream_seconds": 15.160281691001728,
+          "output_tokens": 69,
+          "chunk_count": 62,
+          "cached_tokens": 0,
+          "tokens_per_second": 135.71169348070327,
+          "prefill_tokens_per_second": 2878.6540164061585,
+          "response": "const textureProperties = properties.get( texture );\n\t\t_gl.deleteTexture( textureProperties.__webglTexture );\n\n\t\tconst source = texture.source;\n\t\tconst webglTextures = _sources.get( source );\n\t\tdelete webglTextures[ textureProperties.__cacheKey ];\n\n\t\tinfo.memory.textures --;\n\n\t}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "refreshMaterialUniforms",
+          "prompt_bytes": 148293,
+          "prompt_tokens": 42293,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 4.505385536998801,
+          "generation_seconds": 3.9283951179968426,
+          "stream_seconds": 8.464528785996663,
+          "output_tokens": 511,
+          "chunk_count": 469,
+          "cached_tokens": 32768,
+          "tokens_per_second": 130.07856507584904,
+          "prefill_tokens_per_second": 2114.136497704688,
+          "response": "if ( material.isMeshBasicMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\n\t\t} else if ( material.isMeshLambertMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\n\t\t} else if ( material.isMeshToonMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\t\t\trefreshUniformsToon( uniforms, material );\n\n\t\t} else if ( material.isMeshPhongMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\t\t\trefreshUniformsPhong( uniforms, material );\n\n\t\t} else if ( material.isMeshStandardMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\t\t\trefreshUniformsStandard( uniforms, material );\n\n\t\t\tif ( material.isMeshPhysicalMaterial ) {\n\n\t\t\t\trefreshUniformsPhysical( uniforms, material, transmissionRenderTarget );\n\n\t\t\t}\n\n\t\t} else if ( material.isMeshMatcapMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\t\t\trefreshUniformsMatcap( uniforms, material );\n\n\t\t} else if ( material.isMeshDepthMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\n\t\t} else if ( material.isMeshDistanceMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\t\t\trefreshUniformsDistance( uniforms, material );\n\n\t\t} else if ( material.isMeshNormalMaterial ) {\n\n\t\t\trefreshUniformsCommon( uniforms, material );\n\n\t\t} else if ( material.isLineBasicMaterial ) {\n\n\t\t\trefreshUniformsLine( uniforms, material );\n\n\t\t\tif ( material.isLineDashedMaterial ) {\n\n\t\t\t\trefreshUniformsDash( uniforms, material );\n\n\t\t\t}\n\n\t\t} else if ( material.isPointsMaterial ) {\n\n\t\t\trefreshUniformsPoints( uniforms, material, pixelRatio, height );\n\n\t\t} else if ( material.isSpriteMaterial ) {\n\n\t\t\trefreshUniformsSprites( uniforms, material );\n\n\t\t} else if ( material.isShadowMaterial ) {\n\n\t\t\tuniforms.color.value.copy( material.color );\n\t\t\tuniforms.opacity.value = material.opacity;\n\n\t\t} else if ( material.isShaderMaterial ) {\n\n\t\t\tmaterial.uniformsNeedUpdate = false; // #15581\n\n\t\t}\n\n\t}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-6",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "transformVertex",
+          "prompt_bytes": 148027,
+          "prompt_tokens": 48659,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 15.68773985599546,
+          "generation_seconds": 1.3765474240062758,
+          "stream_seconds": 17.064488561998587,
+          "output_tokens": 176,
+          "chunk_count": 159,
+          "cached_tokens": 0,
+          "tokens_per_second": 127.85611082527993,
+          "prefill_tokens_per_second": 3101.72150014355,
+          "response": "```javascript\n\t// compute position in camera space\n\t_alignedPosition.subVectors( vertexPosition, center ).addScalar( 0.5 ).multiply( scale );\n\n\t// to check if rotation is not zero\n\tif ( sin !== undefined ) {\n\n\t\t_rotatedPosition.x = ( cos * _alignedPosition.x ) - ( sin * _alignedPosition.y );\n\t\t_rotatedPosition.y = ( sin * _alignedPosition.x ) + ( cos * _alignedPosition.y );\n\n\t} else {\n\n\t\t_rotatedPosition.copy( _alignedPosition );\n\n\t}\n\n\n\tvertexPosition.copy( mvPosition );\n\tvertexPosition.x += _rotatedPosition.x;\n\tvertexPosition.y += _rotatedPosition.y;\n\n\t// transform to world space\n\tvertexPosition.applyMatrix4( _viewWorldMatrix );\n\n}\n```",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "eliminateHole",
+          "prompt_bytes": 148074,
+          "prompt_tokens": 48684,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 5.568825877002382,
+          "generation_seconds": 0.48662617299851263,
+          "stream_seconds": 6.055856395003502,
+          "output_tokens": 75,
+          "chunk_count": 66,
+          "cached_tokens": 32768,
+          "tokens_per_second": 154.12241297639622,
+          "prefill_tokens_per_second": 2858.0530890233813,
+          "response": "const bridge = findHoleBridge( hole, outerNode );\n\tif ( ! bridge ) {\n\n\t\treturn outerNode;\n\n\t}\n\n\tconst bridgeReverse = splitPolygon( bridge, hole );\n\n\t// filter collinear points around the cuts\n\tfilterPoints( bridgeReverse, bridgeReverse.next );\n\treturn filterPoints( bridge, bridge.next );\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-7",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "toJSON$1",
+          "prompt_bytes": 148065,
+          "prompt_tokens": 44802,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.856620842001576,
+          "generation_seconds": 0.873310290997324,
+          "stream_seconds": 15.730572431995824,
+          "output_tokens": 123,
+          "chunk_count": 108,
+          "cached_tokens": 0,
+          "tokens_per_second": 140.84341071892499,
+          "prefill_tokens_per_second": 3015.625186673607,
+          "response": "```javascript\n\tdata.shapes = [];\n\n\tif ( Array.isArray( shapes ) ) {\n\n\t\tfor ( let i = 0, l = shapes.length; i < l; i ++ ) {\n\n\t\t\tconst shape = shapes[ i ];\n\n\t\t\tdata.shapes.push( shape.uuid );\n\n\t\t}\n\n\t} else {\n\n\t\tdata.shapes.push( shapes.uuid );\n\n\t}\n\n\tdata.options = Object.assign( {}, options );\n\n\tif ( options.extrudePath !== undefined ) data.options.extrudePath = options.extrudePath.toJSON();\n\n\treturn data;\n\n}\n```",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "subclip",
+          "prompt_bytes": 148052,
+          "prompt_tokens": 44760,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 4.718963421000808,
+          "generation_seconds": 2.803161589996307,
+          "stream_seconds": 7.522667491000902,
+          "output_tokens": 387,
+          "chunk_count": 349,
+          "cached_tokens": 32768,
+          "tokens_per_second": 138.05839855293888,
+          "prefill_tokens_per_second": 2541.236057612142,
+          "response": "```javascript\n\tconst clip = sourceClip.clone();\n\n\tclip.name = name;\n\n\tconst tracks = [];\n\n\tfor ( let i = 0; i < clip.tracks.length; ++ i ) {\n\n\t\tconst track = clip.tracks[ i ];\n\t\tconst valueSize = track.getValueSize();\n\n\t\tconst times = [];\n\t\tconst values = [];\n\n\t\tfor ( let j = 0; j < track.times.length; ++ j ) {\n\n\t\t\tconst frame = track.times[ j ] * fps;\n\n\t\t\tif ( frame < startFrame || frame >= endFrame ) continue;\n\n\t\t\ttimes.push( track.times[ j ] );\n\n\t\t\tfor ( let k = 0; k < valueSize; ++ k ) {\n\n\t\t\t\tvalues.push( track.values[ j * valueSize + k ] );\n\n\t\t\t}\n\n\t\t}\n\n\t\tif ( times.length === 0 ) continue;\n\n\t\ttrack.times = convertArray( times, track.times.constructor );\n\t\ttrack.values = convertArray( values, track.values.constructor );\n\n\t\ttracks.push( track );\n\n\t}\n\n\tclip.tracks = tracks;\n\n\t// find minimum .times value across all tracks in the trimmed clip\n\n\tlet minStartTime = Infinity;\n\n\tfor ( let i = 0; i < clip.tracks.length; ++ i ) {\n\n\t\tif ( minStartTime > clip.tracks[ i ].times[ 0 ] ) {\n\n\t\t\tminStartTime = clip.tracks[ i ].times[ 0 ];\n\n\t\t}\n\n\t}\n\n\t// shift all tracks such that clip begins at t=0\n\n\tfor ( let i = 0; i < clip.tracks.length; ++ i ) {\n\n\t\tclip.tracks[ i ].shift( - 1 * minStartTime );\n\n\t}\n\n\tclip.resetDuration();\n\n\treturn clip;\n\n}\n```",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "job_id": "eighths-8",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": false,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "intersectObject",
+          "prompt_bytes": 148018,
+          "prompt_tokens": 45131,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 14.950279279000824,
+          "generation_seconds": 0.6279972019983688,
+          "stream_seconds": 15.578792779997457,
+          "output_tokens": 92,
+          "chunk_count": 82,
+          "cached_tokens": 0,
+          "tokens_per_second": 146.49746799387646,
+          "prefill_tokens_per_second": 3018.7395939413013,
+          "response": "if ( object.layers.test( raycaster.layers ) ) {\n\n\t\tobject.raycast( raycaster, intersects );\n\n\t}\n\n\tif ( recursive === true ) {\n\n\t\tconst children = object.children;\n\n\t\tfor ( let i = 0, l = children.length; i < l; i ++ ) {\n\n\t\t\tintersectObject( children[ i ], raycaster, intersects, true );\n\n\t\t}\n\n\t}\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "setPoint",
+          "prompt_bytes": 148198,
+          "prompt_tokens": 45224,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 4.798634026999935,
+          "generation_seconds": 0.6139181909966283,
+          "stream_seconds": 5.45869266599766,
+          "output_tokens": 98,
+          "chunk_count": 89,
+          "cached_tokens": 32768,
+          "tokens_per_second": 159.63038958156272,
+          "prefill_tokens_per_second": 2595.7386893676876,
+          "response": "_vector.set( x, y, z ).unproject( camera );\n\n\tconst points = pointMap[ point ];\n\n\tif ( points !== undefined ) {\n\n\t\tconst position = geometry.getAttribute( 'position' );\n\n\t\tfor ( let i = 0, l = points.length; i < l; i ++ ) {\n\n\t\t\tposition.setXYZ( points[ i ], _vector.x, _vector.y, _vector.z );\n\n\t\t}\n\n\t}\n\n}",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 8,
+    "sub_jobs": 16,
+    "passed": 16,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 10.110058841000864,
+    "median_tokens_per_second": 136.70818895887075,
+    "median_cached_tokens": 16384.0
+  }
+}

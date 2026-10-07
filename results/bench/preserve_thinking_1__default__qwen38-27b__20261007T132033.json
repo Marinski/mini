@@ -77,5 +77,9 @@
     "median_ttft_seconds": 1.3846228739985236,
     "median_tokens_per_second": 71.62929353034988,
     "median_cached_tokens": 48.0
+  },
+  "regraded": {
+    "at": "2026-10-07",
+    "why": "preserve_thinking checker: the first number is the one turn 1 printed, not the first 20-digit run in its reasoning (an example number there was taken as the first)"
   }
 }

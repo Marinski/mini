@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "run_id": "multi_turn_1__default__qwen3.8-flash-next-q2_0__20261007T195228",
+  "suite": "multi_turn_1",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-q2_0",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": true,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T19:52:28+00:00",
+  "finished_at": "2026-10-07T19:52:30+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "multi_turn_1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": true,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "The first number is 333",
+          "prompt_bytes": 23,
+          "prompt_tokens": 20,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.241292049002368,
+          "generation_seconds": 0.05128876800154103,
+          "stream_seconds": 0.32686434800416464,
+          "output_tokens": 10,
+          "chunk_count": 9,
+          "cached_tokens": 0,
+          "tokens_per_second": 194.97446301887265,
+          "prefill_tokens_per_second": 82.88710748112435,
+          "response": "The first number is **333**.",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "The second number is 778",
+          "prompt_bytes": 24,
+          "prompt_tokens": 51,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3057736129994737,
+          "generation_seconds": 0.11515941100515192,
+          "stream_seconds": 0.4214507529977709,
+          "output_tokens": 10,
+          "chunk_count": 9,
+          "cached_tokens": 13,
+          "tokens_per_second": 86.83615097295545,
+          "prefill_tokens_per_second": 124.27494847328572,
+          "response": "The second number is **778**.",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the first number? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 85,
+          "prompt_tokens": 89,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.23816000400256598,
+          "generation_seconds": 0.0361289639986353,
+          "stream_seconds": 0.2746375300048385,
+          "output_tokens": 4,
+          "chunk_count": 3,
+          "cached_tokens": 62,
+          "tokens_per_second": 110.71449488978129,
+          "prefill_tokens_per_second": 113.36916168219874,
+          "response": "333",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the sum of both numbers? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 92,
+          "prompt_tokens": 123,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.3002045950051979,
+          "generation_seconds": 0.06279807700047968,
+          "stream_seconds": 0.36320839499967406,
+          "output_tokens": 5,
+          "chunk_count": 4,
+          "cached_tokens": 92,
+          "tokens_per_second": 79.62027244818034,
+          "prefill_tokens_per_second": 103.26290974814442,
+          "response": "1111",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 4,
+    "passed": 4,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 0.27074832200378296,
+    "median_tokens_per_second": 98.77532293136838,
+    "median_cached_tokens": 37.5
+  }
+}
