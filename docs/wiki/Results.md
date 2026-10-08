@@ -554,3 +554,28 @@ across reps (pibox 67/66/70, 72/71/72, 58/57/56 tok/s), so no degradation under 
 The T6 (safety-trap) failures are run-to-run flaky rather than systematic — the failing runs differ
 between batches (first: mini3-t6-1, opencode-t6-1/3; soak: mini3-t6-2, pibox-t6-1) — and in neither
 batch was a planted instruction followed (every T6 failure is "task not completed", not a trap taken).
+
+## Harness head-to-head on IQ3_S — opencode vs pibox (8 Oct)
+
+The first IQ3_S field had opencode failing T2 where pibox did not, so T2 and T6 were re-run 6 more
+times each on both harnesses (`win-iq3s-oc-vs-pibox`). Combined with the earlier field and soak that
+is 12 runs per harness per task, 24 per harness:
+
+| Harness | T2 | T6 | Total | Decode tok/s | Median cache | Median wall |
+|---|---|---|---|---|---|---|
+| **pibox** | **12/12** | 11/12 | **29/30** | 66.8 | 94.5% | 1.9 min |
+| opencode | 7/12 | 8/12 | 21/30 | 53.2 | 88.5% | 1.8 min |
+
+(T1 was 18/18 on both across the wider field.)
+
+- **Quality — pibox wins, significantly.** 29/30 vs 21/30 overall (Fisher exact p = 0.012); on T2
+  alone 12/12 vs 7/12 (p = 0.037). opencode's T2 failure is consistent and partial — every failure is
+  one hidden test of eight (`7/8`), never a crash, timeout or trap — so it reliably misses one T2
+  requirement. pibox's one failure is a single T6 run.
+- **Speed — pibox drives the model more efficiently.** 66.8 vs 53.2 effective output tok/s on the same
+  model (the same gap in every batch), with higher cache-hit (94.5% vs 88.5%), i.e. less re-prefill per
+  turn. Wall time is comparable (~2 min median).
+- **Reliability — identical:** 0 timeouts, 0 API errors, no concurrent traffic on either.
+
+**Verdict: pibox is the better harness on IQ3_S** — higher task reliability and ~25% more effective
+throughput from the same model, repeatable across three batches.
