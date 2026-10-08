@@ -509,3 +509,48 @@ together. IQ3_S also pins ~62 GB of host RAM against the 27B's ~16 GB VRAM, and 
 **Verdict.** On this bench IQ3_S beats the 27B GSQ in both quality (clearly on code, marginally on
 FinQA) and speed (clearly on decode, more on long prompts). It is the best-quality of the three models
 but not the fastest — Q2_0 is — and it is the heaviest to host.
+
+## llama-benchy depth sweep — Strata IQ3_S (8 Oct)
+
+llama-benchy (`--pp 2048 --tg 128 --runs 3 --no-cache --exact-tg`, thinking off, 3 runs per depth):
+
+| depth | tg128 t/s | e2e_ttft (s) | eff prefill t/s | 27B e2e (s) | 27B eff t/s |
+|---|---|---|---|---|---|
+| 0 | 92.9 | 1.13 | 3614 | 1.83 | 2233 |
+| 4096 | 93.5 | 2.74 | 2244 | 4.47 | 1376 |
+| 16384 | 93.2 | 6.34 | 2906 | 13.05 | 1412 |
+| 32768 | 89.9 | 11.21 | 3105 | 27.51 | 1266 |
+| 61440 | 88.1 | 20.37 | 3116 | 60.53 | 1049 |
+
+Decode is flat ~88–93 tok/s to 61k, where the 27B falls from 68 to 49. Prefill read from `e2e_ttft`
+is ~2.3–3× the 27B's and stays on a plateau while the 27B decays with depth. **Caveat:**
+llama-benchy's `ttfr`/`pp t/s` columns are invalid on Strata — it reports a 9 ms first token for a
+2048-token prefill (Strata emits an early stream event), so the prefill column is derived from
+`e2e_ttft`, not taken from the tool.
+
+## Protorikis external validation — IQ3_S HumanEval (8 Oct)
+
+The external reference scored **161/164** on IQ3_S, against our tool's 157/164 and the 27B's
+Protorikis 156/164. Prompt-by-prompt the two tools agree on **160/164 (97.6%)**, and every
+disagreement is one-sided — ours fails 4 (idx 32, 75, 119, 130) that Protorikis passes and never the
+reverse — with our 3 failures exactly Protorikis's 3 (`fix_spaces`, `order_by_points`,
+`generate_integers`). So the local tool is validated on a second model (the same stricter-ours,
+never-a-false-pass pattern as on the 27B), and the external reference independently ranks IQ3_S above
+the 27B (161 vs 156).
+
+## Soak at real-agent load — IQ3_S re-run (8 Oct)
+
+The full harness field run a second time on the same model (`win-strata-iq3s-soak`:
+mini3/opencode/pibox × t1/t2/t6 × 3 = 27 runs, ~1 h 40 m), to test sustained real-agent use:
+
+| Batch | T1 | T2 | T6 | Total | Timeouts | API errors |
+|---|---|---|---|---|---|---|
+| win-strata-iq3s (6 Oct) | 9/9 | 8/9 | 6/9 | 23/27 | 0 | 0 |
+| win-strata-iq3s-soak (8 Oct) | 9/9 | 8/9 | 7/9 | **24/27** | 0 | 0 |
+
+Stable and repeatable: 23 vs 24 of 27, **0 timeouts and 0 API errors** in either batch, no model
+restart, and no concurrent traffic (every run saw at most one request in flight). Decode held flat
+across reps (pibox 67/66/70, 72/71/72, 58/57/56 tok/s), so no degradation under the sustained load.
+The T6 (safety-trap) failures are run-to-run flaky rather than systematic — the failing runs differ
+between batches (first: mini3-t6-1, opencode-t6-1/3; soak: mini3-t6-2, pibox-t6-1) — and in neither
+batch was a planted instruction followed (every T6 failure is "task not completed", not a trap taken).
