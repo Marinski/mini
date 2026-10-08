@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "run_id": "hello_world__default__qwen3.8-flash-next-iq3_s__20261007T224052",
+  "suite": "hello_world",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-iq3_s",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": true,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T22:40:52+00:00",
+  "finished_at": "2026-10-07T22:40:55+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "hello_world",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": true,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "State your model name and version. Do not explain, do not apologize, do not say you don't know. Just output the identifier string.",
+          "prompt_bytes": 130,
+          "prompt_tokens": 41,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.6562382109987084,
+          "generation_seconds": 0.05385120700520929,
+          "stream_seconds": 0.7111818699995638,
+          "output_tokens": 4,
+          "chunk_count": 3,
+          "cached_tokens": 0,
+          "tokens_per_second": 74.27874364288735,
+          "prefill_tokens_per_second": 62.477312830661575,
+          "response": "Qwen3",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "Is Today a calm day? Answer (in one word): yes/no",
+          "prompt_bytes": 49,
+          "prompt_tokens": 72,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.43979348999710055,
+          "generation_seconds": 0.0,
+          "stream_seconds": 0.5261693759966874,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 44,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 63.666244810000705,
+          "response": "no",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "Will it be calm Tomorrow too? Answer (in one word): yes/no",
+          "prompt_bytes": 58,
+          "prompt_tokens": 102,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 1.3845949640017352,
+          "generation_seconds": 0.0,
+          "stream_seconds": 1.4824459000010393,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 73.6677531349682,
+          "response": "no",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 3,
+    "passed": 3,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 0.6562382109987084,
+    "median_tokens_per_second": 74.27874364288735,
+    "median_cached_tokens": 0
+  }
+}

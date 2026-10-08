@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "run_id": "multi_turn_1__default__qwen3.8-flash-next-iq3_s__20261007T224056",
+  "suite": "multi_turn_1",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-iq3_s",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": true,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T22:40:56+00:00",
+  "finished_at": "2026-10-07T22:41:00+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "multi_turn_1",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": true,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "The first number is 333",
+          "prompt_bytes": 23,
+          "prompt_tokens": 20,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.32666890600376064,
+          "generation_seconds": 1.022793937001552,
+          "stream_seconds": 1.3967219379992457,
+          "output_tokens": 69,
+          "chunk_count": 63,
+          "cached_tokens": 0,
+          "tokens_per_second": 67.46226928395969,
+          "prefill_tokens_per_second": 61.22407009796567,
+          "response": "Understood. The first number is **333**.\n\nHow would you like to proceed? For example:\n- Should I generate a sequence based on a specific rule?\n- Do you have a second number to compare or combine with?\n- Is this part of a puzzle or riddle?\n\nPlease provide more details!",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "The second number is 778",
+          "prompt_bytes": 24,
+          "prompt_tokens": 110,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.8042474039975787,
+          "generation_seconds": 1.0032556660007685,
+          "stream_seconds": 1.8078988830020535,
+          "output_tokens": 85,
+          "chunk_count": 77,
+          "cached_tokens": 13,
+          "tokens_per_second": 84.7241664119691,
+          "prefill_tokens_per_second": 120.60965259925419,
+          "response": "Understood. The second number is **778**.\n\nHere is the current sequence:\n1. **333**\n2. **778**\n\nHow would you like to continue? For example:\n- Should I find the difference, sum, or ratio between them?\n- Is there a pattern you want me to identify or extend?\n- Do you have a third number?",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the first number? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 85,
+          "prompt_tokens": 223,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.33702638300019316,
+          "generation_seconds": 0.057099038996966556,
+          "stream_seconds": 0.3943029059955734,
+          "output_tokens": 4,
+          "chunk_count": 3,
+          "cached_tokens": 195,
+          "tokens_per_second": 70.05371842094408,
+          "prefill_tokens_per_second": 83.07954929446562,
+          "response": "333",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "What is the sum of both numbers? Print only the number without explanations or highlighting.",
+          "prompt_bytes": 92,
+          "prompt_tokens": 257,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.405987776000984,
+          "generation_seconds": 0.047818078004638664,
+          "stream_seconds": 0.45409870900039095,
+          "output_tokens": 5,
+          "chunk_count": 4,
+          "cached_tokens": 226,
+          "tokens_per_second": 104.56296464937314,
+          "prefill_tokens_per_second": 76.35697878727478,
+          "response": "1111",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 4,
+    "passed": 4,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 0.3715070795005886,
+    "median_tokens_per_second": 77.38894241645659,
+    "median_cached_tokens": 104.0
+  }
+}

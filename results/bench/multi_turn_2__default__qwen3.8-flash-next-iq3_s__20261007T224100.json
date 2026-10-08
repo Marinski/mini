@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "run_id": "multi_turn_2__default__qwen3.8-flash-next-iq3_s__20261007T224100",
+  "suite": "multi_turn_2",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-iq3_s",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": false,
+    "temperature": 0.0,
+    "multi_turn": true,
+    "preserve_thinking": false,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T22:41:00+00:00",
+  "finished_at": "2026-10-07T22:41:22+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "multi_turn_2",
+      "params": {
+        "thinking": false,
+        "temperature": 0.0,
+        "multi_turn": true,
+        "preserve_thinking": false,
+        "max_tokens": 1024
+      },
+      "sub_jobs": [
+        {
+          "label": "part 1",
+          "prompt_bytes": 65609,
+          "prompt_tokens": 25702,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 10.448059700000158,
+          "generation_seconds": 0.0,
+          "stream_seconds": 10.51791388700076,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 0,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 2459.978286686054,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "part 2",
+          "prompt_bytes": 65612,
+          "prompt_tokens": 51875,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 10.569156363999355,
+          "generation_seconds": 0.0,
+          "stream_seconds": 10.611662704999617,
+          "output_tokens": 2,
+          "chunk_count": 1,
+          "cached_tokens": 25695,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": 2477.0188933124577,
+          "response": "OK",
+          "reasoning": "",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "part 3",
+          "prompt_bytes": 65635,
+          "prompt_tokens": 49226,
+          "prompt_tokens_estimated": true,
+          "ttft_seconds": null,
+          "generation_seconds": null,
+          "stream_seconds": null,
+          "output_tokens": null,
+          "chunk_count": 0,
+          "cached_tokens": null,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": null,
+          "response": "",
+          "reasoning": "",
+          "status": "skipped",
+          "reason": "exceeds context (server): HTTP 400: {\"error\": {\"type\": \"invalid_request_error\", \"message\": \"prompt (73706 tokens) + max tokens (1024) exceeds the context (65536); requests are never truncated. Send a smaller max_tokens (at most 0 here), or add \\\"fit_max_tokens\\\": true to the model's strata-<model>.json to shorten it to the room left (#545)\"}}"
+        },
+        {
+          "label": "one more line",
+          "prompt_bytes": 168,
+          "prompt_tokens": null,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": null,
+          "generation_seconds": null,
+          "stream_seconds": null,
+          "output_tokens": null,
+          "chunk_count": 0,
+          "cached_tokens": null,
+          "tokens_per_second": null,
+          "prefill_tokens_per_second": null,
+          "response": "",
+          "reasoning": "",
+          "status": "skipped",
+          "reason": "previous turn exceeded context"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 4,
+    "passed": 2,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 2,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 10.508608031999756,
+    "median_tokens_per_second": null,
+    "median_cached_tokens": 12847.5
+  }
+}

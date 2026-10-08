@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "run_id": "preserve_thinking_1__default__qwen3.8-flash-next-iq3_s__20261007T224122",
+  "suite": "preserve_thinking_1",
+  "profile": "default",
+  "model": "qwen3.8-flash-next-iq3_s",
+  "endpoint": "http://192.168.50.153:8080/v1",
+  "params": {
+    "thinking": true,
+    "temperature": 1.0,
+    "multi_turn": true,
+    "preserve_thinking": true,
+    "max_tokens": null
+  },
+  "started_at": "2026-10-07T22:41:22+00:00",
+  "finished_at": "2026-10-07T22:41:30+00:00",
+  "context_window": 65536,
+  "context_source": "models.meta.n_ctx",
+  "jobs": [
+    {
+      "job_id": "preserve_thinking_1",
+      "params": {
+        "thinking": true,
+        "temperature": 1.0,
+        "multi_turn": true,
+        "preserve_thinking": true,
+        "max_tokens": 8192
+      },
+      "sub_jobs": [
+        {
+          "label": "Generate two 20 digit numbers. Make sure to think of two numbers - I'll ask about the 2nd one later. But print only the first number - nothing else. Don't return Python code - return just the number.",
+          "prompt_bytes": 199,
+          "prompt_tokens": 100,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 0.9332031310041202,
+          "generation_seconds": 3.1139273019944085,
+          "stream_seconds": 4.047434769003303,
+          "output_tokens": 237,
+          "chunk_count": 234,
+          "cached_tokens": 0,
+          "tokens_per_second": 76.10967662867601,
+          "prefill_tokens_per_second": 107.15780592420504,
+          "response": "12345678901234567890",
+          "reasoning": "We need answer user's request. Need generate two 20 digit numbers, keep track of second mentally? User says print only first number - nothing else. Don't return Python code - just number. Need final only first number. Need ensure two 20 digit numbers? We need think of two numbers, print only first. Can choose e.g. 12345678901234567890 and 98765432109876543210. Need 20 digits each. First printed 12345678901234567890. Count 20? 1,2,3,4,5,6,7,8,9,0 (10), 1 2 3 4 5 6 7 8 9 0 =20. Good. Final only number. Ensure no extra whitespace? fine.\n",
+          "status": "pass",
+          "reason": null
+        },
+        {
+          "label": "Now print the second number you generated in the previous step. Do not generate new numbers - use the number you thought of in the first step. If you don't remember it, or didn't think of one, say 'I don't remember the number'.",
+          "prompt_bytes": 227,
+          "prompt_tokens": 404,
+          "prompt_tokens_estimated": false,
+          "ttft_seconds": 1.3682457079994492,
+          "generation_seconds": 2.0033981520027737,
+          "stream_seconds": 3.371981046999281,
+          "output_tokens": 141,
+          "chunk_count": 138,
+          "cached_tokens": 95,
+          "tokens_per_second": 70.38041832026447,
+          "prefill_tokens_per_second": 225.83663021446466,
+          "response": "98765432109876543210",
+          "reasoning": "We need answer second number we thought of. However actual context: I in prior final only printed first number and thought of 98765432109876543210. Need print that. Ensure 20 digits. Count 9876543210 10, 9876543210 20. Final only number? User says Now print second number... likely only number, no extra. Must not generate new numbers. Use previous. Need final.\n",
+          "status": "pass",
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "jobs": 1,
+    "sub_jobs": 2,
+    "passed": 2,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 1.0,
+    "median_ttft_seconds": 1.1507244195017847,
+    "median_tokens_per_second": 73.24504747447024,
+    "median_cached_tokens": 47.5
+  }
+}
