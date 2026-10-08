@@ -160,10 +160,10 @@ case $H in
       -e PIBOX_API_MODE=1 -e PIBOX_API_MODE_PORT=8080 -e PIBOX_API_MODE_TOKEN=trial-local-token -e PIBOX_MCP_MODE=0 \
       -e PIBOX_PROVIDER_NAME=aigate -e PIBOX_PROVIDER_API=openai-completions -e PIBOX_PROVIDER_BASE_URL=$GW \
       -e PIBOX_PROVIDER_API_KEY="$(cat $KEYS/pibox-trial.key)" -e PIBOX_PROVIDER_MODEL=$MODEL -e PIBOX_AVAILABLE_MODELS=$MODEL \
-      -v $R:/workspace/task -v $RM:/remote aigate-pibox:local > /dev/null
+      -v $R:/workspace/task -v $RM:/remote ${PIBOX_IMAGE:-aigate-pibox:local} > /dev/null
     IP=$(docker inspect $NAME --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')
     for i in $(seq 1 40); do curl -s -m 3 -o /dev/null http://$IP:8080/healthz && break; sleep 3; done
-    python3 -c 'import json,sys; print(json.dumps({"prompt":sys.argv[1],"workspace":"task","model":sys.argv[2],"outputFormat":"json-verbose","noContinue":True,"timeoutSeconds":int(sys.argv[3])}))' "$PROMPT" $MODEL "$TMO" \
+    python3 -c 'import json,sys,os; d={"prompt":sys.argv[1],"workspace":"task","model":sys.argv[2],"outputFormat":"json-verbose","noContinue":True,"timeoutSeconds":int(sys.argv[3])}; ap=os.environ.get("PIBOX_APPEND_PROMPT"); d.update({"appendSystemPrompt":ap} if ap else {}); print(json.dumps(d))' "$PROMPT" $MODEL "$TMO" \
       | timeout -k 30 $((TMO+60)) curl -s -m $((TMO-10)) http://$IP:8080/run -H 'Authorization: Bearer trial-local-token' -H 'content-type: application/json' -d @- > $L.agent.json 2> $L.err ;;
   mini)
     # mini-harness v1 (86 lines), baked into agent-trial:3/:4 as /opt/mini_harness.py.

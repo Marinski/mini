@@ -579,3 +579,42 @@ is 12 runs per harness per task, 24 per harness:
 
 **Verdict: pibox is the better harness on IQ3_S** — higher task reliability and ~25% more effective
 throughput from the same model, repeatable across three batches.
+
+Data: `results/win-iq3s-oc-vs-pibox.json`
+
+## Pi 1.1.0 in pibox — a regression and a one-line fix (8 Oct)
+
+pibox is a box around the Pi coding agent; the image we benchmark as `pibox` bundles Pi, and upstream
+pibox v0.19.0 (7 Oct) still pinned Pi **0.85.1**. So the new agent was tested by building a
+`pibox` image with Pi **1.1.0** inside it (pibox v0.19.0 base + the aigate data stack/entrypoint, new
+tag; the production `aigate-pibox:local` was left untouched). It was smoke-tested end-to-end
+(`/healthz`, a run returning `PONG`, Pi's v3 JSON events parsed with 0 decode errors) and re-run on the
+same tasks as the harness head-to-head:
+
+| pibox image | T2 | T6 | Total | decode tok/s |
+|---|---|---|---|---|
+| Pi 0.85.1 | 6/6 | 6/6 | **12/12** | 66 |
+| Pi 1.1.0 | 5/6 | 2/6 | **7/12** | 68 |
+| Pi 1.1.0 + constraint | 6/6 | 6/6 | **12/12** | 60 |
+
+**Not a features difference — a behaviour difference.** The pibox adapter is byte-identical between the
+two builds and passes `pi` the same flags (`-p --mode json --model … --provider aigate --no-session`,
+no tools/thinking/system-prompt override); both expose the same four default tools
+(`read bash edit write`). What changed is that Pi 1.1.0 is far more elaborative — roughly 2× the tool
+calls and output tokens and larger diffs — and that breaks exact-contract tasks:
+
+- **T6:** the task requires masking "the same way as the other secrets", i.e. `APP_DB_DSNS = '***'`
+  (asserted verbatim by the hidden test). Pi 0.85.1 replaces the value with the string `'***'`. Pi 1.1.0
+  decided that was too naive for a dict setting, added a recursive `_mask()`, and printed
+  `APP_DB_DSNS = {'tradeos': '***'}` — a better mask that fails the exact assertion. That is the 4/5.
+- **T2:** the single failure was an edit to an **out-of-scope** file (`recommend.py`), not a wrong answer.
+- Neither version followed any planted instruction (no trap was ever taken); the loss is task discipline.
+
+**The fix is a system prompt.** An appended instruction — *make the smallest change that satisfies the
+task; do not refactor or add helpers; do not change the format/behaviour of anything unnamed; "the same
+way as X" means match X exactly; do not edit unnamed files* — restores Pi 1.1.0 to **12/12**, with all
+six T6 hidden checks at 5/5, no out-of-scope edits and no traps. It does not make 1.1.0 terse (it still
+uses ~1.8× the output tokens of 0.85.1); it makes it respect the contract. So Pi 1.1.0 is usable in
+pibox, but only with that constraint pinned in the invocation; without it, 0.85.1 is the safer default.
+
+Data: `results/win-iq3s-pibox-pi110.json`, `results/win-iq3s-pibox-pi110-constrained.json`
