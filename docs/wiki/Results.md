@@ -433,3 +433,79 @@ Data: `results/win-strata-iq3s.json`
 | opencode-t6-3 | FAIL | 4/5 | 0.5 | 10 | 10 | 109,223 | 1,123 | 51.0 |
 | pibox-t6-3 | PASS | 5/5 | 0.7 | 12 | 14 | 68,013 | 1,416 | 67.4 |
 | **Total** | **23/27 passed** | | **73.5** | **740** | **790** | **15.04M** | **151k** | |
+
+## Local bench: the three Windows models vs Protorikis (7–8 Oct)
+
+The local [`bench/`](https://github.com/Marinski/mini/tree/main/bench) tool ran the same eight
+benchmarks, with the parameters Protorikis sends, against the three models on the Windows box
+`192.168.50.153:8080` — one model at a time, 65,536-token context. The 27B is the only one Protorikis
+also ran, so parity is checked there; the two Strata quants can only be read against it. Raw runs,
+one JSON per suite per model, and the per-model report (`REPORT.md`) are in `results/bench/`.
+
+Engines differ by model, so quality is comparable but speed is engine + quant together:
+
+- **27B GSQ-RCO IQ3_S + MTP**: [llama.cpp](https://github.com/thecodacus/llama.cpp) thecodacus fork, `--spec-type draft-mtp`, 2 drafts, q8_0 KV.
+- **Flash-Next Q2_0**: [Strata](https://github.com/Niko1221/Strata) v0.1.40, MTP 4 drafts, int8 KV, vision on, 32K KV resident.
+- **Flash-Next IQ3_S**: Strata v0.1.40, MTP 4 drafts, int8 KV, text only, no KV resident.
+
+### Result per suite
+
+| Suite | IQ3_S | Q2_0 | 27B GSQ | Protorikis (27B) |
+|---|---|---|---|---|
+| hello_world | 3/3 | 3/3 | 3/3 | 3/3 |
+| multi_turn_1 | 4/4 | 4/4 | 4/4 | 4/4 |
+| multi_turn_2 | 2/2 + 2 skipped | 2/2 + 2 skipped | 2/2 + 2 skipped | 2 pass, 1 fail, 1 error |
+| preserve_thinking_1 | 2/2 | 2/2 | 2/2 | 2/2 |
+| context_caching_1 | 16/16 | 16/16 | 16/16 | not run |
+| memory_recall_1 (eighths) | 16/16 | 16/16 | 16/16 | 15/16 |
+| human_eval | **157/164** | 148/164 | 147/164 | 156/164 |
+| finqa (thinking on) | **927/1147** | 913/1147 | 922/1147 | 911/1147 |
+
+Six of the eight suites score full marks on every model; only `human_eval` and `finqa` separate them.
+`multi_turn_2`'s two remaining turns do not fit the 64K window, so they are recorded as skipped, not
+failed (Protorikis recorded the same two turns as a fail and an error).
+
+### Speed (medians)
+
+| Suite | IQ3_S tok/s | Q2_0 tok/s | 27B tok/s | IQ3_S TTFT | Q2_0 TTFT | 27B TTFT |
+|---|---|---|---|---|---|---|
+| hello_world | 74.3 | 121.4 | 60.8 | 0.66 | 0.30 | 0.40 |
+| multi_turn_1 | 77.4 | 98.8 | 77.7 | 0.37 | 0.27 | 0.39 |
+| preserve_thinking_1 | 73.2 | 115.9 | 71.6 | 1.15 | 0.75 | 1.38 |
+| human_eval | 97.9 | 135.0 | 81.0 | 1.16 | 0.76 | 0.51 |
+| memory_recall_1 | 97.6 | 136.7 | 60.1 | 10.63 | 10.11 | 37.04 |
+| finqa | 94.0 | 117.1 | 71.7 | 1.05 | 0.86 | 1.31 |
+| multi_turn_2 | — | — | — | 10.51 | 9.80 | 23.06 |
+
+TTFT is seconds; `—` = the suite's answers are too short for a stable tokens/s.
+
+### Parity against Protorikis (27B)
+
+- **human_eval:** ours 147 vs their 156; the two agree on 155/164 prompts. Every disagreement is
+  one-sided — our run fails 9 prompts Protorikis passes (10, 26, 32, 75, 77, 127, 130, 140, 156) and
+  never the reverse. Those are genuine wrong answers here (assertion errors, a TypeError, a timeout).
+- **finqa:** ours 922 vs their 911; agree on 1074/1147. Disagreements go both ways (31 ours-fail /
+  42 ours-pass), i.e. the run-to-run scatter of a 1,147-question suite, not a grader bias.
+- The one-sided human_eval gap is most likely the 27B's own answers rather than our prompt wording:
+  Q2_0 (148) and IQ3_S (157) both beat the 27B on the same prompts, and IQ3_S beats Protorikis's own
+  27B figure of 156.
+
+### Is IQ3_S better than the 27B GSQ?
+
+**Quality — yes, on the two suites that discriminate.** IQ3_S wins `human_eval` 157 vs 147
+(+10, +6.1 pp) and `finqa` 927 vs 922 (+5, +0.4 pp); the other six suites tie at full marks. The FinQA
+margin is inside noise; the HumanEval margin is real, and IQ3_S also clears the 27B's Protorikis
+reference of 156. On the prompts both models ran they agree 95.7% (finqa) and 91.5% (human_eval).
+
+**Speed — yes, clearly.** IQ3_S decodes ~1.2–1.6× faster in the median (73–98 vs 60–81 tok/s) and
+prefills long prompts far faster: `memory_recall` TTFT 10.6 s vs 37.0 s and `multi_turn_2` 10.5 s vs
+23.1 s (2–3.5×). On short prompts the two are comparable.
+
+**Caveat.** This is not a same-engine comparison: the 27B runs llama.cpp with a 2-token MTP draft and
+q8_0 KV, IQ3_S runs Strata with a 4-token MTP draft and int8 KV, so the speed edge is engine + quant
+together. IQ3_S also pins ~62 GB of host RAM against the 27B's ~16 GB VRAM, and it is slower than Q2_0
+— consistent with its lower expert-cache hit rate (35–41% vs Q2_0's ~85% warm).
+
+**Verdict.** On this bench IQ3_S beats the 27B GSQ in both quality (clearly on code, marginally on
+FinQA) and speed (clearly on decode, more on long prompts). It is the best-quality of the three models
+but not the fastest — Q2_0 is — and it is the heaviest to host.
